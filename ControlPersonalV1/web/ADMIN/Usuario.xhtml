@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Usuario</title>
+            </f:facet>
+        </h:head>
+
+        <h:body >
+
+
+
+            <p:layout fullPage="true">
+
+                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
+                    <div>
+                        <h:graphicImage url="../images/bannerC.png" alt="Logo"  style="vertical-align: top;"/> 
+                    </div>
+
+                </p:layoutUnit>
+
+
+
+
+                <p:layoutUnit position="west" size="230" header="Control Usuario" collapsible="true">
+                    <h:form id="formularioMenu"> 
+                        <p:menu>
+
+
+
+                            <p:submenu label="Menu Registros">
+
+                                <p:menuitem value="Personal" url="registroEmpleados.xhtml" />
+
+                                <p:menuitem value="Contratista" url="registroContratista.xhtml" />
+                                <p:menuitem value="Ingresos" url="index.xhtml" />
+
+                            </p:submenu>
+
+                            <p:submenu label="Menu Reportes">
+                                <p:menuitem value="Reportes" url="index.xhtml"/>
+
+                            </p:submenu>
+
+                        </p:menu>
+
+
+                        <p:commandButton   id="btnCerrar" action="#{usuarioVista.cerrarSesion_action}" style="width: 100%" value="Cerrar Sesion" />
+
+                    </h:form>
+
+
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center">
+                    <h:form id="formulario1">
+                        <p:growl id="growl1" showDetail="true" sticky="true" />  
+                        <p:messages id="mensajes1" showDetail="true" />
+                        <p:panel header="Registro de Usuarios" id="panelUsuario">
+                            <p:panelGrid id="panelUsuario1"  columns="4" style="width: 84%;"  >
+
+
+
+                                <h:outputText value="Identificación:"/>
+                                <p:inputText id="txtIdentificacion" binding="#{usuarioVista.txtdocUsuario}"/>
+
+                                <h:outputText value="Nombre de usuario:"/>
+                                <p:inputText id="txtNombre" binding="#{usuarioVista.txtNombre}"/>
+
+                                <h:outputText value="Password:"/>
+                                <p:password id="txtPassword"  binding="#{usuarioVista.txtClaveUsuario}"/>
+
+                                <h:outputText value="Confirmacion Password:"/>
+                                <p:password id="txtConfirmacion" binding="#{usuarioVista.txtConfirmacion}"/>
+
+                            </p:panelGrid>
+
+
+                        </p:panel>
+
+                        <p:panel>
+
+                            <p:panelGrid id="pnlBotones1"  columns="6" style="width: 100%;">
+                                <f:facet name="footer"> 
+                                    <div align="center"> 
+                                        <p:commandButton  id="btnRegistrar" action="#{usuarioVista.registrar_Action}" value="Registrar" binding="#{usuarioVista.btnRegistrar}" update=":formulario1:mensajes1,:formulario1:panelUsuario1,:formulario1:panelTabla1"/>
+                                        <p:commandButton  id="btnEliminar" action="#{usuarioVista.eliminar_action}" value="Eliminar" binding="#{usuarioVista.btnEliminar}" onclick="PF('confirmation').show();"  type="button"/>
+                                        <p:commandButton  id="btnLimpiar" action="#{usuarioVista.limpiar_action()}" value="Limpiar" binding="#{usuarioVista.btnLimpiar}" update=":formulario1"/>
+                                        <p:commandButton  id="btnModificar" action="#{usuarioVista.modificar_action}" value="Cambiar Clave" binding="#{usuarioVista.btnModificar}" onclick="PF('confirmation').show();"  type="button" />
+
+
+                                    </div>
+                                </f:facet>
+                            </p:panelGrid>
+                        </p:panel>
+
+                        <p:panel id="panelTabla1">   
+                            <p:dataTable var="usuario" value="#{usuarioVista.listaUsuario}" rows="10"
+                                         paginator="true"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15"
+                                         rowKey="#{usuario.documentousuario}"
+                                         selection="#{usuarioVista.selectedUsuario}"
+                                         selectionMode="single"
+                                         filteredValue="#{usuarioVista.listaUsuario}"
+                                         emptyMessage="No hay casid Registradas!"
+                                         >
+                                <p:ajax 
+                                    event="rowSelect"
+                                    listener="#{usuarioVista.seleccionarUsuario}"
+                                    update=":formulario1:pnlBotones1,:formulario1:panelUsuario1,:formulario1:panelTabla1,:formulario1:mensajes1,"
+                                    />
+
+
+                                <p:column headerText="Identificación:"  
+                                          filterBy="#{usuario.documentousuario}" filterMatchMode="contains"
+                                          >
+                                    <h:outputText value="#{usuario.documentousuario}" />
+                                </p:column>
+
+
+                                <p:column headerText="Nombre"  filterBy="#{usuario.nombreusuario}" filterMatchMode="contains" >
+                                    <h:outputText value="#{usuario.nombreusuario}" />
+                                </p:column>
+
+                                <p:column headerText="Clave"   filterBy="#{usuario.claveusuario}" filterMatchMode="contains" >
+                                    <h:outputText   value="#{usuario.claveusuario}" />
+                                </p:column>
+
+
+                            </p:dataTable>
+                        </p:panel>
+                        <br/>
+                        <br/>
+
+
+                    </h:form>    
+
+
+                    <div  align="center">
+
+
+                        CONTACTENOS   <br/>       
+                        Ventas
+                        compat5@hotmail.com
+                        Cel: 3162902471   <br/>   
+                        Gerencia
+                        Arturo Rios Pedroza
+                        compat5@hotmail.com
+                        Cel: 3162902471    <br/>   
+
+                        Dirección: CR 41 #  35-51 Oficina 107.  <br/>  Tulua - Colombia        <br/>   
+                        Actualizada el 15/05/2016. <br/>  Todos los derechos reservados WWW.DILOVE.COM.CO ®
+
+                    </div>
+                </p:layoutUnit>
+
+
+
+
+            </p:layout>
+
+
+
+            <!-- Dialogo de confirmacion para el boton eliminar -->
+            <h:form id="formDialog" > 
+                <p:confirmDialog id="confirmDialog" message="Está Seguro de Eliminar el usuario?"  
+                                 header="Confirmación" showEffect="fade" hideEffect="explode" severity="alert" widgetVar="confirmation">  
+                    <p:commandButton id="confirm" value="Si" oncomplete="PF('confirmation').hide();" 
+                                     update=":formulario1"   
+                                     actionListener="#{usuarioVista.eliminar_action}" />  
+                    <p:commandButton id="decline" value="No" onclick="PF('confirmation').hide();" type="button" />   
+
+                </p:confirmDialog> 
+            </h:form>
+
+
+
+
+
+        </h:body>
+
+    </f:view>
+</html>
+
+

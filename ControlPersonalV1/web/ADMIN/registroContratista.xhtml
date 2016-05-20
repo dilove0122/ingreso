@@ -1,0 +1,178 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Control personal</title>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+
+            <p:layout fullPage="true">
+
+
+                <p:layoutUnit position="north" size="230" resizable="true" closable="true" collapsible="true">
+
+                    <h:graphicImage url="../images/bannerC.png" alt="Logo"  style="vertical-align: top;" />
+
+                </p:layoutUnit>
+
+
+
+                <p:layoutUnit position="west" size="230" header="Control Personal" collapsible="true">
+                    <h:form id="formularioMenu"> 
+                        <p:menu>
+
+
+                            <p:submenu label="Menu Registros">
+
+                                <p:menuitem value="Usuarios" url="Usuario.xhtml" />
+                                <p:menuitem value="Personal" url="registroEmpleados.xhtml" />
+                                <p:menuitem value="Ingresos" url="faces/index.xhtml" />
+                               
+
+
+                            </p:submenu>
+
+                            <p:submenu label="Menu Reportes">
+                                <p:menuitem value="Reportes" url="faces/index.xhtml"/>
+
+                            </p:submenu>
+
+                        </p:menu>
+
+                        <p:commandButton   id="btnCerrar" action="#{usuarioVista.cerrarSesion_action}" style="width: 100%" value="Cerrar Sesion" />
+
+
+                    </h:form>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center">
+                    <h:form id="formulario"> 
+
+                        <p:messages id="mensajes" showDetail="true" />
+                        <p:panel header="Datos del Contratista: ">
+                            <p:panelGrid id="panelUsuario" columns="4" style="width: 82%;">
+
+                                <h:outputText value="Nit:"/>
+                                <p:inputText id="txtNit" binding="#{contratistaVista.txtNitContratista}"/>
+
+                                <h:outputText value="Nombre:"/>
+                                <p:inputText id="txtNombre" binding="#{contratistaVista.txtNombreContratista}"/>
+
+                                <h:outputText   value="Estado:"/>
+                                <p:inputText  id="txtEstado" binding="#{contratistaVista.txtEstadoContratista}"/>
+
+
+                            </p:panelGrid>
+                        </p:panel>
+
+                        <p:panelGrid id="pnlBotones" columns="4" style="width: 82%;">
+                            <f:facet name="footer"> 
+                                <div align="center"> 
+
+                                    <p:commandButton  id="btnRegistrar" action="#{contratistaVista.registrar_action()}" value="Registrar" binding="#{contratistaVista.btnRegistrar}" update=":formulario:mensajes,:formulario:panelUsuario,:formulario:panelTabla" />
+                                    <p:commandButton  id="btnModificar" action="#{contratistaVista.modificar_action}" value="Modificar" binding="#{contratistaVista.btnModificar}" update=":formulario:mensajes,:formulario:panelUsuario,:formulario:panelTabla"/>
+                                    <p:commandButton  id="btnActivo" action="#{contratistaVista.activar_action()}" value="Activar" binding="#{contratistaVista.btnActivo}" onclick="PF('confirmation2').show();"  type="button"/>
+                                    <p:commandButton  id="btnInactivo" action="#{contratistaVista.inactivar_action()}" value="Inactivar" binding="#{contratistaVista.btnInactivo}" onclick="PF('confirmation1').show();"  type="button"/>
+                                    <p:commandButton  id="btnLimpiar" action="#{contratistaVista.limpiar()}" value="Limpiar" binding="#{contratistaVista.btnLimpiar}" update=":formulario" />
+                                </div>
+                            </f:facet>
+                        </p:panelGrid>       
+
+                        <p:panel id="panelTabla">   
+                            <p:dataTable var="contratista" value="#{contratistaVista.listaContratista}" rows="10"
+                                         paginator="true"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15"
+                                         rowKey="#{contratista.nitcontratista}"
+                                         selection="#{contratistaVista.selectedContratista}"
+                                         selectionMode="single"
+                                         filteredValue="#{contratistaVista.listaContratista}"
+                                         >
+                                <p:ajax 
+                                    event="rowSelect"
+                                    listener="#{contratistaVista.seleccionarContratista}"
+                                    update=":formulario:pnlBotones,:formulario:panelUsuario "
+                                    />
+
+
+                                <p:column headerText="Nit"   filterBy="#{contratista.nitcontratista}" filterMatchMode="contains" >
+                                    <h:outputText value="#{contratista.nitcontratista}" />
+                                </p:column>
+
+
+                                <p:column headerText="Nombre">
+                                    <h:outputText value="#{contratista.nombrecontratista}" />
+                                </p:column>
+
+
+                                <p:column headerText="Estado">
+                                    <h:outputText value="#{contratista.estadocontratista}" />
+                                </p:column>
+
+
+                            </p:dataTable>
+                        </p:panel>
+                        <br/>
+                        <br/>
+                    </h:form>
+
+
+                    <div  align="center">
+
+                        CONTACTENOS   <br/>       
+                        Ventas
+                        compat5@hotmail.com
+                        Cel: 3162902471   <br/>   
+                        Gerencia
+                        Arturo Rios Pedroza
+                        compat5@hotmail.com
+                        Cel: 3162902471    <br/>   
+
+                        Dirección: CR 41 #  35-51 Oficina 107.  <br/>  Tulua - Colombia        <br/>   
+                        Actualizada el 15/05/2016. <br/>  Todos los derechos reservados WWW.DILOVE.COM.CO ®
+
+                    </div>
+
+                </p:layoutUnit>
+
+            </p:layout>
+
+
+            <h:form id="formDialog1" > 
+                <p:confirmDialog id="confirmDialog1" message="Está Seguro de inactivarlo el usuario?"  
+                                 header="Confirmación1" showEffect="fade" hideEffect="explode" severity="alert" widgetVar="confirmation1">  
+                    <p:commandButton id="confirm1" value="Si" oncomplete="PF('confirmation1').hide();" 
+                                     update=":formulario:mensajes,:formulario:panelTabla"  
+                                     actionListener="#{contratistaVista.inactivar_action()}" />  
+                    <p:commandButton id="decline" value="No" onclick="PF('confirmation1').hide();" type="button" />   
+
+                </p:confirmDialog> 
+            </h:form>
+
+            <h:form id="formDialog2" > 
+                <p:confirmDialog id="confirmDialog2" message="Está Seguro de activarlo el usuario?"  
+                                 header="Confirmación2" showEffect="fade" hideEffect="explode" severity="alert" widgetVar="confirmation2">  
+                    <p:commandButton id="confirm2" value="Si" oncomplete="PF('confirmation2').hide();" 
+                                     update=":formulario:mensajes,:formulario:panelTabla"  
+                                     actionListener="#{contratistaVista.activar_action()}" />  
+                    <p:commandButton id="decline" value="No" onclick="PF('confirmation2').hide();" type="button" />   
+
+                </p:confirmDialog> 
+            </h:form>
+
+        </h:body>
+
+    </f:view>
+</html>
+
+
+
