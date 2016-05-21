@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Ingreso</title>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+
+            <p:layout fullPage="true">
+
+
+
+                <p:layoutUnit position="center">
+                    <h:form id="formulario"> 
+
+                        <p:messages id="mensajes" showDetail="true" />
+                        <p:panel header="Datos del Empleado: ">
+                            <p:panelGrid id="panelUsuario" columns="4" style="width: 82%;">
+
+
+                                <h:outputText value="Cedula:"/>
+                                <p:inputText id="txtCedula" binding="#{empleadoVista.txtCedula}"/>
+
+
+                                <h:outputText value="Primer apellido"/>
+                                <p:inputText id="txtNombrePrimer" />
+
+                                <h:outputText value="Segundo Apellido:"/>
+                                <p:inputText id="txtApellidoApellido" />
+
+
+                                <h:outputText value="Nombre"/>
+                                <p:inputText id="txtTelefonoNombre" />
+
+                                <h:outputText value="Vacio"/>
+                                <p:inputText id="txtCorreoVacio" />
+
+                                     <h:outputText value="Sexo"/>
+                                <p:inputText id="txtTelefonoSexo" />
+
+                                <h:outputText value="Fecha de Nacimiento"/>
+                                <p:inputText id="txtCorreoNacimiento" />
+
+                                 <h:outputText value="Tipo de sangre"/>
+                                <p:inputText id="txtTelefono" />
+
+                                <h:outputText value="Codigo 1"/>
+                                <p:inputText id="txtCodi1" />
+
+
+                                <h:outputText value="Codigo 2"/>
+                                <p:inputText id="txtCodi2" />
+                                
+                                
+                                <h:outputText value="Vacio fin"/>
+                                <p:inputText id="txtCodi4" />
+
+
+
+
+
+
+
+                            </p:panelGrid>
+                        </p:panel>
+
+                    </h:form>
+
+                </p:layoutUnit>
+
+            </p:layout>
+
+
+
+
+        </h:body>
+
+    </f:view>
+</html>
+
+
+
