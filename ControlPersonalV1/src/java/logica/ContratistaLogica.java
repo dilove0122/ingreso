@@ -82,7 +82,7 @@ public class ContratistaLogica implements ContratistaLogicaLocal {
         if (objContratista == null) {
             throw new Exception("el contratista no existe");
         } else {
-            objContratista.setEstadocontratista("ACTIVADO");
+            objContratista.setEstadocontratista("ACTIVO");
             contratistaDAO.edit(objContratista);
         }
 
