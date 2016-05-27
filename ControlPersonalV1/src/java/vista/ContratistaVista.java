@@ -198,20 +198,23 @@ public class ContratistaVista {
             Contratista objcontratista = new Contratista();
         
         try {
-
-
+            String nombre= txtNombreContratista.getValue().toString();
             Long nit = Long.parseLong(txtNitContratista.getValue().toString());
             objcontratista.setNitcontratista(nit);
             objcontratista.setNombrecontratista(txtNombreContratista.getValue().toString());
             objcontratista.setEstadocontratista("ACTIVO");
-            
+             
+            if (nombre.equals("") ) {
+                FacesContext.getCurrentInstance().addMessage("Mensajes", new FacesMessage(FacesMessage.SEVERITY_INFO, " ", "El nombre es obligatorio"));
+            } else {        
             contratistaLogica.registrar(objcontratista);
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "El contratista se registro con exito"));
-        }catch (NumberFormatException e) {
-            FacesContext.getCurrentInstance().addMessage("mensajes",new FacesMessage("El nit debe ser numerico "));
+         
+        }}catch (NumberFormatException e) {
+            FacesContext.getCurrentInstance().addMessage("mensajes",new FacesMessage("El nit debe ser numerico. "," "));
         }
-        catch (Exception ex) {
+         catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: ", ex.getMessage()));
             Logger.getLogger(ContratistaVista.class.getName()).log(Level.SEVERE, null, ex);
         }
