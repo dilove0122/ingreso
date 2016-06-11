@@ -186,7 +186,7 @@ public class UsuarioLogica implements UsuarioLogicaLocal {
             throw new Exception("Numero de documento es incorrecto");
         } else {
 
-            return usuarioDAO.consultarPorDocumento(documento);
+            return usuarioDAO.find(documento);
         }
 
     }

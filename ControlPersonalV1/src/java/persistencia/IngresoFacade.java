@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package persistencia;
 
 import javax.ejb.Stateless;
@@ -13,7 +12,7 @@ import modelo.Ingreso;
 
 /**
  *
- * @author arios
+ * @author DILOVE
  */
 @Stateless
 public class IngresoFacade extends AbstractFacade<Ingreso> implements IngresoFacadeLocal {

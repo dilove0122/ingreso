@@ -102,7 +102,7 @@ public class ContratistaLogica implements ContratistaLogicaLocal {
              if (nit == null ) {
             throw new Exception("El nit  es incorrecto");
         } else {
-             return contratistaDAO.consultarPorNit(nit);
+             return contratistaDAO.find(nit);
         }
         
         

@@ -3,17 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package persistencia;
 
 import java.util.List;
 import javax.ejb.Local;
 import modelo.Empleado;
-import modelo.Usuario;
 
 /**
  *
- * @author arios
+ * @author DILOVE
  */
 @Local
 public interface EmpleadoFacadeLocal {
@@ -31,7 +29,5 @@ public interface EmpleadoFacadeLocal {
     List<Empleado> findRange(int[] range);
 
     int count();
-    
- public Empleado consultarPorDocumento(Long documento );
     
 }

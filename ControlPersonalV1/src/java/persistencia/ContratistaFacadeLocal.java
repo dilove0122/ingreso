@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package persistencia;
 
 import java.util.List;
@@ -12,7 +11,7 @@ import modelo.Contratista;
 
 /**
  *
- * @author arios
+ * @author DILOVE
  */
 @Local
 public interface ContratistaFacadeLocal {
@@ -30,7 +29,5 @@ public interface ContratistaFacadeLocal {
     List<Contratista> findRange(int[] range);
 
     int count();
-    
-     public Contratista consultarPorNit(Long nit );
     
 }

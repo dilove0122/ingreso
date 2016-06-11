@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Empleado.findByCorreoempleado", query = "SELECT e FROM Empleado e WHERE e.correoempleado = :correoempleado"),
     @NamedQuery(name = "Empleado.findByEpsempleado", query = "SELECT e FROM Empleado e WHERE e.epsempleado = :epsempleado"),
     @NamedQuery(name = "Empleado.findByArlempleado", query = "SELECT e FROM Empleado e WHERE e.arlempleado = :arlempleado"),
+    @NamedQuery(name = "Empleado.findByCargoempleado", query = "SELECT e FROM Empleado e WHERE e.cargoempleado = :cargoempleado"),
     @NamedQuery(name = "Empleado.findByEstadoempleado", query = "SELECT e FROM Empleado e WHERE e.estadoempleado = :estadoempleado")})
 public class Empleado implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -64,6 +65,9 @@ public class Empleado implements Serializable {
     @Size(max = 50)
     @Column(name = "arlempleado")
     private String arlempleado;
+    @Size(max = 50)
+    @Column(name = "cargoempleado")
+    private String cargoempleado;
     @Size(max = 50)
     @Column(name = "estadoempleado")
     private String estadoempleado;
@@ -134,6 +138,14 @@ public class Empleado implements Serializable {
 
     public void setArlempleado(String arlempleado) {
         this.arlempleado = arlempleado;
+    }
+
+    public String getCargoempleado() {
+        return cargoempleado;
+    }
+
+    public void setCargoempleado(String cargoempleado) {
+        this.cargoempleado = cargoempleado;
     }
 
     public String getEstadoempleado() {

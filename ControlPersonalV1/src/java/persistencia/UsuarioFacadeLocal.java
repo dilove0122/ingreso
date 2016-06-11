@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package persistencia;
 
 import java.util.List;
@@ -12,7 +11,7 @@ import modelo.Usuario;
 
 /**
  *
- * @author arios
+ * @author DILOVE
  */
 @Local
 public interface UsuarioFacadeLocal {
@@ -30,13 +29,8 @@ public interface UsuarioFacadeLocal {
     List<Usuario> findRange(int[] range);
 
     int count();
- 
-     public Usuario consultarPorClave(String clave , String nombre);
-     
-             
-     public Usuario consultarPorClave(String clave );
-     
-      public Usuario consultarPorDocumento(Long documento );
-    
-    
+
+    public Usuario consultarPorClave(String clave, String nombre);
+
+    public Usuario consultarPorClave(String clave);
 }

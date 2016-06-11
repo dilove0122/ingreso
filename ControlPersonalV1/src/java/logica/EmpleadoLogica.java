@@ -116,7 +116,7 @@ public class EmpleadoLogica implements EmpleadoLogicaLocal {
         if (documento == null || documento == 0) {
             throw new Exception("Numero del empleado es incorrecto");
         } else {
-            return empleadoDAO.consultarPorDocumento(documento);
+            return empleadoDAO.find(documento);
         }
 
     }
