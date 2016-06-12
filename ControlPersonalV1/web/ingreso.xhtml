@@ -9,80 +9,118 @@
         <h:head>
             <f:facet name="first">
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-                <title>Ingreso  arturo    ruben </title>
-            </f:facet>
+                <title>Ingreso Personal</title>
+            </f:facet>           
         </h:head>
 
         <h:body>
-
             <p:layout fullPage="true">
-
-
-
                 <p:layoutUnit position="center">
-                    <h:form id="formulario"> 
-
-                        <p:messages id="mensajes" showDetail="true" />
-                        <p:panel header="Datos del Empleado: ">
-                            <p:panelGrid id="panelUsuario" columns="2" style="width: 40%;">
-
-
-                                <h:outputText value="Cedula:"/>
-                                <p:inputText id="txtCedula" binding="#{empleadoVista.txtCedula}"/>
-
-
-                           
-                                <p:inputText id="txtNombrePrimer" />
-
-                           
-                                <p:inputText id="txtApellidoApellido" />
-
-
-                             
-                                <p:inputText id="txtTelefonoNombre" />
-
-                              
-                                <p:inputText id="txtCorreoVacio" />
-
-                                   
-                                <p:inputText id="txtTelefonoSexo" />
-
-                              
-                                <p:inputText id="txtCorreoNacimiento" />
-
-                                <p:inputText id="txtTelefono" />
-
-                           
-                                <p:inputText id="txtCodi1" />
-
-
-                              
-                                <p:inputText id="txtCodi2" />
-                                
-                                
-                             
-                                <p:inputText id="txtCodi4" />
-
-
-
-
-
-
-
+                    <h:form id="formulario">
+                        <p:panel id="panelIngreso" header="SISTEMA - CONTROL DE INGRESO DE PERSONAL">
+                            <p:focus context="panelIngreso"/>
+                            <p:panelGrid id="panelGridIngreso" style="width: 100%;">                                
+                                <p:row>
+                                    <p:column>
+                                        <h:outputText value="Cédula:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="txtCedula" binding="#{ingresosVista.txtCedula}" value="#{ingresosVista.documento}"/>
+                                    </p:column>  
+                                    <p:column>
+                                        <h:outputText value="Primer Apellido:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="txtPrimerApellido" binding="#{ingresosVista.txtPrimerApellido}"/>
+                                    </p:column>    
+                                    <p:column>
+                                        <h:outputText value="Segundo Apellido:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="txtSegundoApellido" binding="#{ingresosVista.txtSegundoApellido}"/>
+                                    </p:column> 
+                                </p:row>
+                                <p:row>   
+                                    <p:column>
+                                        <h:outputText value="Primer Nombre:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="txtPrimerNombre" binding="#{ingresosVista.txtPrimerNombre}"/>
+                                    </p:column>  
+                                    <p:column>
+                                        <h:outputText value="Segundo Nombre:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="txtSegundoNombre" binding="#{ingresosVista.txtSegundoNombre}"/>
+                                    </p:column>   
+                                    <p:column>
+                                        <h:outputText value="Sexo:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="txtSexo" binding="#{ingresosVista.txtSexo}"/>
+                                    </p:column> 
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <h:outputText value="Fecha de Nacimiento:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="txtFechaN" binding="#{ingresosVista.txtFechaN}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="Tipo de Sangre:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="txtTipoSangre" binding="#{ingresosVista.txtTipoSangre}"/>
+                                    </p:column>    
+                                    <p:column>
+                                        <h:outputText value="Código Referencia:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="txtCodigo1" binding="#{ingresosVista.txtCodigo1}"/>
+                                    </p:column> 
+                                </p:row>   
+                                <p:row>
+                                    <p:column colspan="2">
+                                        <h:outputText value="Código Referencia 2:"/>
+                                    </p:column>
+                                    <p:column colspan="2">
+                                        <p:inputText id="txtCodigo2" binding="#{ingresosVista.txtCodigo2}"/>
+                                    </p:column> 
+                                    <p:column colspan="2">
+                                        <p:inputText id="txtCodigo3" binding="#{ingresosVista.txtCodigo3}">
+                                            <p:ajax event="focus" update="formulario" oncomplete="PF('dlgIngreso').show();"  process="@all"  listener="#{ingresosVista.action_registrar_ingreso}" />
+                                        </p:inputText>
+                                    </p:column> 
+                                </p:row>
                             </p:panelGrid>
                         </p:panel>
+                        <p:dialog header="INFORMACIÓN DE INGRESO" widgetVar="dlgIngreso" height="160" width="500" onShow="myFunction();" onHide="myStopFunction();">
+                            <h:outputText style="font-size: 16px;" value="Fecha: #{ingresosVista.datoFechaIngreso} - Hora: #{ingresosVista.datoHoraIngreso}" />
+                            <p:messages id="mensajesDialogo" showDetail="true" style="font-size: 20px;"/>
+                            <h:outputText style="font-size: 16px;font-weight: bold;" value="#{ingresosVista.datoNombreIngreso}" /> <br/>
+                            <h:outputText style="font-size: 16px;" value="#{ingresosVista.datoCargoIngreso}" />
+                        </p:dialog>   
+                        <script>
+                            var myVar;
 
+                            function myFunction()
+                            {
+                                myVar = setTimeout(function () {
+                                    PF('dlgIngreso').hide();
+                                }, 2000);
+                            }
+
+                            function myStopFunction()
+                            {
+                                clearTimeout(myVar);
+                            }
+                        </script>
                     </h:form>
 
                 </p:layoutUnit>
-
             </p:layout>
-
-
-
-
         </h:body>
-
     </f:view>
 </html>
 

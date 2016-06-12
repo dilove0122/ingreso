@@ -34,4 +34,5 @@ public interface EmpleadoLogicaLocal {
 
     public List<Empleado> consultar() throws Exception;
     
+    public void limpiarCache();
 }

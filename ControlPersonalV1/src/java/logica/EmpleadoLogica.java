@@ -121,4 +121,9 @@ public class EmpleadoLogica implements EmpleadoLogicaLocal {
 
     }
 
+    @Override
+    public void limpiarCache() {
+        empleadoDAO.limpiarCache();
+    }
+
 }

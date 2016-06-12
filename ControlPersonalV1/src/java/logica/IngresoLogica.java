@@ -9,6 +9,7 @@ package logica;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import modelo.Empleado;
 import modelo.Ingreso;
 
 
@@ -52,6 +53,11 @@ public class IngresoLogica implements IngresoLogicaLocal {
     public List<Ingreso> consultar() throws Exception {
         
           return ingresoDAO.findAll();
+    }
+
+    @Override
+    public Ingreso consultarxFecha(String fecha, Empleado empleado) throws Exception {
+        return ingresoDAO.consultarIngresoxFecha(fecha, empleado);
     }
 
 

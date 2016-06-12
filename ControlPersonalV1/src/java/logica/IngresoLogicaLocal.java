@@ -7,6 +7,7 @@ package logica;
 
 import java.util.List;
 import javax.ejb.Local;
+import modelo.Empleado;
 import modelo.Ingreso;
 
 /**
@@ -23,5 +24,7 @@ public interface IngresoLogicaLocal {
     public void eliminar(Ingreso ingreso) throws Exception;
 
     public List<Ingreso> consultar() throws Exception;
+    
+    public Ingreso consultarxFecha(String fecha, Empleado empleado) throws Exception;
 
 }

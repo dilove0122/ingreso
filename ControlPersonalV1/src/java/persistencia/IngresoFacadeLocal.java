@@ -7,6 +7,7 @@ package persistencia;
 
 import java.util.List;
 import javax.ejb.Local;
+import modelo.Empleado;
 import modelo.Ingreso;
 
 /**
@@ -29,5 +30,7 @@ public interface IngresoFacadeLocal {
     List<Ingreso> findRange(int[] range);
 
     int count();
+    
+    Ingreso consultarIngresoxFecha(String fecha, Empleado empleado);
     
 }

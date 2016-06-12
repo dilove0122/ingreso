@@ -27,5 +27,10 @@ public class EmpleadoFacade extends AbstractFacade<Empleado> implements Empleado
     public EmpleadoFacade() {
         super(Empleado.class);
     }
+
+    @Override
+    public void limpiarCache() {
+       getEntityManager().getEntityManagerFactory().getCache().evictAll();
+    }
     
 }

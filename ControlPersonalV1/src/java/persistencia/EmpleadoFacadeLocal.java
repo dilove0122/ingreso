@@ -30,4 +30,5 @@ public interface EmpleadoFacadeLocal {
 
     int count();
     
+    void limpiarCache();
 }
