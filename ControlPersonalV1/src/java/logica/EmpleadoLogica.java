@@ -54,7 +54,8 @@ public class EmpleadoLogica implements EmpleadoLogicaLocal {
             objEmpleado.setEpsempleado(empleado.getEpsempleado());
             objEmpleado.setCorreoempleado(empleado.getCorreoempleado());
             objEmpleado.setTelefonoempleado(empleado.getTelefonoempleado());
-            
+            objEmpleado.setCargoempleado(empleado.getCargoempleado());
+            objEmpleado.setContratistaempleado(empleado.getContratistaempleado());
             empleadoDAO.edit(objEmpleado);
         }
 
@@ -71,7 +72,7 @@ public class EmpleadoLogica implements EmpleadoLogicaLocal {
         if (objEmpleado == null) {
             throw new Exception("el empleado no existe");
         } else {
-            objEmpleado.setEstadoempleado("ACTIVADO");
+            objEmpleado.setEstadoempleado("ACTIVO");
             empleadoDAO.edit(objEmpleado);
         }
 

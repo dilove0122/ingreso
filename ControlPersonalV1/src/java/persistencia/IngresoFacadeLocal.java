@@ -7,6 +7,7 @@ package persistencia;
 
 import java.util.List;
 import javax.ejb.Local;
+import modelo.Contratista;
 import modelo.Empleado;
 import modelo.Ingreso;
 
@@ -32,5 +33,9 @@ public interface IngresoFacadeLocal {
     int count();
     
     Ingreso consultarIngresoxFecha(String fecha, Empleado empleado);
+    
+    List<Ingreso> consultarIngresosContratista(Contratista c);
+    
+    List<Ingreso> consultarIngresosContratista(Contratista c, String fechai, String fechaf);
     
 }

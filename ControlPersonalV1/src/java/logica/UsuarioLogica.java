@@ -141,37 +141,26 @@ public class UsuarioLogica implements UsuarioLogicaLocal {
     public Usuario ingresar(Usuario u) throws Exception {
 
         if (u.getClaveusuario().equals("")) {
-            throw new Exception("La clave es obligatoriA");
+            throw new Exception("La clave es obligatoria");
         }
 
-        if (u.getNombreusuario().equals("")) {
+        if (u.getDocumentousuario()==null) {
             throw new Exception("El nombre de usuario  es obligatorio");
         }
-
-        Usuario objUsuario = usuarioDAO.consultarPorClave(u.getClaveusuario(), u.getNombreusuario());
+        Usuario objUsuario = usuarioDAO.find(u.getDocumentousuario());
         if (objUsuario == null) {
-            throw new Exception("la clave y contraseña son incorrectas");
+            throw new Exception("La clave y Contraseña son incorrectas");
         }
 
         if (!(objUsuario.getClaveusuario().equals(u.getClaveusuario()))) {
             throw new Exception("la clave de usuario es incorecta");
         }
 
-        if (!(objUsuario.getNombreusuario().equals(u.getNombreusuario()))) {
-            throw new Exception("El nombre de usuario es incorecto");
-        }
-
         return objUsuario;
 
     }
 
-    @Override
-    public Usuario consultarClave(String clave, String nombre) throws Exception {
-
-        return usuarioDAO.consultarPorClave(clave, nombre);
-
-    }
-
+    
     @Override
     public Usuario consultarClave(String clave) throws Exception {
 

@@ -21,6 +21,7 @@ import modelo.Empleado;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
+import org.primefaces.component.selectoneradio.SelectOneRadio;
 import org.primefaces.event.SelectEvent;
 
 /**
@@ -36,31 +37,34 @@ public class EmpleadoVista {
      */
     @EJB
     private EmpleadoLogicaLocal empleadoLogica;
-
+    
     @EJB
     private ContratistaLogicaLocal contratistaLogica;
-
+    
     private InputText txtCedula;
     private InputText txtNombre;
     private InputText txtApellido;
     private InputText txtTelefono;
     private InputText txtCorreo;
-    private SelectOneMenu cmbEps;
-    private SelectOneMenu cmbArl;
+    private InputText txtCargo;
+    private SelectOneRadio cmbEps;
+    private SelectOneRadio cmbArl;
     private InputText txtEstadoEmpleado;
     private InputText txtCodigoContratista;
-
+    
     private List<Empleado> listaEmpleado = null;
     private List<Contratista> listaContratista = null;
-
+    
     private Empleado selectedEmpleado;
-
+    private Contratista selectedContratista;
+    
     private CommandButton btnLimpiar;
     private CommandButton btnModificar;
     private CommandButton btnActivar;
     private CommandButton btnInactivo;
     private CommandButton btnRegistrar;
-
+    private CommandButton btnSeleccionar;
+    
     public EmpleadoVista() {
     }
 
@@ -166,7 +170,7 @@ public class EmpleadoVista {
      * @return the listaEmpleado
      */
     public List<Empleado> getListaEmpleado() {
-
+        
         if (listaEmpleado == null) {
             try {
                 listaEmpleado = empleadoLogica.consultar();
@@ -175,7 +179,7 @@ public class EmpleadoVista {
             }
         }
         return listaEmpleado;
-
+        
     }
 
     /**
@@ -254,27 +258,25 @@ public class EmpleadoVista {
     public void setBtnRegistrar(CommandButton btnRegistrar) {
         this.btnRegistrar = btnRegistrar;
     }
-
+    
     public void registrar_action() {
         try {
-
+            
             Empleado empleado = new Empleado();
-
-            //Contratista contratistaObj = new Contratista();
+            Contratista contratistaObj = new Contratista();
             empleado.setCedulaempleado(Long.parseLong(txtCedula.getValue().toString()));
             empleado.setNombreempleado((txtNombre.getValue().toString()));
             empleado.setApellidoempleado(txtApellido.getValue().toString());
             empleado.setTelefonoempleado(txtTelefono.getValue().toString());
             empleado.setCorreoempleado(txtCorreo.getValue().toString());
-
+            empleado.setCargoempleado(txtCargo.getValue().toString());
             empleado.setEpsempleado((getCmbEps().getValue().toString()));
             empleado.setArlempleado(getCmbArl().getValue().toString());
             empleado.setEstadoempleado("ACTIVO");
-
-           // contratistaObj.setNitcontratista(Long.parseLong(txtCodigoContratista.getValue().toString()));
-            //empleado.setContratistaempleado(contratistaObj);
+            contratistaObj.setNitcontratista(Long.parseLong(txtCodigoContratista.getValue().toString()));
+            empleado.setContratistaempleado(contratistaObj);
             empleadoLogica.registrar(empleado);
-
+            
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "El Empleado Se registro con Exito"));
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: ", ex.getMessage()));
@@ -283,23 +285,24 @@ public class EmpleadoVista {
         listaEmpleado = null;
         limpiar();
     }
-
+    
     public void modificar_action() {
         try {
-
+            
             Empleado empleado = new Empleado();
-
+            Contratista contratistaObj = new Contratista();
             empleado.setCedulaempleado(Long.parseLong(txtCedula.getValue().toString()));
             empleado.setNombreempleado((txtNombre.getValue().toString()));
             empleado.setApellidoempleado(txtApellido.getValue().toString());
             empleado.setTelefonoempleado(txtTelefono.getValue().toString());
             empleado.setCorreoempleado(txtCorreo.getValue().toString());
-
+            empleado.setCargoempleado(txtCargo.getValue().toString());
             empleado.setEpsempleado((getCmbEps().getValue().toString()));
             empleado.setArlempleado(getCmbArl().getValue().toString());
-
+            contratistaObj.setNitcontratista(Long.parseLong(txtCodigoContratista.getValue().toString()));
+            empleado.setContratistaempleado(contratistaObj);
             empleadoLogica.modificar(empleado);
-
+            
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "el Empleado Se modifico con Exito"));
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: ", ex.getMessage()));
@@ -308,16 +311,16 @@ public class EmpleadoVista {
         listaEmpleado = null;
         limpiar();
     }
-
+    
     public void inactivar_action() {
         try {
-
+            
             Empleado empleado = new Empleado();
-
+            
             empleado.setCedulaempleado(Long.parseLong(txtCedula.getValue().toString()));
-
+            
             empleadoLogica.inactivar(empleado);
-
+            
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "el empleado Se desactivo con Exito"));
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: ", ex.getMessage()));
@@ -326,16 +329,16 @@ public class EmpleadoVista {
         listaEmpleado = null;
         limpiar();
     }
-
+    
     public void activar_action() {
         try {
-
+            
             Empleado empleado = new Empleado();
-
+            
             empleado.setCedulaempleado(Long.parseLong(txtCedula.getValue().toString()));
-
+            
             empleadoLogica.activar(empleado);
-
+            
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "el empleado Se activo con Exito"));
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: ", ex.getMessage()));
@@ -344,9 +347,9 @@ public class EmpleadoVista {
         listaEmpleado = null;
         limpiar();
     }
-
+    
     public void limpiar() {
-
+        
         txtNombre.setValue("");
         txtApellido.setValue("");
         txtCedula.setValue("");
@@ -357,13 +360,17 @@ public class EmpleadoVista {
         txtEstadoEmpleado.setValue("");
         btnRegistrar.setDisabled(false);
         txtCodigoContratista.setValue("");
-
+        txtCodigoContratista.setValue("");
+        txtCargo.setValue("");
+        btnActivar.setDisabled(false);
+        btnInactivo.setDisabled(false);
+        
     }
-
+    
     public void seleccionarEmpleado(SelectEvent event) {
-
+        
         Empleado empleado = (Empleado) event.getObject();
-
+        
         txtNombre.setValue(empleado.getNombreempleado());
         txtApellido.setValue(empleado.getApellidoempleado());
         txtCedula.setValue(empleado.getCedulaempleado());
@@ -372,14 +379,23 @@ public class EmpleadoVista {
         cmbEps.setValue(empleado.getEpsempleado());
         cmbArl.setValue(empleado.getArlempleado());
         txtEstadoEmpleado.setValue(empleado.getEstadoempleado());
-
+        txtCargo.setValue(empleado.getCargoempleado());
+        if(empleado.getEstadoempleado().equals("ACTIVO")){
+            btnActivar.setDisabled(true);
+        }else{
+            btnInactivo.setDisabled(true);
+        }
         txtEstadoEmpleado.setDisabled(true);
-
+        
         btnRegistrar.setDisabled(true);
+        if (empleado.getContratistaempleado() != null) {
+            txtCodigoContratista.setValue(empleado.getContratistaempleado().getNitcontratista());
+        } else {
+            txtCodigoContratista.setValue("");
+            
+        }
 
-        txtCodigoContratista.setValue(empleado.getContratistaempleado().getNitcontratista());
-
-       // btnEliminar.setDisabled(false);
+        // btnEliminar.setDisabled(false);
         // btnModificar.setDisabled(false);
     }
 
@@ -387,7 +403,7 @@ public class EmpleadoVista {
      * @return the listaContratista
      */
     public List<Contratista> getListaContratista() {
-
+        
         if (listaContratista == null) {
             try {
                 listaContratista = contratistaLogica.consultar();
@@ -396,7 +412,7 @@ public class EmpleadoVista {
             }
         }
         return listaContratista;
-
+        
     }
 
     /**
@@ -409,28 +425,28 @@ public class EmpleadoVista {
     /**
      * @return the cmbEps
      */
-    public SelectOneMenu getCmbEps() {
+    public SelectOneRadio getCmbEps() {
         return cmbEps;
     }
 
     /**
      * @param cmbEps the cmbEps to set
      */
-    public void setCmbEps(SelectOneMenu cmbEps) {
+    public void setCmbEps(SelectOneRadio cmbEps) {
         this.cmbEps = cmbEps;
     }
 
     /**
      * @return the cmbArl
      */
-    public SelectOneMenu getCmbArl() {
+    public SelectOneRadio getCmbArl() {
         return cmbArl;
     }
 
     /**
      * @param cmbArl the cmbArl to set
      */
-    public void setCmbArl(SelectOneMenu cmbArl) {
+    public void setCmbArl(SelectOneRadio cmbArl) {
         this.cmbArl = cmbArl;
     }
 
@@ -447,5 +463,34 @@ public class EmpleadoVista {
     public void setBtnActivar(CommandButton btnActivar) {
         this.btnActivar = btnActivar;
     }
-
+    
+    public InputText getTxtCargo() {
+        return txtCargo;
+    }
+    
+    public void setTxtCargo(InputText txtCargo) {
+        this.txtCargo = txtCargo;
+    }
+    
+    public CommandButton getBtnSeleccionar() {
+        return btnSeleccionar;
+    }
+    
+    public void setBtnSeleccionar(CommandButton btnSeleccionar) {
+        this.btnSeleccionar = btnSeleccionar;
+    }
+    
+    public void seleccionarContratista(SelectEvent event) {
+        Contratista cs = (Contratista) event.getObject();
+        txtCodigoContratista.setValue(cs.getNitcontratista());
+    }
+    
+    public Contratista getSelectedContratista() {
+        return selectedContratista;
+    }
+    
+    public void setSelectedContratista(Contratista selectedContratista) {
+        this.selectedContratista = selectedContratista;
+    }
+    
 }

@@ -30,8 +30,6 @@ public interface UsuarioLogicaLocal {
 
     public Usuario ingresar(Usuario u) throws Exception;
 
-    public Usuario consultarClave(String clave, String nombre) throws Exception;
-
         public Usuario consultarClave(String clave) throws Exception;
         
            public void cambiarClave(Usuario u) throws Exception;

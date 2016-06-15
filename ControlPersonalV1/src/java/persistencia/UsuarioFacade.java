@@ -8,6 +8,7 @@ package persistencia;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import modelo.Usuario;
@@ -32,24 +33,17 @@ public class UsuarioFacade extends AbstractFacade<Usuario> implements UsuarioFac
     }
 
     @Override
-    public Usuario consultarPorClave(String clave, String nombre) {
+    public Usuario findUsuario(Long documento) {
 
         try {
-            String jpql = "SELECT a FROM Usuario a WHERE a.claveusuario = :claveusuario  AND a.nombreusuario= :nombreusuario ";
+            String jpql = "SELECT u FROM Usuario u WHERE u.documentousuario = :documentousuario";
             Query query = em.createQuery(jpql);
-            query.setParameter("claveusuario", clave);
-            query.setParameter("nombreusuario", nombre);
-
-            List<Usuario> results = query.getResultList();
-            Usuario foundEntity = null;
-            if (!results.isEmpty()) {
-
-                foundEntity = results.get(0);
-            }
-            return foundEntity;
+            query.setParameter("documentousuario", documento);
+            
+            return (Usuario) query.getSingleResult();
 
         } catch (RuntimeException e) {
-            throw e;
+            return null;
         }
 
     }

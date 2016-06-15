@@ -285,6 +285,8 @@ public class ContratistaVista {
         txtNombreContratista.setValue("");
         txtEstadoContratista.setValue("");
         btnRegistrar.setDisabled(false);
+        btnActivo.setDisabled(false);
+        btnInactivo.setDisabled(false);
     }
 
     public void seleccionarContratista(SelectEvent event) {
@@ -296,6 +298,11 @@ public class ContratistaVista {
         txtEstadoContratista.setValue(contratista.getEstadocontratista());
         txtEstadoContratista.setDisabled(true);
         btnRegistrar.setDisabled(true);
+        if(contratista.getEstadocontratista().equals("ACTIVO")){
+            btnActivo.setDisabled(true);
+        }else{
+            btnInactivo.setDisabled(true);
+        }
     }
 
     /**

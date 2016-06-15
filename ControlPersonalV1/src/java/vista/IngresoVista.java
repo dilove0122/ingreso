@@ -7,21 +7,27 @@ package vista;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import logica.ContratistaLogicaLocal;
 import logica.EmpleadoLogicaLocal;
 import logica.IngresoLogicaLocal;
+import logica.UsuarioLogicaLocal;
+import modelo.Contratista;
 import modelo.Empleado;
 import modelo.Ingreso;
-import org.primefaces.component.commandbutton.CommandButton;
+import modelo.Usuario;
+import org.primefaces.component.calendar.Calendar;
 
 import org.primefaces.component.inputtext.InputText;
+import org.primefaces.event.SelectEvent;
+import persistencia.IngresoFacadeLocal;
 
 /**
  *
@@ -47,103 +53,120 @@ public class IngresoVista {
     private String datoHoraIngreso;
     private String datoCargoIngreso;
     private String datoNombreIngreso;
-    private CommandButton btnPrueba;
-    
+    private List<Ingreso> listaIngresos;
+    private Ingreso selectedIngreso;
+    //Consultas Contratista
+    private InputText txtContratista;
+    private Calendar txtFechaIngresoInicioC;
+    private Calendar txtFechaIngresoFinC;
+    private List<Contratista> listaContratistas;
+    private Contratista selectedContratista;
+    //Consultas Empleados
+    private InputText txtEmpleado;
+    private Calendar txtFechaIngresoInicioE;
+    private Calendar txtFechaIngresoFinE;
+    private List<Empleado> listaEmpleados;
+    private Empleado selectedEmpleado;
+
     @EJB
     private IngresoLogicaLocal ingresoLogica;
     @EJB
     private EmpleadoLogicaLocal empleadoLogica;
+    @EJB
+    private ContratistaLogicaLocal contratistaLogica;
+    @EJB
+    private IngresoFacadeLocal ingresoDAO;
 
     /**
      * Creates a new instance of IngresoVista
      */
     public IngresoVista() {
     }
-    
+
     public InputText getTxtCedula() {
         return txtCedula;
     }
-    
+
     public void setTxtCedula(InputText txtCedula) {
         this.txtCedula = txtCedula;
     }
-    
+
     public InputText getTxtPrimerNombre() {
         return txtPrimerNombre;
     }
-    
+
     public void setTxtPrimerNombre(InputText txtPrimerNombre) {
         this.txtPrimerNombre = txtPrimerNombre;
     }
-    
+
     public InputText getTxtSegundoNombre() {
         return txtSegundoNombre;
     }
-    
+
     public void setTxtSegundoNombre(InputText txtSegundoNombre) {
         this.txtSegundoNombre = txtSegundoNombre;
     }
-    
+
     public InputText getTxtPrimerApellido() {
         return txtPrimerApellido;
     }
-    
+
     public void setTxtPrimerApellido(InputText txtPrimerApellido) {
         this.txtPrimerApellido = txtPrimerApellido;
     }
-    
+
     public InputText getTxtSegundoApellido() {
         return txtSegundoApellido;
     }
-    
+
     public void setTxtSegundoApellido(InputText txtSegundoApellido) {
         this.txtSegundoApellido = txtSegundoApellido;
     }
-    
+
     public InputText getTxtSexo() {
         return txtSexo;
     }
-    
+
     public void setTxtSexo(InputText txtSexo) {
         this.txtSexo = txtSexo;
     }
-    
+
     public InputText getTxtTipoSangre() {
         return txtTipoSangre;
     }
-    
+
     public void setTxtTipoSangre(InputText txtTipoSangre) {
         this.txtTipoSangre = txtTipoSangre;
     }
-    
+
     public InputText getTxtCodigo1() {
         return txtCodigo1;
     }
-    
+
     public void setTxtCodigo1(InputText txtCodigo1) {
         this.txtCodigo1 = txtCodigo1;
     }
-    
+
     public InputText getTxtCodigo2() {
         return txtCodigo2;
     }
-    
+
     public void setTxtCodigo2(InputText txtCodigo2) {
         this.txtCodigo2 = txtCodigo2;
     }
-    
+
     public String getDatoFechaIngreso() {
         return datoFechaIngreso;
     }
-    
+
     public void setDatoFechaIngreso(String datoFechaIngreso) {
         this.datoFechaIngreso = datoFechaIngreso;
     }
-    
+
     public String getDatoHoraIngreso() {
         return datoHoraIngreso;
     }
-    
+
     public void setDatoHoraIngreso(String datoHoraIngreso) {
         this.datoHoraIngreso = datoHoraIngreso;
     }
@@ -155,37 +178,35 @@ public class IngresoVista {
     public void setDatoCargoIngreso(String datoCargoIngreso) {
         this.datoCargoIngreso = datoCargoIngreso;
     }
-   
-    
-    
+
     public String getDatoNombreIngreso() {
         return datoNombreIngreso;
     }
-    
+
     public void setDatoNombreIngreso(String datoNombreIngreso) {
         this.datoNombreIngreso = datoNombreIngreso;
     }
-    
+
     public InputText getTxtFechaN() {
         return txtFechaN;
     }
-    
+
     public void setTxtFechaN(InputText txtFechaN) {
         this.txtFechaN = txtFechaN;
     }
-    
+
     public InputText getTxtCodigo3() {
         return txtCodigo3;
     }
-    
+
     public void setTxtCodigo3(InputText txtCodigo3) {
         this.txtCodigo3 = txtCodigo3;
     }
-    
+
     public void action_registrar_ingreso() {
         try {
             empleadoLogica.limpiarCache();
-            System.out.println("Documento "+documento);
+            System.out.println("Documento " + documento);
             Empleado empleadoIngreso = empleadoLogica.consultarPorDocumento(Long.parseLong(documento));
             if (empleadoIngreso == null) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "INGRESO NO AUTORIZADO", "El empleado no se encuentra registrado"));
@@ -202,7 +223,7 @@ public class IngresoVista {
                 datoNombreIngreso = empleadoIngreso.getNombreempleado() + " " + empleadoIngreso.getApellidoempleado();
                 datoCargoIngreso = empleadoIngreso.getCargoempleado();
                 Ingreso tieneIngreso = ingresoLogica.consultarxFecha(datoFechaIngreso, empleadoIngreso);
-                if (tieneIngreso != null && tieneIngreso.getHorasalidaingreso()==null) {
+                if (tieneIngreso != null && tieneIngreso.getHorasalidaingreso() == null) {
                     Date fechaSalida = new Date();
                     tieneIngreso.setHorasalidaingreso(fechaSalida);
                     ingresoLogica.modificar(tieneIngreso);
@@ -218,20 +239,20 @@ public class IngresoVista {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "INGRESO NO AUTORIZADO", "El empleado esta INACTIVO."));
                         nuevoIngreso.setAutorizadoingreso("N");
                     } else {
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "INGRESO AUTORIZADO", ""));                        
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "INGRESO AUTORIZADO", ""));
                         nuevoIngreso.setAutorizadoingreso("S");
                         ingresoLogica.registrar(nuevoIngreso);
                     }
-                    
+
                 }
-            }      
+            }
             limpiar();
         } catch (Exception ex) {
             Logger.getLogger(IngresoVista.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void limpiar(){
+
+    public void limpiar() {
         txtCedula.setValue("");
         txtPrimerNombre.setValue("");
         txtSegundoNombre.setValue("");
@@ -243,7 +264,7 @@ public class IngresoVista {
         txtFechaN.setValue("");
         txtSexo.setValue("");
         txtTipoSangre.setValue("");
-        documento = "";                    
+        documento = "";
     }
 
     public String getDocumento() {
@@ -253,6 +274,160 @@ public class IngresoVista {
     public void setDocumento(String documento) {
         this.documento = documento;
     }
+
+    public List<Ingreso> getListaIngresos() {
+        if (listaIngresos == null) {
+            try {
+                listaIngresos = ingresoLogica.consultar();
+            } catch (Exception ex) {
+                Logger.getLogger(IngresoVista.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return listaIngresos;
+    }
+
+    public void setListaIngresos(List<Ingreso> listaIngresos) {
+        this.listaIngresos = listaIngresos;
+    }
+
+    public Ingreso getSelectedIngreso() {
+        return selectedIngreso;
+    }
+
+    public void setSelectedIngreso(Ingreso selectedIngreso) {
+        this.selectedIngreso = selectedIngreso;
+    }
+
+    public InputText getTxtContratista() {
+        return txtContratista;
+    }
+
+    public void setTxtContratista(InputText txtContratista) {
+        this.txtContratista = txtContratista;
+    }
+
+    public Calendar getTxtFechaIngresoInicioC() {
+        return txtFechaIngresoInicioC;
+    }
+
+    public void setTxtFechaIngresoInicioC(Calendar txtFechaIngresoInicioC) {
+        this.txtFechaIngresoInicioC = txtFechaIngresoInicioC;
+    }
+
+    public Calendar getTxtFechaIngresoFinC() {
+        return txtFechaIngresoFinC;
+    }
+
+    public void setTxtFechaIngresoFinC(Calendar txtFechaIngresoFinC) {
+        this.txtFechaIngresoFinC = txtFechaIngresoFinC;
+    }
+
     
+
+    public List<Contratista> getListaContratistas() {
+            try {
+                listaContratistas = contratistaLogica.consultar();
+            } catch (Exception ex) {
+                Logger.getLogger(IngresoVista.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        return listaContratistas;
+    }
+
+    public void setListaContratistas(List<Contratista> listaContratistas) {
+        this.listaContratistas = listaContratistas;
+    }
+
+    public Contratista getSelectedContratista() {
+        return selectedContratista;
+    }
+
+    public void setSelectedContratista(Contratista selectedContratista) {
+        this.selectedContratista = selectedContratista;
+    }
+
+
+    public void seleccionarContratista(SelectEvent event) {
+        Contratista objC = (Contratista) event.getObject();
+        txtContratista.setValue(objC.getNitcontratista());
+        listaIngresos = null;
+    }
+
+    public void seleccionarEmpleado(SelectEvent event) {
+        Empleado objE = (Empleado) event.getObject();
+        txtEmpleado.setValue(objE.getCedulaempleado());
+        listaIngresos = null;
+    }
+
+    public InputText getTxtEmpleado() {
+        return txtEmpleado;
+    }
+
+    public void setTxtEmpleado(InputText txtEmpleado) {
+        this.txtEmpleado = txtEmpleado;
+    }
+
+    public Calendar getTxtFechaIngresoInicioE() {
+        return txtFechaIngresoInicioE;
+    }
+
+    public void setTxtFechaIngresoInicioE(Calendar txtFechaIngresoInicioE) {
+        this.txtFechaIngresoInicioE = txtFechaIngresoInicioE;
+    }
+
+    public Calendar getTxtFechaIngresoFinE() {
+        return txtFechaIngresoFinE;
+    }
+
+    public void setTxtFechaIngresoFinE(Calendar txtFechaIngresoFinE) {
+        this.txtFechaIngresoFinE = txtFechaIngresoFinE;
+    }
+
+    public List<Empleado> getListaEmpleados() {
+        if (listaEmpleados == null) {
+            try {
+                listaEmpleados = empleadoLogica.consultar();
+
+            } catch (Exception ex) {
+                Logger.getLogger(IngresoVista.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return listaEmpleados;
+    }
+
+    public void setListaEmpleados(List<Empleado> listaEmpleados) {
+        this.listaEmpleados = listaEmpleados;
+    }
+
+    public Empleado getSelectedEmpleado() {
+        return selectedEmpleado;
+    }
+
+    public void setSelectedEmpleado(Empleado selectedEmpleado) {
+        this.selectedEmpleado = selectedEmpleado;
+    }
     
+    public void consultarxContratista(){
+        Contratista c = new Contratista();
+        c.setNitcontratista(Long.parseLong(txtContratista.getValue().toString()));
+        if(txtFechaIngresoInicioC.getValue()==null || txtFechaIngresoFinC.getValue()==null){
+            listaIngresos = ingresoDAO.consultarIngresosContratista(c);
+        }else{
+            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+            String fechai = formato.format((Date)txtFechaIngresoInicioC.getValue());
+            String fechaf = formato.format((Date)txtFechaIngresoFinC.getValue());
+            listaIngresos = ingresoDAO.consultarIngresosContratista(c, fechai, fechaf);
+        }
+    }
+    
+    public void consultarxEmpleado(){
+    
+    }
+    
+    public void limpiarConsultaContratista(){
+        txtContratista.setValue("");
+        txtFechaIngresoInicioC.setValue(null);
+        txtFechaIngresoFinC.setValue(null);
+        
+    }
+
 }

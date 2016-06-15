@@ -9,7 +9,7 @@
         <h:head>
             <f:facet name="first">
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-                <title>Control personal</title>
+                <title>Control Personal V1</title>
             </f:facet>
         </h:head>
 
@@ -18,45 +18,30 @@
             <p:layout fullPage="true">
 
 
-                <p:layoutUnit position="north" size="230" resizable="true" closable="true" collapsible="true">
+                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
 
-                    <h:graphicImage url="../images/bannerC.png" alt="Logo"  style="vertical-align: top;" />
+                 
 
                 </p:layoutUnit>
 
 
 
-                <p:layoutUnit position="west" size="230" header="Control Personal" collapsible="true">
-                    <h:form id="formularioMenu"> 
+                <p:layoutUnit position="west" size="160" header="..." collapsible="true">
+                   <h:form id="formularioMenu"> 
                         <p:menu>
-
-
-                            <p:submenu label="Menu Registros">
-
-                                <p:menuitem value="Usuarios" url="Usuario.xhtml" />
-                                <p:menuitem value="Personal" url="registroEmpleados.xhtml" />
-                                <p:menuitem value="Ingresos" url="faces/index.xhtml" />
-                               
-                            </p:submenu>
-
-                            <p:submenu label="Menu Reportes">
-                                <p:menuitem value="Reportes" url="faces/index.xhtml"/>
-
-                            </p:submenu>
-
+                            <p:menuitem value="Empleados" url="gestionEmpleados.xhtml" />
+                            <p:menuitem value="Contratistas" url="gestionContratistas.xhtml" />
+                            <p:menuitem value="Ingresos" url="gestionIngresos.xhtml" />
+                            <p:menuitem value="Cerrar Sesión"  action="#{usuarioVista.cerrarSesion_action}"/>
                         </p:menu>
-
-                        <p:commandButton   id="btnCerrar" action="#{usuarioVista.cerrarSesion_action}" style="width: 100%" value="Cerrar Sesion" />
-
-
-                    </h:form>
+                   </h:form>
                 </p:layoutUnit>
 
                 <p:layoutUnit position="center">
                     <h:form id="formulario"> 
 
                         <p:messages id="mensajes" showDetail="true" />
-                        <p:panel header="Datos del Contratista: ">
+                        <p:panel header="GESTIÓN DE INFORMACIÓN DE CONTRATISTAS">
                             <p:panelGrid id="panelUsuario" columns="4" style="width: 82%;">
 
                                 <h:outputText value="Nit:"/>
@@ -149,7 +134,7 @@
                 <p:confirmDialog id="confirmDialog1" message="Está Seguro de inactivarlo el usuario?"  
                                  header="Confirmación1" showEffect="fade" hideEffect="explode" severity="alert" widgetVar="confirmation1">  
                     <p:commandButton id="confirm1" value="Si" oncomplete="PF('confirmation1').hide();" 
-                                     update=":formulario:mensajes,:formulario:panelTabla"  
+                                     update=":formulario"  
                                      actionListener="#{contratistaVista.inactivar_action()}" />  
                     <p:commandButton id="decline" value="No" onclick="PF('confirmation1').hide();" type="button" />   
 
@@ -160,7 +145,7 @@
                 <p:confirmDialog id="confirmDialog2" message="Está Seguro de activarlo el usuario?"  
                                  header="Confirmación2" showEffect="fade" hideEffect="explode" severity="alert" widgetVar="confirmation2">  
                     <p:commandButton id="confirm2" value="Si" oncomplete="PF('confirmation2').hide();" 
-                                     update=":formulario:mensajes,:formulario:panelTabla"  
+                                     update=":formulario"  
                                      actionListener="#{contratistaVista.activar_action()}" />  
                     <p:commandButton id="decline" value="No" onclick="PF('confirmation2').hide();" type="button" />   
 

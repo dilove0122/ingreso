@@ -39,7 +39,7 @@ public class FiltroUsuario implements Filter {
 
         if (u != null) {
      
-            nuevo = usuarioDAO.consultarPorClave(u.getClaveusuario(),u.getNombreusuario());
+            nuevo = usuarioDAO.find(u.getDocumentousuario());
             
              chain.doFilter(request, response);
           

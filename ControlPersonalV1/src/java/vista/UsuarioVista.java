@@ -216,12 +216,12 @@ public class UsuarioVista {
             Usuario usr = new Usuario();
 
             usr.setClaveusuario(txtClaveUsuario.getValue().toString());
-            usr.setNombreusuario(txtNombre.getValue().toString());
+            usr.setDocumentousuario(Long.parseLong(txtdocUsuario.getValue().toString())); //txtNombre hace referencia es al documento del usuario
 
             Usuario logeado = usuarioLogica.ingresar(usr);
 
             if (logeado != null) {
-                url = extContext.encodeActionURL(context.getApplication().getViewHandler().getActionURL(context, "/ADMIN/Usuario.xhtml"));
+                url = extContext.encodeActionURL(context.getApplication().getViewHandler().getActionURL(context, "/ADMIN/gestionIngresos.xhtml"));
                 extContext.getSessionMap().put("usuarioControl", logeado);
                 extContext.redirect(url);
             }
@@ -382,8 +382,10 @@ public class UsuarioVista {
 
         txtdocUsuario.setValue(us.getDocumentousuario());
         txtNombre.setValue(us.getNombreusuario());
-        txtClaveUsuario.setValue(us.getClaveusuario());
-
+        txtClaveUsuario.setDisabled(true);
+        txtConfirmacion.setDisabled(true);
+        txtNombre.setDisabled(true);
+        txtdocUsuario.setDisabled(true);
         btnRegistrar.setDisabled(true);
     }
 
@@ -394,7 +396,10 @@ public class UsuarioVista {
         txtClaveUsuario.setValue("");
         txtConfirmacion.setValue("");
         btnRegistrar.setDisabled(false);
-
+        txtClaveUsuario.setDisabled(false);
+        txtConfirmacion.setDisabled(false);
+        txtNombre.setDisabled(false);
+        txtdocUsuario.setDisabled(false);
     }
 
     /**

@@ -19,6 +19,7 @@ import javax.persistence.Parameter;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
+import modelo.Contratista;
 import modelo.Empleado;
 import modelo.Ingreso;
 
@@ -28,6 +29,7 @@ import modelo.Ingreso;
  */
 @Stateless
 public class IngresoFacade extends AbstractFacade<Ingreso> implements IngresoFacadeLocal {
+
     @PersistenceContext(unitName = "ControlPersonalV1PU")
     private EntityManager em;
 
@@ -42,14 +44,29 @@ public class IngresoFacade extends AbstractFacade<Ingreso> implements IngresoFac
 
     @Override
     public Ingreso consultarIngresoxFecha(String fecha, Empleado empleado) {
-        String consulta = "select ingreso from Ingreso ingreso where ingreso.fechaingreso = '"+fecha+"' and ingreso.empleadoingreso.cedulaempleado="+empleado.getCedulaempleado()+" and ingreso.horasalidaingreso=null";
-        try{
+        String consulta = "select ingreso from Ingreso ingreso where ingreso.fechaingreso = '" + fecha + "' and ingreso.empleadoingreso.cedulaempleado=" + empleado.getCedulaempleado() + " and ingreso.horasalidaingreso=null";
+        try {
             Query query = em.createQuery(consulta);
             return (Ingreso) query.getSingleResult();
-        }catch(NoResultException e){
+        } catch (NoResultException e) {
             return null;
         }
-        
+
     }
-    
+
+    @Override
+    public List<Ingreso> consultarIngresosContratista(Contratista c) {
+        String consulta = "select ingreso from Ingreso ingreso where ingreso.empleadoingreso.contratistaempleado.nitcontratista=" + c.getNitcontratista();
+        Query query = em.createQuery(consulta);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Ingreso> consultarIngresosContratista(Contratista c, String fechai, String fechaf) {
+        String consulta = "select ingreso from Ingreso ingreso where ingreso.empleadoingreso.contratistaempleado.nitcontratista=" + c.getNitcontratista()+" and ingreso.fechaingreso between '"+fechai+"' and '"+fechaf+"'";
+        System.out.println("COnsulta "+consulta);
+        Query query = em.createQuery(consulta);
+        return query.getResultList();
+    }
+
 }
