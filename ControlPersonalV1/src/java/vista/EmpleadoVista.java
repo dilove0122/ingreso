@@ -278,7 +278,9 @@ public class EmpleadoVista {
             empleadoLogica.registrar(empleado);
             
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "El Empleado Se registro con Exito"));
-        } catch (Exception ex) {
+        } catch (NumberFormatException e) {
+            FacesContext.getCurrentInstance().addMessage("mensajes",new FacesMessage("La cedula y el telefono debe ser numerica. "," "));
+        }catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: ", ex.getMessage()));
             Logger.getLogger(EmpleadoVista.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -304,6 +306,8 @@ public class EmpleadoVista {
             empleadoLogica.modificar(empleado);
             
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "el Empleado Se modifico con Exito"));
+        }catch (NumberFormatException e) {
+            FacesContext.getCurrentInstance().addMessage("mensajes",new FacesMessage("La cedula y el telefono debe ser numerica. "," "));
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: ", ex.getMessage()));
             Logger.getLogger(EmpleadoVista.class.getName()).log(Level.SEVERE, null, ex);
