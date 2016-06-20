@@ -194,27 +194,27 @@ public class ContratistaVista {
     }
 
     public void registrar_action() {
-        
-            Contratista objcontratista = new Contratista();
-        
+
+        Contratista objcontratista = new Contratista();
+
         try {
-            String nombre= txtNombreContratista.getValue().toString();
+            String nombre = txtNombreContratista.getValue().toString();
             Long nit = Long.parseLong(txtNitContratista.getValue().toString());
             objcontratista.setNitcontratista(nit);
             objcontratista.setNombrecontratista(txtNombreContratista.getValue().toString());
             objcontratista.setEstadocontratista("ACTIVO");
-             
-            if (nombre.equals("") ) {
-                FacesContext.getCurrentInstance().addMessage("Mensajes", new FacesMessage(FacesMessage.SEVERITY_INFO, " ", "El nombre es obligatorio"));
-            } else {        
-            contratistaLogica.registrar(objcontratista);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "El contratista se registro con exito"));
-         
-        }}catch (NumberFormatException e) {
-            FacesContext.getCurrentInstance().addMessage("mensajes",new FacesMessage("El nit debe ser numerico. "," "));
-        }
-         catch (Exception ex) {
+            if (nombre.equals("")) {
+                FacesContext.getCurrentInstance().addMessage("Mensajes", new FacesMessage(FacesMessage.SEVERITY_INFO, " ", "El nombre es obligatorio"));
+            } else {
+                contratistaLogica.registrar(objcontratista);
+
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "El contratista se registro con exito"));
+
+            }
+        } catch (NumberFormatException e) {
+            FacesContext.getCurrentInstance().addMessage("mensajes", new FacesMessage("El nit debe ser numerico. ", " "));
+        } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: ", ex.getMessage()));
             Logger.getLogger(ContratistaVista.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -225,17 +225,16 @@ public class ContratistaVista {
     public void modificar_action() {
         Contratista objcontratista = new Contratista();
         try {
-          
+
             objcontratista.setNitcontratista(Long.parseLong(txtNitContratista.getValue().toString()));
             objcontratista.setNombrecontratista(txtNombreContratista.getValue().toString());
 
             contratistaLogica.modificar(objcontratista);
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "El contratista se modifico con Exito"));
-        }catch (NumberFormatException e) {
-            FacesContext.getCurrentInstance().addMessage("mensajes",new FacesMessage("El nit debe ser numerico "));
-        } 
-        catch (Exception ex) {
+        } catch (NumberFormatException e) {
+            FacesContext.getCurrentInstance().addMessage("mensajes", new FacesMessage("El nit debe ser numerico "));
+        } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: ", ex.getMessage()));
             Logger.getLogger(ContratistaVista.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -298,10 +297,16 @@ public class ContratistaVista {
         txtEstadoContratista.setValue(contratista.getEstadocontratista());
         txtEstadoContratista.setDisabled(true);
         btnRegistrar.setDisabled(true);
-        if(contratista.getEstadocontratista().equals("ACTIVO")){
+
+        if (contratista.getEstadocontratista().equals("ACTIVO")) {
             btnActivo.setDisabled(true);
-        }else{
-            btnInactivo.setDisabled(true);
+            btnInactivo.setDisabled(false);
+
+        } else {
+            if (contratista.getEstadocontratista().equals("INACTIVO")) {
+                btnInactivo.setDisabled(true);
+                btnActivo.setDisabled(false);
+            }
         }
     }
 
