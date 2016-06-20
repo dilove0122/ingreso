@@ -69,4 +69,19 @@ public class IngresoFacade extends AbstractFacade<Ingreso> implements IngresoFac
         return query.getResultList();
     }
 
+    @Override
+    public List<Ingreso> consultarIngresosEmpleado(Empleado e) {
+        String consulta = "select ingreso from Ingreso ingreso where ingreso.empleadoingreso.cedulaempleado=" + e.getCedulaempleado();
+        Query query = em.createQuery(consulta);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Ingreso> consultarIngresosEmpleado(Empleado e, String fechai, String fechaf) {
+        String consulta = "select ingreso from Ingreso ingreso where ingreso.empleadoingreso.cedulaempleado=" + e.getCedulaempleado()+" and ingreso.fechaingreso between '"+fechai+"' and '"+fechaf+"'";
+        System.out.println("COnsulta "+consulta);
+        Query query = em.createQuery(consulta);
+        return query.getResultList();
+    }
+
 }

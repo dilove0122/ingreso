@@ -322,14 +322,31 @@ public class IngresoVista {
     }
 
     public void consultarxEmpleado() {
-
+        Empleado e = new Empleado();
+        e.setCedulaempleado(Long.parseLong(txtEmpleado.getValue().toString()));
+        if (txtFechaIngresoInicioE.getValue() == null || txtFechaIngresoFinE.getValue() == null) {
+            listaIngresos = ingresoDAO.consultarIngresosEmpleado(e);
+        } else {
+            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+            String fechai = formato.format((Date) txtFechaIngresoInicioE.getValue());
+            String fechaf = formato.format((Date) txtFechaIngresoFinE.getValue());
+            listaIngresos = ingresoDAO.consultarIngresosEmpleado(e, fechai, fechaf);
+        }
     }
 
     public void limpiarConsultaContratista() {
         txtContratista.setValue("");
         txtFechaIngresoInicioC.setValue(null);
         txtFechaIngresoFinC.setValue(null);
+        listaIngresos = null;
 
+    }
+    
+    public void limpiarConsultaEmpleados() {
+        txtEmpleado.setValue("");
+        txtFechaIngresoInicioE.setValue(null);
+        txtFechaIngresoFinE.setValue(null);
+        listaIngresos = null;
     }
 
 }

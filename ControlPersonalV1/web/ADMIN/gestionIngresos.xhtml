@@ -39,15 +39,25 @@
                     allDayText: "Todo el día"
                 };
             </script>
+            <style>
+                .a{
+                    background-color:lightgreen;
+                    background-image:none;
+                }
+                .na{
+                    background-color:darksalmon;
+                    background-image:none;
+                }
+            </style>
         </h:head>
 
         <h:body style="font-size: 12px;" >
 
-             <p:layout fullPage="true">
-                 <p:layoutUnit position="north" size="140" resizable="true" closable="true" collapsible="true">
-                     <div align="center">
-                <h:graphicImage url="../images/bannerControl.png" width="100%" height="100%" alt="Ingreso"  />
-            </div>
+            <p:layout fullPage="true">
+                <p:layoutUnit position="north" size="140" resizable="true" closable="true" collapsible="true">
+                    <div align="center">
+                        <h:graphicImage url="../images/bannerControl.png" width="100%" height="100%" alt="Ingreso"  />
+                    </div>
                 </p:layoutUnit>
                 <p:layoutUnit position="west" size="160" header="..." collapsible="true">
                     <h:form id="formularioMenu"> 
@@ -107,7 +117,7 @@
                                         <p:commandButton value="Consultar" icon="ui-icon-search" action="#{ingresosVista.consultarxContratista()}" update=":formulario" />
                                     </p:column>
                                     <p:column>
-                                        <p:commandButton value="Limpiar" icon="ui-icon-refresh" action="#{ingresosVista.limpiarConsultaContratista()}" update=":formulario:panelParametros" />
+                                        <p:commandButton value="Limpiar" icon="ui-icon-refresh" action="#{ingresosVista.limpiarConsultaContratista()}" update=":formulario:panelParametros,:formulario:panelTablaIngresos" />
                                     </p:column>
                                 </p:row>
                                 <p:row>
@@ -150,18 +160,21 @@
                                     <p:column>
                                         <p:commandButton value="Consultar" icon="ui-icon-search" action="#{ingresosVista.consultarxEmpleado()}" update=":formulario"/>
                                     </p:column>
+                                    <p:column>
+                                        <p:commandButton value="Limpiar" icon="ui-icon-refresh" action="#{ingresosVista.limpiarConsultaEmpleados()}" update=":formulario:panelParametros,:formulario:panelTablaIngresos" />
+                                    </p:column>
                                 </p:row>
                             </p:panelGrid>
 
                             <p:panel id="panelTablaIngresos">   
                                 <p:dataTable var="ingreso" value="#{ingresosVista.listaIngresos}" rows="10" widgetVar="tablaIngreso"
-                                             paginator="true"
+                                             paginator="true" 
                                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                              rowsPerPageTemplate="5,10,15"
                                              rowKey="#{ingreso.numeroingreso}"
                                              filteredValue="#{ingresosVista.listaIngresos}"
                                              emptyMessage="No se encontraron Ingresos Reqistrados"
-                                             >
+                                             rowStyleClass="#{ingreso.autorizadoingreso eq 'S' ? 'a' : 'na'}">
                                     <p:column headerText="Fecha" sortBy="#{ingreso.fechaingreso}">
                                         <h:outputText value="#{ingreso.fechaingreso}">
                                             <f:convertDateTime pattern="yyyy-MM-dd" />

@@ -38,4 +38,8 @@ public interface IngresoFacadeLocal {
     
     List<Ingreso> consultarIngresosContratista(Contratista c, String fechai, String fechaf);
     
+    List<Ingreso> consultarIngresosEmpleado(Empleado e);
+    
+    List<Ingreso> consultarIngresosEmpleado(Empleado e, String fechai, String fechaf);
+    
 }
