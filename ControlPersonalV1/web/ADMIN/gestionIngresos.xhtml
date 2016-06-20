@@ -73,7 +73,7 @@
                                     <p:column>
                                         <p:inputText size="10" id="txtContratista" readonly="true" binding="#{ingresosVista.txtContratista}"/>
                                         <p:commandButton id="btnConsultarC" value="..." type="button"/>
-                                        <p:overlayPanel id="contratistaPanel" widgetVar="contratistaP" for="btnConsultarC" hideEffect="fade" dynamic="true" style="width:600px">
+                                        <p:overlayPanel id="contratistaPanel" widgetVar="contratistaP" for="btnConsultarC" hideEffect="fade"  style="width:600px">
                                             <p:dataTable var="contratista" value="#{ingresosVista.listaContratistas}" rows="5" paginator="true" selectionMode="single"
                                                          selection="#{ingresosVista.selectedContratista}" rowKey="#{contratista.nitcontratista}" filteredValue="#{ingresosVista.listaContratistas}">
                                                 <p:ajax event="rowSelect" update=":formulario:txtContratista" listener="#{ingresosVista.seleccionarContratista}"  oncomplete="PF('contratistaP').hide();"/>
@@ -117,7 +117,7 @@
                                     <p:column>
                                         <p:inputText size="10" id="txtEmpleado" binding="#{ingresosVista.txtEmpleado}"/>
                                         <p:commandButton id="btnConsultarU" value="..." type="button"/>
-                                        <p:overlayPanel id="usuarioPanel" widgetVar="usuarioP" for="btnConsultarU" hideEffect="fade" dynamic="true" style="width:600px">
+                                        <p:overlayPanel id="usuarioPanel" widgetVar="usuarioP" for="btnConsultarU" hideEffect="fade"  style="width:600px">
                                             <p:dataTable var="empleado" value="#{ingresosVista.listaEmpleados}" rows="5" paginator="true" selectionMode="single"
                                                          selection="#{ingresosVista.selectedEmpleado}" rowKey="#{empleado.cedulaempleado}" filteredValue="#{ingresosVista.listaEmpleados}">
                                                 <p:ajax event="rowSelect" update=":formulario:txtEmpleado" listener="#{ingresosVista.seleccionarEmpleado}"  oncomplete="PF('usuarioP').hide();"/>

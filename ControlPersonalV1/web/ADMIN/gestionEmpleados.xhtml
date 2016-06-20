@@ -35,8 +35,7 @@
                 </p:layoutUnit>
 
                 <p:layoutUnit position="center">
-                    <h:form id="formulario"> 
-                        
+                    <h:form id="formulario" onkeypress="return event.keyCode !== 13">                         
                         <p:messages id="mensajes" showDetail="true" />
                         <p:panel header="GESTIÓN DE INFORMACIÓN DE EMPLEADOS">
                             <p:focus context="panelUsuario"/>
@@ -133,7 +132,7 @@
                                     <p:column>
                                         <p:inputText readonly="true" id="txtContratista" binding="#{empleadoVista.txtCodigoContratista}"/>
                                         <p:commandButton   id="btnSeleccionar" type="button" value="..." />
-                                        <p:overlayPanel id="panelContratista" for="btnSeleccionar" widgetVar="panelC" hideEffect="fade" dynamic="true" style="width:600px">
+                                        <p:overlayPanel id="panelContratista" for="btnSeleccionar" widgetVar="panelC" hideEffect="fade"  style="width:600px">
                                             <p:dataTable var="contratista" value="#{empleadoVista.listaContratista}" rows="10"
                                                          paginator="true"
                                                          rowKey="#{contratista.nitcontratista}"
@@ -173,8 +172,8 @@
                         <p:panelGrid id="pnlBotones" columns="4" style="width: 82%;">
                             <f:facet name="footer"> 
                                 <div align="center"> 
-                                    <p:commandButton  id="btnRegistrar" action="#{empleadoVista.registrar_action()}" value="Registrar" binding="#{empleadoVista.btnRegistrar}" update=":formulario:mensajes,:formulario:panelUsuario,:formulario:panelTabla" />
-                                    <p:commandButton  id="btnModificar" action="#{empleadoVista.modificar_action}" value="Modificar" binding="#{empleadoVista.btnModificar}" update=":formulario:mensajes,:formulario:panelUsuario,:formulario:panelTabla"/>
+                                    <p:commandButton  id="btnRegistrar" action="#{empleadoVista.registrar_action()}" value="Registrar" binding="#{empleadoVista.btnRegistrar}" update=":formulario" />
+                                    <p:commandButton  id="btnModificar" action="#{empleadoVista.modificar_action}" value="Modificar" binding="#{empleadoVista.btnModificar}" update=":formulario"/>
                                     <p:commandButton  id="btnLimpiar" action="#{empleadoVista.limpiar()}" value="Limpiar" binding="#{empleadoVista.btnLimpiar}" update=":formulario" />
                                     <p:commandButton  id="btnActivar" action="#{empleadoVista.activar_action()}" value="Activar" binding="#{empleadoVista.btnActivar}" onclick="PF('confirmation2').show();"  type="button" update=":formulario" />
                                     <p:commandButton  id="btnInactivar" action="#{empleadoVista.inactivar_action()}" value="Inactivar" binding="#{empleadoVista.btnInactivo}" onclick="PF('confirmation1').show();"  type="button" update=":formulario" />

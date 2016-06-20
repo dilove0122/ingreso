@@ -282,6 +282,8 @@ public class EmpleadoVista {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "El Empleado Se registro con Exito"));
         } catch (NumberFormatException e) {
             FacesContext.getCurrentInstance().addMessage("mensajes",new FacesMessage("La cedula y el telefono debe ser numerica. "," "));
+        }catch (NullPointerException e) {
+            FacesContext.getCurrentInstance().addMessage("mensajes",new FacesMessage("La ARL y la EPS son obligatorias. "," "));
         }catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: ", ex.getMessage()));
             Logger.getLogger(EmpleadoVista.class.getName()).log(Level.SEVERE, null, ex);
@@ -296,8 +298,8 @@ public class EmpleadoVista {
             Empleado empleado = new Empleado();
             Contratista contratistaObj = new Contratista();
             empleado.setCedulaempleado(Long.parseLong(txtCedula.getValue().toString()));
-            empleado.setNombreempleado((txtNombre.getValue().toString()));
-            empleado.setApellidoempleado(txtApellido.getValue().toString());
+             empleado.setNombreempleado(txtNombre.getValue().toString().trim()+" "+txtNombre2.getValue().toString().trim());
+            empleado.setApellidoempleado(txtApellido.getValue().toString().trim()+" "+txtApellido2.getValue().toString().trim());
             empleado.setTelefonoempleado(txtTelefono.getValue().toString());
             empleado.setCorreoempleado(txtCorreo.getValue().toString());
             empleado.setCargoempleado(txtCargo.getValue().toString());
@@ -306,7 +308,6 @@ public class EmpleadoVista {
             contratistaObj.setNitcontratista(Long.parseLong(txtCodigoContratista.getValue().toString()));
             empleado.setContratistaempleado(contratistaObj);
             empleadoLogica.modificar(empleado);
-            
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "el Empleado Se modifico con Exito"));
         }catch (NumberFormatException e) {
             FacesContext.getCurrentInstance().addMessage("mensajes",new FacesMessage("La cedula y el telefono debe ser numerica. "," "));
@@ -358,6 +359,8 @@ public class EmpleadoVista {
         
         txtNombre.setValue("");
         txtApellido.setValue("");
+        txtNombre2.setValue("");
+        txtApellido2.setValue("");
         txtCedula.setValue("");
         txtCorreo.setValue("");
         getCmbEps().setValue("-1");
@@ -365,7 +368,6 @@ public class EmpleadoVista {
         txtTelefono.setValue("");
         txtEstadoEmpleado.setValue("");
         btnRegistrar.setDisabled(false);
-        txtCodigoContratista.setValue("");
         txtCodigoContratista.setValue("");
         txtCargo.setValue("");
         btnActivar.setDisabled(false);
@@ -384,10 +386,14 @@ public class EmpleadoVista {
         txtNombre.setValue(datosN[0]);
         if(datosN.length>1){
             txtNombre2.setValue(datosN[1]);
+        }else{
+            txtNombre2.setValue("");
         }
         txtApellido.setValue(datosA[0]);
         if(datosA.length>1){
             txtApellido2.setValue(datosA[1]);
+        }else{
+            txtApellido2.setValue("");
         }
         txtCedula.setValue(empleado.getCedulaempleado());
         txtCorreo.setValue(empleado.getCorreoempleado());
@@ -424,7 +430,7 @@ public class EmpleadoVista {
      * @return the listaContratista
      */
     public List<Contratista> getListaContratista() {
-        
+        System.out.println("Llama lista?");
         if (listaContratista == null) {
             try {
                 listaContratista = contratistaLogica.consultar();
