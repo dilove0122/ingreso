@@ -43,7 +43,9 @@ public class EmpleadoVista {
     
     private InputText txtCedula;
     private InputText txtNombre;
+    private InputText txtNombre2;
     private InputText txtApellido;
+    private InputText txtApellido2;
     private InputText txtTelefono;
     private InputText txtCorreo;
     private InputText txtCargo;
@@ -265,8 +267,8 @@ public class EmpleadoVista {
             Empleado empleado = new Empleado();
             Contratista contratistaObj = new Contratista();
             empleado.setCedulaempleado(Long.parseLong(txtCedula.getValue().toString()));
-            empleado.setNombreempleado((txtNombre.getValue().toString()));
-            empleado.setApellidoempleado(txtApellido.getValue().toString());
+            empleado.setNombreempleado(txtNombre.getValue().toString().trim()+" "+txtNombre2.getValue().toString().trim());
+            empleado.setApellidoempleado(txtApellido.getValue().toString().trim()+" "+txtApellido2.getValue().toString().trim());
             empleado.setTelefonoempleado(txtTelefono.getValue().toString());
             empleado.setCorreoempleado(txtCorreo.getValue().toString());
             empleado.setCargoempleado(txtCargo.getValue().toString());
@@ -368,15 +370,25 @@ public class EmpleadoVista {
         txtCargo.setValue("");
         btnActivar.setDisabled(false);
         btnInactivo.setDisabled(false);
+        listaContratista = null;
         
     }
     
     public void seleccionarEmpleado(SelectEvent event) {
         
         Empleado empleado = (Empleado) event.getObject();
-        
-        txtNombre.setValue(empleado.getNombreempleado());
-        txtApellido.setValue(empleado.getApellidoempleado());
+        String nombre = empleado.getNombreempleado();
+        String apellido = empleado.getApellidoempleado();
+        String[] datosN = nombre.split(" ");
+        String[] datosA = apellido.split(" ");
+        txtNombre.setValue(datosN[0]);
+        if(datosN.length>1){
+            txtNombre2.setValue(datosN[1]);
+        }
+        txtApellido.setValue(datosA[0]);
+        if(datosA.length>1){
+            txtApellido2.setValue(datosA[1]);
+        }
         txtCedula.setValue(empleado.getCedulaempleado());
         txtCorreo.setValue(empleado.getCorreoempleado());
         txtTelefono.setValue(empleado.getTelefonoempleado());
@@ -384,10 +396,15 @@ public class EmpleadoVista {
         cmbArl.setValue(empleado.getArlempleado());
         txtEstadoEmpleado.setValue(empleado.getEstadoempleado());
         txtCargo.setValue(empleado.getCargoempleado());
-        if(empleado.getEstadoempleado().equals("ACTIVO")){
+         if(empleado.getEstadoempleado().equals("ACTIVO")){
             btnActivar.setDisabled(true);
+            btnInactivo.setDisabled(false);
+            
         }else{
-            btnInactivo.setDisabled(true);
+            if(empleado.getEstadoempleado().equals("INACTIVO")){
+           btnInactivo.setDisabled(true);
+               btnActivar.setDisabled(false);
+        }
         }
         txtEstadoEmpleado.setDisabled(true);
         
@@ -398,7 +415,7 @@ public class EmpleadoVista {
             txtCodigoContratista.setValue("");
             
         }
-
+        listaContratista = null;
         // btnEliminar.setDisabled(false);
         // btnModificar.setDisabled(false);
     }
@@ -496,5 +513,22 @@ public class EmpleadoVista {
     public void setSelectedContratista(Contratista selectedContratista) {
         this.selectedContratista = selectedContratista;
     }
+
+    public InputText getTxtNombre2() {
+        return txtNombre2;
+    }
+
+    public void setTxtNombre2(InputText txtNombre2) {
+        this.txtNombre2 = txtNombre2;
+    }
+
+    public InputText getTxtApellido2() {
+        return txtApellido2;
+    }
+
+    public void setTxtApellido2(InputText txtApellido2) {
+        this.txtApellido2 = txtApellido2;
+    }
+    
     
 }

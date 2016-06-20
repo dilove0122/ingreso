@@ -22,30 +22,35 @@
                 </p:layoutUnit>
                 <p:layoutUnit position="center">
                     <h:form id="formulario">
-                        <p:panel id="panelIngreso" header="SISTEMA - CONTROL DE INGRESO DE PERSONAL">
+                        <p:panel style="font-size: 30px;text-align: center;" id="panelIngreso" header="SISTEMA - CONTROL DE INGRESO DE PERSONAL">
                             <p:focus context="panelIngreso"/>
+                            <div align="center">                                          
                             <p:panelGrid id="panelGridIngreso" style="width: 100%;">                                
                                 <p:row>
-                                    <p:column>
-                                        <h:outputText value="Cédula:"/>
+                                    <p:column style="text-align: center;">
+                                        <h:outputText value="!Bienvenido! Pase su Cédula por el Lector:"/>
                                     </p:column>
-                                    <p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="text-align: center;">
                                         <p:inputText id="txtCedula" binding="#{ingresosVista.txtCedula}" value="#{ingresosVista.documento}"/>
                                     </p:column>  
-                               
+                                </p:row>
+                                <p:row>
                                     <p:column colspan="2">
-                                        <p:inputText id="txtCodigo3" >
+                                        <p:inputText style="opacity: 0.0;" id="txtCodigo3" >
                                             <p:ajax event="focus" update="formulario" oncomplete="PF('dlgIngreso').show();"  process="@all"  listener="#{ingresosVista.action_registrar_ingreso}" />
                                         </p:inputText>
                                     </p:column> 
                                 </p:row>
                             </p:panelGrid>
+                                </div>
                         </p:panel>
-                        <p:dialog header="INFORMACIÓN DE INGRESO" widgetVar="dlgIngreso" height="160" width="500" onShow="myFunction();" onHide="myStopFunction();">
-                            <h:outputText style="font-size: 16px;" value="Fecha: #{ingresosVista.datoFechaIngreso} - Hora: #{ingresosVista.datoHoraIngreso}" />
-                            <p:messages id="mensajesDialogo" showDetail="true" style="font-size: 20px;"/>
-                            <h:outputText style="font-size: 16px;font-weight: bold;" value="#{ingresosVista.datoNombreIngreso}" /> <br/>
-                            <h:outputText style="font-size: 16px;" value="#{ingresosVista.datoCargoIngreso}" />
+                        <p:dialog style="font-size: 25px;" header="INFORMACIÓN DE INGRESO" widgetVar="dlgIngreso" height="200" width="550" onShow="myFunction();" onHide="myStopFunction();">
+                            <h:outputText style="font-size: 30px;" value="Fecha: #{ingresosVista.datoFechaIngreso} - Hora: #{ingresosVista.datoHoraIngreso}" />
+                            <p:messages id="mensajesDialogo" showDetail="true" style="font-size: 35px;"/>
+                            <h:outputText style="font-size: 25px;font-weight: bold;" value="#{ingresosVista.datoNombreIngreso}" /> <br/>
+                            <h:outputText style="font-size: 25px;" value="#{ingresosVista.datoCargoIngreso}" />
                         </p:dialog>   
                         <script>
                             var myVar;
@@ -54,7 +59,7 @@
                             {
                                 myVar = setTimeout(function () {
                                     PF('dlgIngreso').hide();
-                                }, 2000);
+                                }, 4000);
                             }
 
                             function myStopFunction()

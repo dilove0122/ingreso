@@ -36,9 +36,10 @@
 
                 <p:layoutUnit position="center">
                     <h:form id="formulario"> 
-
+                        
                         <p:messages id="mensajes" showDetail="true" />
                         <p:panel header="GESTIÓN DE INFORMACIÓN DE EMPLEADOS">
+                            <p:focus context="panelUsuario"/>
                             <p:panelGrid id="panelUsuario" style="width: 82%;">
                                 <p:row>
                                     <p:column>
@@ -47,19 +48,36 @@
                                     <p:column>
                                         <p:inputText id="txtCedula" binding="#{empleadoVista.txtCedula}"/>
                                     </p:column>
+                                     <p:column>
+                                        <h:outputText value="Primer Apellido:"/>
+                                    </p:column>
                                     <p:column>
-                                        <h:outputText value="Nombre:"/>
+                                        <p:inputText id="txtApellido" binding="#{empleadoVista.txtApellido}"/>
+                                    </p:column>                                    
+                                </p:row>
+                                <p:row>
+                                   <p:column>
+                                        <h:outputText value="Segundo Apellido:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="txtApellido2" binding="#{empleadoVista.txtApellido2}"/>
+                                    </p:column>
+                                    
+                                    <p:column>
+                                        <h:outputText value="Primer Nombre:"/>
                                     </p:column>
                                     <p:column>
                                         <p:inputText id="txtNombre" binding="#{empleadoVista.txtNombre}"/>
                                     </p:column>
+                                    
+                                    
                                 </p:row>
                                 <p:row>
                                     <p:column>
-                                        <h:outputText value="Apellido:"/>
+                                        <h:outputText value="Segundo Nombre:"/>
                                     </p:column>
                                     <p:column>
-                                        <p:inputText id="txtApellido" binding="#{empleadoVista.txtApellido}"/>
+                                        <p:inputText id="txtNombre2" binding="#{empleadoVista.txtNombre2}"/>
                                     </p:column>
                                     <p:column>
                                         <h:outputText value="Teléfono:"/>
