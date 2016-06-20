@@ -38,16 +38,7 @@ import persistencia.IngresoFacadeLocal;
 public class IngresoVista {
 
     private InputText txtCedula;
-    private InputText txtPrimerNombre;
-    private InputText txtSegundoNombre;
-    private InputText txtPrimerApellido;
-    private InputText txtSegundoApellido;
-    private InputText txtSexo;
-    private InputText txtTipoSangre;
-    private InputText txtFechaN;
-    private InputText txtCodigo1;
-    private InputText txtCodigo2;
-    private InputText txtCodigo3;
+
     private String documento;
     private String datoFechaIngreso;
     private String datoHoraIngreso;
@@ -91,69 +82,6 @@ public class IngresoVista {
         this.txtCedula = txtCedula;
     }
 
-    public InputText getTxtPrimerNombre() {
-        return txtPrimerNombre;
-    }
-
-    public void setTxtPrimerNombre(InputText txtPrimerNombre) {
-        this.txtPrimerNombre = txtPrimerNombre;
-    }
-
-    public InputText getTxtSegundoNombre() {
-        return txtSegundoNombre;
-    }
-
-    public void setTxtSegundoNombre(InputText txtSegundoNombre) {
-        this.txtSegundoNombre = txtSegundoNombre;
-    }
-
-    public InputText getTxtPrimerApellido() {
-        return txtPrimerApellido;
-    }
-
-    public void setTxtPrimerApellido(InputText txtPrimerApellido) {
-        this.txtPrimerApellido = txtPrimerApellido;
-    }
-
-    public InputText getTxtSegundoApellido() {
-        return txtSegundoApellido;
-    }
-
-    public void setTxtSegundoApellido(InputText txtSegundoApellido) {
-        this.txtSegundoApellido = txtSegundoApellido;
-    }
-
-    public InputText getTxtSexo() {
-        return txtSexo;
-    }
-
-    public void setTxtSexo(InputText txtSexo) {
-        this.txtSexo = txtSexo;
-    }
-
-    public InputText getTxtTipoSangre() {
-        return txtTipoSangre;
-    }
-
-    public void setTxtTipoSangre(InputText txtTipoSangre) {
-        this.txtTipoSangre = txtTipoSangre;
-    }
-
-    public InputText getTxtCodigo1() {
-        return txtCodigo1;
-    }
-
-    public void setTxtCodigo1(InputText txtCodigo1) {
-        this.txtCodigo1 = txtCodigo1;
-    }
-
-    public InputText getTxtCodigo2() {
-        return txtCodigo2;
-    }
-
-    public void setTxtCodigo2(InputText txtCodigo2) {
-        this.txtCodigo2 = txtCodigo2;
-    }
 
     public String getDatoFechaIngreso() {
         return datoFechaIngreso;
@@ -187,21 +115,7 @@ public class IngresoVista {
         this.datoNombreIngreso = datoNombreIngreso;
     }
 
-    public InputText getTxtFechaN() {
-        return txtFechaN;
-    }
 
-    public void setTxtFechaN(InputText txtFechaN) {
-        this.txtFechaN = txtFechaN;
-    }
-
-    public InputText getTxtCodigo3() {
-        return txtCodigo3;
-    }
-
-    public void setTxtCodigo3(InputText txtCodigo3) {
-        this.txtCodigo3 = txtCodigo3;
-    }
 
     public void action_registrar_ingreso() {
         try {
@@ -254,16 +168,7 @@ public class IngresoVista {
 
     public void limpiar() {
         txtCedula.setValue("");
-        txtPrimerNombre.setValue("");
-        txtSegundoNombre.setValue("");
-        txtPrimerApellido.setValue("");
-        txtSegundoApellido.setValue("");
-        txtCodigo1.setValue("");
-        txtCodigo2.setValue("");
-        txtCodigo3.setValue("");
-        txtFechaN.setValue("");
-        txtSexo.setValue("");
-        txtTipoSangre.setValue("");
+      
         documento = "";
     }
 
@@ -322,14 +227,12 @@ public class IngresoVista {
         this.txtFechaIngresoFinC = txtFechaIngresoFinC;
     }
 
-    
-
     public List<Contratista> getListaContratistas() {
-            try {
-                listaContratistas = contratistaLogica.consultar();
-            } catch (Exception ex) {
-                Logger.getLogger(IngresoVista.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        try {
+            listaContratistas = contratistaLogica.consultar();
+        } catch (Exception ex) {
+            Logger.getLogger(IngresoVista.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return listaContratistas;
     }
 
@@ -344,7 +247,6 @@ public class IngresoVista {
     public void setSelectedContratista(Contratista selectedContratista) {
         this.selectedContratista = selectedContratista;
     }
-
 
     public void seleccionarContratista(SelectEvent event) {
         Contratista objC = (Contratista) event.getObject();
@@ -405,29 +307,29 @@ public class IngresoVista {
     public void setSelectedEmpleado(Empleado selectedEmpleado) {
         this.selectedEmpleado = selectedEmpleado;
     }
-    
-    public void consultarxContratista(){
+
+    public void consultarxContratista() {
         Contratista c = new Contratista();
         c.setNitcontratista(Long.parseLong(txtContratista.getValue().toString()));
-        if(txtFechaIngresoInicioC.getValue()==null || txtFechaIngresoFinC.getValue()==null){
+        if (txtFechaIngresoInicioC.getValue() == null || txtFechaIngresoFinC.getValue() == null) {
             listaIngresos = ingresoDAO.consultarIngresosContratista(c);
-        }else{
+        } else {
             SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-            String fechai = formato.format((Date)txtFechaIngresoInicioC.getValue());
-            String fechaf = formato.format((Date)txtFechaIngresoFinC.getValue());
+            String fechai = formato.format((Date) txtFechaIngresoInicioC.getValue());
+            String fechaf = formato.format((Date) txtFechaIngresoFinC.getValue());
             listaIngresos = ingresoDAO.consultarIngresosContratista(c, fechai, fechaf);
         }
     }
-    
-    public void consultarxEmpleado(){
-    
+
+    public void consultarxEmpleado() {
+
     }
-    
-    public void limpiarConsultaContratista(){
+
+    public void limpiarConsultaContratista() {
         txtContratista.setValue("");
         txtFechaIngresoInicioC.setValue(null);
         txtFechaIngresoFinC.setValue(null);
-        
+
     }
 
 }
