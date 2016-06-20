@@ -167,10 +167,11 @@
                             </p:panelGrid>
 
                             <p:panel id="panelTablaIngresos">   
-                                <p:dataTable var="ingreso" value="#{ingresosVista.listaIngresos}" rows="10" widgetVar="tablaIngreso"
+                                <p:dataTable id="tablaIngresos" var="ingreso" value="#{ingresosVista.listaIngresos}" rows="10" widgetVar="tablaIngreso"
                                              paginator="true" 
                                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                              rowsPerPageTemplate="5,10,15"
+                                             style="margin-bottom:20px"
                                              rowKey="#{ingreso.numeroingreso}"
                                              filteredValue="#{ingresosVista.listaIngresos}"
                                              emptyMessage="No se encontraron Ingresos Reqistrados"
@@ -180,7 +181,6 @@
                                             <f:convertDateTime pattern="yyyy-MM-dd" />
                                         </h:outputText>
                                     </p:column>
-
 
                                     <p:column headerText="Hora Entrada" sortBy="#{ingreso.horaentradaingreso}">
                                         <h:outputText value="#{ingreso.horaentradaingreso}">
@@ -207,6 +207,15 @@
                                         <h:outputText value="#{ingreso.empleadoingreso.nombreempleado}" />
                                     </p:column>
                                 </p:dataTable>
+                                <h:commandLink>
+                                    <p:graphicImage url="../images/excel.png" width="24" />
+                                    <p:dataExporter type="xls" target="tablaIngresos" fileName="ingresos" />
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage url="../images/pdf.png" width="24" />
+                                    <p:dataExporter type="pdf" target="tablaIngresos" fileName="ingresos"  />
+                                </h:commandLink>
                             </p:panel>
                         </p:panel>
                     </h:form>
