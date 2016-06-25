@@ -20,131 +20,53 @@
 
 
             <p:layout fullPage="true">
-
-                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
-                    
+                 <p:layoutUnit position="north" size="140" resizable="true" closable="true" collapsible="true">
+                     <div align="center">
+                <h:graphicImage url="../images/bannerControl.png" width="100%" height="100%" alt="Ingreso"  />
+            </div>
                 </p:layoutUnit>
-
 
 
 
                 <p:layoutUnit position="west" size="160" header="..." collapsible="true">
-                    <h:form id="formularioMenu"> 
+                     <h:form id="formularioMenu"> 
                         <p:menu>
-                            <p:menuitem value="Usuarios" url="gestionUsuarios.xhtml" />
-                            <p:menuitem value="Empleados" url="gestionEmpleados.xhtml" />
-                            <p:menuitem value="Contratistas" url="gestionContratistas.xhtml" />
                             <p:menuitem value="Ingresos" url="gestionIngresos.xhtml" />
-                            <p:menuitem value="Reportes" url="index.xhtml"/>
+                            <p:menuitem value="Empleados" url="gestionEmpleados.xhtml" />
+                            <p:menuitem value="Contratistas" url="gestionContratistas.xhtml" />                            
+                            <p:menuitem value="Cambiar Clave" url="gestionUsuarios.xhtml" />
+                            <p:menuitem value="Cerrar Sesión"  action="#{usuarioVista.cerrarSesion_action}"/>
                         </p:menu>
-                        <p:commandLink  id="btnCerrar" action="#{usuarioVista.cerrarSesion_action}" style="width: 100%" value="Cerrar Sesión" />
                     </h:form>
                 </p:layoutUnit>
 
                 <p:layoutUnit position="center">
-                    <h:form id="formulario1">
-                        <p:growl id="growl1" showDetail="true" sticky="true" />  
+                    <h:form id="formulario1"> 
                         <p:messages id="mensajes1" showDetail="true" />
-                        <p:panel header="GESTIÓN DE INFORMACIÓN DE USUARIOS" id="panelUsuario">
-                            <p:panelGrid id="panelUsuario1"  columns="4" style="width: 84%;"  >
+                        <p:panel header="CAMBIO DE CLAVE" id="panelUsuario">
+                            <p:panelGrid id="panelUsuario1"  columns="2" style="width: 84%;"  >
+                                <h:outputText value="Clave Anterior:"/>
+                                <p:password id="txtNombre" binding="#{usuarioVista.txtClaveAnterior}"/>
 
-
-
-                                <h:outputText value="Identificación:"/>
-                                <p:inputText id="txtIdentificacion" binding="#{usuarioVista.txtdocUsuario}"/>
-
-                                <h:outputText value="Nombre de usuario:"/>
-                                <p:inputText id="txtNombre" binding="#{usuarioVista.txtNombre}"/>
-
-                                <h:outputText value="Password:"/>
+                                <h:outputText value="Nueva Clave"/>
                                 <p:password id="txtPassword"  binding="#{usuarioVista.txtClaveUsuario}"/>
 
-                                <h:outputText value="Confirmacion Password:"/>
+                                <h:outputText value="Repita la Clave:"/>
                                 <p:password id="txtConfirmacion" binding="#{usuarioVista.txtConfirmacion}"/>
-
                             </p:panelGrid>
-
-
                         </p:panel>
-
                         <p:panel>
-
                             <p:panelGrid id="pnlBotones1"  columns="6" style="width: 100%;">
                                 <f:facet name="footer"> 
                                     <div align="center"> 
-                                        <p:commandButton  id="btnRegistrar" action="#{usuarioVista.registrar_Action}" value="Registrar" binding="#{usuarioVista.btnRegistrar}" update=":formulario1:mensajes1,:formulario1:panelUsuario1,:formulario1:panelTabla1"/>
-                                        <p:commandButton  id="btnEliminar" action="#{usuarioVista.eliminar_action}" value="Eliminar" binding="#{usuarioVista.btnEliminar}" onclick="PF('confirmation').show();"  type="button"/>
-                                        <p:commandButton  id="btnLimpiar" action="#{usuarioVista.limpiar_action()}" value="Limpiar" binding="#{usuarioVista.btnLimpiar}" update=":formulario1"/>
-                                       
-
+                                        <p:commandButton  id="btnRegistrar" action="#{usuarioVista.cambiarCalve_action()}" value="Cambiar Clave" update=":formulario1:mensajes1,:formulario1:panelUsuario"/>
                                     </div>
                                 </f:facet>
                             </p:panelGrid>
                         </p:panel>
-
-                        <p:panel id="panelTabla1">   
-                            <p:dataTable var="usuario" value="#{usuarioVista.listaUsuario}" rows="10"
-                                         paginator="true"
-                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                         rowsPerPageTemplate="5,10,15"
-                                         rowKey="#{usuario.documentousuario}"
-                                         selection="#{usuarioVista.selectedUsuario}"
-                                         selectionMode="single"
-                                         filteredValue="#{usuarioVista.listaUsuario}"
-                                         emptyMessage="No hay casid Registradas!"
-                                         >
-                                <p:ajax 
-                                    event="rowSelect"
-                                    listener="#{usuarioVista.seleccionarUsuario}"
-                                    update=":formulario1:pnlBotones1,:formulario1:panelUsuario1,:formulario1:panelTabla1,:formulario1:mensajes1,"
-                                    />
-
-
-                                <p:column headerText="Identificación"  
-                                          filterBy="#{usuario.documentousuario}" filterMatchMode="contains"
-                                          >
-                                    <h:outputText value="#{usuario.documentousuario}" />
-                                </p:column>
-
-
-                                <p:column headerText="Nombre"  filterBy="#{usuario.nombreusuario}" filterMatchMode="contains" >
-                                    <h:outputText value="#{usuario.nombreusuario}" />
-                                </p:column>
-                            </p:dataTable>
-                        </p:panel>
-                        <br/>
-                        <br/>
-
-
                     </h:form>    
-
-
-
                 </p:layoutUnit>
-
-
-
-
             </p:layout>
-
-
-
-            <!-- Dialogo de confirmacion para el boton eliminar -->
-            <h:form id="formDialog" > 
-                <p:confirmDialog id="confirmDialog" message="Está Seguro de Eliminar el usuario?"  
-                                 header="Confirmación" showEffect="fade" hideEffect="explode" severity="alert" widgetVar="confirmation">  
-                    <p:commandButton id="confirm" value="Si" oncomplete="PF('confirmation').hide();" 
-                                     update=":formulario1"   
-                                     actionListener="#{usuarioVista.eliminar_action}" />  
-                    <p:commandButton id="decline" value="No" onclick="PF('confirmation').hide();" type="button" />   
-
-                </p:confirmDialog> 
-            </h:form>
-
-
-
-
-
         </h:body>
 
     </f:view>

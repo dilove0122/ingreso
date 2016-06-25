@@ -205,15 +205,15 @@ public class ContratistaVista {
             objcontratista.setEstadocontratista("ACTIVO");
 
             if (nombre.equals("")) {
-                FacesContext.getCurrentInstance().addMessage("Mensajes", new FacesMessage(FacesMessage.SEVERITY_INFO, " ", "El nombre es obligatorio"));
+                FacesContext.getCurrentInstance().addMessage("Mensajes", new FacesMessage(FacesMessage.SEVERITY_INFO, " ", "El nombre es obligatorio!"));
             } else {
                 contratistaLogica.registrar(objcontratista);
 
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "El contratista se registro con exito"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "¡El contratista se Registró con Éxito!"));
 
             }
         } catch (NumberFormatException e) {
-            FacesContext.getCurrentInstance().addMessage("mensajes", new FacesMessage("El nit debe ser numerico. ", " "));
+            FacesContext.getCurrentInstance().addMessage("mensajes", new FacesMessage("¡El nit debe ser numérico!", " "));
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: ", ex.getMessage()));
             Logger.getLogger(ContratistaVista.class.getName()).log(Level.SEVERE, null, ex);
@@ -231,9 +231,9 @@ public class ContratistaVista {
 
             contratistaLogica.modificar(objcontratista);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "El contratista se modifico con Exito"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "¡El contratista se Modificó con Éxito!"));
         } catch (NumberFormatException e) {
-            FacesContext.getCurrentInstance().addMessage("mensajes", new FacesMessage("El nit debe ser numerico "));
+            FacesContext.getCurrentInstance().addMessage("mensajes", new FacesMessage("¡El nit debe ser numérico!"));
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: ", ex.getMessage()));
             Logger.getLogger(ContratistaVista.class.getName()).log(Level.SEVERE, null, ex);
@@ -251,7 +251,7 @@ public class ContratistaVista {
 
             contratistaLogica.inactivar(contratista);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "El contratista se desactivo con Exito"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "¡El Contratista se desactivó con Éxito!"));
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: ", ex.getMessage()));
             Logger.getLogger(ContratistaVista.class.getName()).log(Level.SEVERE, null, ex);
@@ -269,7 +269,7 @@ public class ContratistaVista {
 
             contratistaLogica.activar(contratista);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "El contratista se activo con Exito"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "¡El contratista se activó con Éxito!"));
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: ", ex.getMessage()));
             Logger.getLogger(ContratistaVista.class.getName()).log(Level.SEVERE, null, ex);

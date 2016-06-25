@@ -30,7 +30,7 @@ public interface UsuarioFacadeLocal {
 
     int count();
 
-    public Usuario findUsuario(Long documento);
+    public Usuario findUsuario(String nombre);
 
     public Usuario consultarPorClave(String clave);
 }

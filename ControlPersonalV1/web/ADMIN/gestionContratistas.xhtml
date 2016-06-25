@@ -16,22 +16,20 @@
          <h:body style="font-size: 12px;" >
 
             <p:layout fullPage="true">
-
-
-                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
-
-                 
-
+                 <p:layoutUnit position="north" size="140" resizable="true" closable="true" collapsible="true">
+                     <div align="center">
+                <h:graphicImage url="../images/bannerControl.png" width="100%" height="100%" alt="Ingreso"  />
+            </div>
                 </p:layoutUnit>
-
 
 
                 <p:layoutUnit position="west" size="160" header="..." collapsible="true">
                    <h:form id="formularioMenu"> 
                         <p:menu>
-                            <p:menuitem value="Empleados" url="gestionEmpleados.xhtml" />
-                            <p:menuitem value="Contratistas" url="gestionContratistas.xhtml" />
                             <p:menuitem value="Ingresos" url="gestionIngresos.xhtml" />
+                            <p:menuitem value="Empleados" url="gestionEmpleados.xhtml" />
+                            <p:menuitem value="Contratistas" url="gestionContratistas.xhtml" />                            
+                            <p:menuitem value="Cambiar Clave" url="gestionUsuarios.xhtml" />
                             <p:menuitem value="Cerrar Sesión"  action="#{usuarioVista.cerrarSesion_action}"/>
                         </p:menu>
                    </h:form>
@@ -92,7 +90,7 @@
                                 </p:column>
 
 
-                                <p:column headerText="Nombre">
+                                <p:column headerText="Nombre" filterBy="#{contratista.nombrecontratista}" filterMatchMode="contains">
                                     <h:outputText value="#{contratista.nombrecontratista}" />
                                 </p:column>
 
@@ -107,32 +105,14 @@
                         <br/>
                         <br/>
                     </h:form>
-
-
-                    <div  align="center">
-
-                        CONTACTENOS   <br/>       
-                        Ventas
-                        compat5@hotmail.com
-                        Cel: 3162902471   <br/>   
-                        Gerencia
-                        Arturo Rios Pedroza
-                        compat5@hotmail.com
-                        Cel: 3162902471    <br/>   
-
-                        Dirección: CR 41 #  35-51 Oficina 107.  <br/>  Tulua - Colombia        <br/>   
-                        Actualizada el 15/05/2016. <br/>  Todos los derechos reservados WWW.DILOVE.COM.CO ®
-
-                    </div>
-
                 </p:layoutUnit>
 
             </p:layout>
 
 
             <h:form id="formDialog1" > 
-                <p:confirmDialog id="confirmDialog1" message="Está Seguro de inactivarlo el usuario?"  
-                                 header="Confirmación1" showEffect="fade" hideEffect="explode" severity="alert" widgetVar="confirmation1">  
+                <p:confirmDialog id="confirmDialog1" message="¿Está Seguro que desea inactivar el Contratista?"  
+                                 header="Confirmación Inactivar" showEffect="fade" hideEffect="explode" severity="alert" widgetVar="confirmation1">  
                     <p:commandButton id="confirm1" value="Si" oncomplete="PF('confirmation1').hide();" 
                                      update=":formulario"  
                                      actionListener="#{contratistaVista.inactivar_action()}" />  
@@ -142,8 +122,8 @@
             </h:form>
 
             <h:form id="formDialog2" > 
-                <p:confirmDialog id="confirmDialog2" message="Está Seguro de activarlo el usuario?"  
-                                 header="Confirmación2" showEffect="fade" hideEffect="explode" severity="alert" widgetVar="confirmation2">  
+                <p:confirmDialog id="confirmDialog2" message="¿Está seguro que desea Activar el Contratista?"  
+                                 header="Confirmación Activación" showEffect="fade" hideEffect="explode" severity="alert" widgetVar="confirmation2">  
                     <p:commandButton id="confirm2" value="Si" oncomplete="PF('confirmation2').hide();" 
                                      update=":formulario"  
                                      actionListener="#{contratistaVista.activar_action()}" />  

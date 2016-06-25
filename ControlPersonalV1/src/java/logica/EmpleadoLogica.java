@@ -25,11 +25,11 @@ public class EmpleadoLogica implements EmpleadoLogicaLocal {
     public void registrar(Empleado empleado) throws Exception {
 
         if (empleado == null) {
-            throw new Exception("el empleado no exixte");
+            throw new Exception("¡El empleado no existe!");
         }
         Empleado objEmpleado = empleadoDAO.find(empleado.getCedulaempleado());
         if (objEmpleado != null) {
-            throw new Exception("el empleado que desea registrar ya existe");
+            throw new Exception("¡El empleado que desea registrar ya existe!");
         } else {
             empleadoDAO.create(empleado);
         }
@@ -40,11 +40,11 @@ public class EmpleadoLogica implements EmpleadoLogicaLocal {
     public void modificar(Empleado empleado) throws Exception {
 
         if (empleado == null) {
-            throw new Exception("el empleado no exixte");
+            throw new Exception("¡El empleado no existe!");
         }
         Empleado objEmpleado = empleadoDAO.find(empleado.getCedulaempleado());
         if (objEmpleado == null) {
-            throw new Exception("el empleado que desea modificar no existe");
+            throw new Exception("¡El empleado que desea modificar no existe!");
         } else {
             
             objEmpleado.setNombreempleado(empleado.getNombreempleado());
@@ -66,11 +66,11 @@ public class EmpleadoLogica implements EmpleadoLogicaLocal {
     public void activar(Empleado empleado) throws Exception {
 
         if (empleado == null) {
-            throw new Exception("el empleado esta vacio");
+            throw new Exception("¡El empleado esta vacio!");
         }
         Empleado objEmpleado = empleadoDAO.find(empleado.getCedulaempleado());
         if (objEmpleado == null) {
-            throw new Exception("el empleado no existe");
+            throw new Exception("¡El empleado no existe!");
         } else {
             objEmpleado.setEstadoempleado("ACTIVO");
             empleadoDAO.edit(objEmpleado);
@@ -82,11 +82,11 @@ public class EmpleadoLogica implements EmpleadoLogicaLocal {
     public void inactivar(Empleado empleado) throws Exception {
 
         if (empleado == null) {
-            throw new Exception("el empleado esta vacio");
+            throw new Exception("¡El empleado esta vacio!");
         }
         Empleado objEmpleado = empleadoDAO.find(empleado.getCedulaempleado());
         if (objEmpleado == null) {
-            throw new Exception("el empleado no existe");
+            throw new Exception("¡El empleado no existe!");
         } else {
             objEmpleado.setEstadoempleado("INACTIVO");
             empleadoDAO.edit(objEmpleado);
@@ -98,7 +98,7 @@ public class EmpleadoLogica implements EmpleadoLogicaLocal {
     public Empleado consultarPorId(Integer idEmpleado) throws Exception {
 
         if (idEmpleado == null || idEmpleado == 0) {
-            throw new Exception("Numero del empleado es incorrecto");
+            throw new Exception("¡Número del empleado es incorrecto!");
         } else {
             return empleadoDAO.find((Object) idEmpleado);
         }
@@ -115,7 +115,7 @@ public class EmpleadoLogica implements EmpleadoLogicaLocal {
     public Empleado consultarPorDocumento(Long documento) throws Exception {
 
         if (documento == null || documento == 0) {
-            throw new Exception("Numero del empleado es incorrecto");
+            throw new Exception("¡Número del empleado es incorrecto!");
         } else {
             return empleadoDAO.find(documento);
         }

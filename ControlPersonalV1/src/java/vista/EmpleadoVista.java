@@ -37,10 +37,10 @@ public class EmpleadoVista {
      */
     @EJB
     private EmpleadoLogicaLocal empleadoLogica;
-    
+
     @EJB
     private ContratistaLogicaLocal contratistaLogica;
-    
+
     private InputText txtCedula;
     private InputText txtNombre;
     private InputText txtNombre2;
@@ -53,20 +53,20 @@ public class EmpleadoVista {
     private SelectOneRadio cmbArl;
     private InputText txtEstadoEmpleado;
     private InputText txtCodigoContratista;
-    
+
     private List<Empleado> listaEmpleado = null;
     private List<Contratista> listaContratista = null;
-    
+
     private Empleado selectedEmpleado;
     private Contratista selectedContratista;
-    
+
     private CommandButton btnLimpiar;
     private CommandButton btnModificar;
     private CommandButton btnActivar;
     private CommandButton btnInactivo;
     private CommandButton btnRegistrar;
     private CommandButton btnSeleccionar;
-    
+
     public EmpleadoVista() {
     }
 
@@ -172,7 +172,7 @@ public class EmpleadoVista {
      * @return the listaEmpleado
      */
     public List<Empleado> getListaEmpleado() {
-        
+
         if (listaEmpleado == null) {
             try {
                 listaEmpleado = empleadoLogica.consultar();
@@ -181,7 +181,7 @@ public class EmpleadoVista {
             }
         }
         return listaEmpleado;
-        
+
     }
 
     /**
@@ -260,46 +260,49 @@ public class EmpleadoVista {
     public void setBtnRegistrar(CommandButton btnRegistrar) {
         this.btnRegistrar = btnRegistrar;
     }
-    
+
     public void registrar_action() {
         try {
-            
+
             Empleado empleado = new Empleado();
             Contratista contratistaObj = new Contratista();
             empleado.setCedulaempleado(Long.parseLong(txtCedula.getValue().toString()));
-            empleado.setNombreempleado(txtNombre.getValue().toString().trim()+" "+txtNombre2.getValue().toString().trim());
-            empleado.setApellidoempleado(txtApellido.getValue().toString().trim()+" "+txtApellido2.getValue().toString().trim());
+            empleado.setNombreempleado(txtNombre.getValue().toString().trim().toUpperCase() + " " + txtNombre2.getValue().toString().trim().toUpperCase());
+            empleado.setApellidoempleado(txtApellido.getValue().toString().trim().toUpperCase() + " " + txtApellido2.getValue().toString().trim().toUpperCase());
             empleado.setTelefonoempleado(txtTelefono.getValue().toString());
             empleado.setCorreoempleado(txtCorreo.getValue().toString());
-            empleado.setCargoempleado(txtCargo.getValue().toString());
+            empleado.setCargoempleado(txtCargo.getValue().toString().trim().toUpperCase());
             empleado.setEpsempleado((getCmbEps().getValue().toString()));
             empleado.setArlempleado(getCmbArl().getValue().toString());
             empleado.setEstadoempleado("ACTIVO");
-            contratistaObj.setNitcontratista(Long.parseLong(txtCodigoContratista.getValue().toString()));
-            empleado.setContratistaempleado(contratistaObj);
-            empleadoLogica.registrar(empleado);
+            if (txtCodigoContratista.getValue() != null) {
+                contratistaObj.setNitcontratista(Long.parseLong(txtCodigoContratista.getValue().toString()));
+                empleado.setContratistaempleado(contratistaObj);
+            }
             
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "El Empleado Se registro con Exito"));
+            empleadoLogica.registrar(empleado);
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "¡El Empleado se registró con Éxito!"));
         } catch (NumberFormatException e) {
-            FacesContext.getCurrentInstance().addMessage("mensajes",new FacesMessage("La cedula y el telefono debe ser numerica. "," "));
-        }catch (NullPointerException e) {
-            FacesContext.getCurrentInstance().addMessage("mensajes",new FacesMessage("La ARL y la EPS son obligatorias. "," "));
-        }catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage("mensajes", new FacesMessage("¡La cédula y el teléfono debe ser numérica!", " "));
+        } catch (NullPointerException e) {
+            FacesContext.getCurrentInstance().addMessage("mensajes", new FacesMessage("¡La ARL y la EPS son obligatorias!", " "));
+        } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: ", ex.getMessage()));
             Logger.getLogger(EmpleadoVista.class.getName()).log(Level.SEVERE, null, ex);
         }
         listaEmpleado = null;
         limpiar();
     }
-    
+
     public void modificar_action() {
         try {
-            
+
             Empleado empleado = new Empleado();
             Contratista contratistaObj = new Contratista();
             empleado.setCedulaempleado(Long.parseLong(txtCedula.getValue().toString()));
-             empleado.setNombreempleado(txtNombre.getValue().toString().trim()+" "+txtNombre2.getValue().toString().trim());
-            empleado.setApellidoempleado(txtApellido.getValue().toString().trim()+" "+txtApellido2.getValue().toString().trim());
+            empleado.setNombreempleado(txtNombre.getValue().toString().trim() + " " + txtNombre2.getValue().toString().trim());
+            empleado.setApellidoempleado(txtApellido.getValue().toString().trim() + " " + txtApellido2.getValue().toString().trim());
             empleado.setTelefonoempleado(txtTelefono.getValue().toString());
             empleado.setCorreoempleado(txtCorreo.getValue().toString());
             empleado.setCargoempleado(txtCargo.getValue().toString());
@@ -308,9 +311,9 @@ public class EmpleadoVista {
             contratistaObj.setNitcontratista(Long.parseLong(txtCodigoContratista.getValue().toString()));
             empleado.setContratistaempleado(contratistaObj);
             empleadoLogica.modificar(empleado);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "el Empleado Se modifico con Exito"));
-        }catch (NumberFormatException e) {
-            FacesContext.getCurrentInstance().addMessage("mensajes",new FacesMessage("La cedula y el telefono debe ser numerica. "," "));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "¡El Empleado se modificó con Éxito!"));
+        } catch (NumberFormatException e) {
+            FacesContext.getCurrentInstance().addMessage("mensajes", new FacesMessage("¡La cédula y el teléfono debe ser numérica!", " "));
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: ", ex.getMessage()));
             Logger.getLogger(EmpleadoVista.class.getName()).log(Level.SEVERE, null, ex);
@@ -318,17 +321,17 @@ public class EmpleadoVista {
         listaEmpleado = null;
         limpiar();
     }
-    
+
     public void inactivar_action() {
         try {
-            
+
             Empleado empleado = new Empleado();
-            
+
             empleado.setCedulaempleado(Long.parseLong(txtCedula.getValue().toString()));
-            
+
             empleadoLogica.inactivar(empleado);
-            
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "el empleado Se desactivo con Exito"));
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "¡El Empleado se desactivó con Éxito!"));
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: ", ex.getMessage()));
             Logger.getLogger(EmpleadoVista.class.getName()).log(Level.SEVERE, null, ex);
@@ -336,17 +339,17 @@ public class EmpleadoVista {
         listaEmpleado = null;
         limpiar();
     }
-    
+
     public void activar_action() {
         try {
-            
+
             Empleado empleado = new Empleado();
-            
+
             empleado.setCedulaempleado(Long.parseLong(txtCedula.getValue().toString()));
-            
+
             empleadoLogica.activar(empleado);
-            
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "el empleado Se activo con Exito"));
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "¡El Empleado se activó con Éxito!"));
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: ", ex.getMessage()));
             Logger.getLogger(EmpleadoVista.class.getName()).log(Level.SEVERE, null, ex);
@@ -354,9 +357,9 @@ public class EmpleadoVista {
         listaEmpleado = null;
         limpiar();
     }
-    
+
     public void limpiar() {
-        
+
         txtNombre.setValue("");
         txtApellido.setValue("");
         txtNombre2.setValue("");
@@ -373,26 +376,26 @@ public class EmpleadoVista {
         btnActivar.setDisabled(false);
         btnInactivo.setDisabled(false);
         listaContratista = null;
-        
+
     }
-    
+
     public void seleccionarEmpleado(SelectEvent event) {
-        
+
         Empleado empleado = (Empleado) event.getObject();
         String nombre = empleado.getNombreempleado();
         String apellido = empleado.getApellidoempleado();
         String[] datosN = nombre.split(" ");
         String[] datosA = apellido.split(" ");
         txtNombre.setValue(datosN[0]);
-        if(datosN.length>1){
+        if (datosN.length > 1) {
             txtNombre2.setValue(datosN[1]);
-        }else{
+        } else {
             txtNombre2.setValue("");
         }
         txtApellido.setValue(datosA[0]);
-        if(datosA.length>1){
+        if (datosA.length > 1) {
             txtApellido2.setValue(datosA[1]);
-        }else{
+        } else {
             txtApellido2.setValue("");
         }
         txtCedula.setValue(empleado.getCedulaempleado());
@@ -402,24 +405,24 @@ public class EmpleadoVista {
         cmbArl.setValue(empleado.getArlempleado());
         txtEstadoEmpleado.setValue(empleado.getEstadoempleado());
         txtCargo.setValue(empleado.getCargoempleado());
-         if(empleado.getEstadoempleado().equals("ACTIVO")){
+        if (empleado.getEstadoempleado().equals("ACTIVO")) {
             btnActivar.setDisabled(true);
             btnInactivo.setDisabled(false);
-            
-        }else{
-            if(empleado.getEstadoempleado().equals("INACTIVO")){
-           btnInactivo.setDisabled(true);
-               btnActivar.setDisabled(false);
-        }
+
+        } else {
+            if (empleado.getEstadoempleado().equals("INACTIVO")) {
+                btnInactivo.setDisabled(true);
+                btnActivar.setDisabled(false);
+            }
         }
         txtEstadoEmpleado.setDisabled(true);
-        
+
         btnRegistrar.setDisabled(true);
         if (empleado.getContratistaempleado() != null) {
             txtCodigoContratista.setValue(empleado.getContratistaempleado().getNitcontratista());
         } else {
             txtCodigoContratista.setValue("");
-            
+
         }
         listaContratista = null;
         // btnEliminar.setDisabled(false);
@@ -439,7 +442,7 @@ public class EmpleadoVista {
             }
         }
         return listaContratista;
-        
+
     }
 
     /**
@@ -490,32 +493,32 @@ public class EmpleadoVista {
     public void setBtnActivar(CommandButton btnActivar) {
         this.btnActivar = btnActivar;
     }
-    
+
     public InputText getTxtCargo() {
         return txtCargo;
     }
-    
+
     public void setTxtCargo(InputText txtCargo) {
         this.txtCargo = txtCargo;
     }
-    
+
     public CommandButton getBtnSeleccionar() {
         return btnSeleccionar;
     }
-    
+
     public void setBtnSeleccionar(CommandButton btnSeleccionar) {
         this.btnSeleccionar = btnSeleccionar;
     }
-    
+
     public void seleccionarContratista(SelectEvent event) {
         Contratista cs = (Contratista) event.getObject();
         txtCodigoContratista.setValue(cs.getNitcontratista());
     }
-    
+
     public Contratista getSelectedContratista() {
         return selectedContratista;
     }
-    
+
     public void setSelectedContratista(Contratista selectedContratista) {
         this.selectedContratista = selectedContratista;
     }
@@ -535,6 +538,5 @@ public class EmpleadoVista {
     public void setTxtApellido2(InputText txtApellido2) {
         this.txtApellido2 = txtApellido2;
     }
-    
-    
+
 }

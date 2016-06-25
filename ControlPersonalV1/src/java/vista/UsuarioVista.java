@@ -216,7 +216,7 @@ public class UsuarioVista {
             Usuario usr = new Usuario();
 
             usr.setClaveusuario(txtClaveUsuario.getValue().toString());
-            usr.setDocumentousuario(Long.parseLong(txtdocUsuario.getValue().toString())); //txtNombre hace referencia es al documento del usuario
+            usr.setNombreusuario(txtdocUsuario.getValue().toString()); //txtNombre hace referencia es al documento del usuario
 
             Usuario logeado = usuarioLogica.ingresar(usr);
 
@@ -227,7 +227,7 @@ public class UsuarioVista {
             }
 
         } catch (NumberFormatException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: ", "La Identificación Debe Ser Numérica!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: ", "¡La Identificación debe ser Numérica!"));
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: ", ex.getMessage()));
         }
@@ -244,7 +244,7 @@ public class UsuarioVista {
             String confirmacion = txtConfirmacion.getValue().toString();
 
             if (confirmacion.equals("")) {
-                FacesContext.getCurrentInstance().addMessage("Mensajes", new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "la clave de confirmacion  es obligatorio"));
+                FacesContext.getCurrentInstance().addMessage("Mensajes", new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "¡La clave de confirmación es obligatoria!"));
             } else {
 
                 if (clave.equals(confirmacion)) {
@@ -254,7 +254,7 @@ public class UsuarioVista {
                     objUsuario.setClaveusuario(clave);
 
                     usuarioLogica.registrar(objUsuario);
-                    FacesContext.getCurrentInstance().addMessage("Mensajes", new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "El usuario se registro con Éxito"));
+                    FacesContext.getCurrentInstance().addMessage("Mensajes", new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "¡El Usuario se registró con Éxito!"));
 
                 } else {
                     throw new Exception("NO SON IGUALES LA CONTRASEÑA CON LA CONFIRMACION");
@@ -263,7 +263,7 @@ public class UsuarioVista {
             }
 
         } catch (NumberFormatException e) {
-            FacesContext.getCurrentInstance().addMessage("mensajes", new FacesMessage("Ingrese la informacion Nuevamente "));
+            FacesContext.getCurrentInstance().addMessage("mensajes", new FacesMessage("¡Ingrese la informacion Nuevamente!"));
         } catch (Exception ex) {
 
             FacesContext.getCurrentInstance().addMessage("mensajes", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", ex.getMessage()));
@@ -286,7 +286,7 @@ public class UsuarioVista {
             String confirmacion = txtConfirmacion.getValue().toString();
 
             if (confirmacion.equals("")) {
-                FacesContext.getCurrentInstance().addMessage("Mensajes", new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "la clave de confirmacion  es obligatorio"));
+                FacesContext.getCurrentInstance().addMessage("Mensajes", new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "¡La clave de confirmación es obligatoria!"));
             } else {
 
                 if (objUsuario.getClaveusuario().equals(claveAnterior) || clave.equals(confirmacion)) {
@@ -297,7 +297,7 @@ public class UsuarioVista {
                     objUsuario.setClaveusuario(clave);
 
                     usuarioLogica.modificar(objUsuario);
-                    FacesContext.getCurrentInstance().addMessage("Mensajes", new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "El usuario se Modifico con Éxito"));
+                    FacesContext.getCurrentInstance().addMessage("Mensajes", new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "¡El usuario se Modificó con Éxito!"));
 
                 } else {
                     throw new Exception("NO SON IGUALES LA CONTRASEÑA CON LA CONFIRMACION");
@@ -321,26 +321,31 @@ public class UsuarioVista {
     public void cambiarCalve_action() {
 
         try {
-            String clave = txtClaveUsuario.getValue().toString();
+            Usuario logueado = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuarioControl");
+            String claveAnterior = txtClaveAnterior.getValue().toString();
+            String claveNueva = txtClaveUsuario.getValue().toString();
             String confirmacion = txtConfirmacion.getValue().toString();
-            Usuario u = new Usuario();
-
-            u.setDocumentousuario(Long.parseLong(txtdocUsuario.getValue().toString()));
-
-            if (clave.equals(confirmacion)) {
+            Usuario u = usuarioLogica.consultarPorDocumento(logueado.getDocumentousuario());
+            if(claveAnterior.equals("")){
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "¡La clave anterior es Obligatoria!"));
+            }else if(!claveAnterior.equals(u.getClaveusuario())){
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "¡La clave anterior no es correcta!"));
+            }else if(claveNueva.equals("") || confirmacion.equals("")){
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "¡La clave nueva y confirmación son Obligatorias!"));
+            }else if (!claveNueva.equals(confirmacion)) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "¡La clave nueva y confirmación no coinciden!"));
+            }else{
+                u.setClaveusuario(claveNueva);
                 usuarioLogica.cambiarClave(u);
-            }
-            
-            else  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "La clave no concide con la del sistema"));
-
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "La clave del usuario se actualizo con Exito"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "¡La clave se actualizó con Éxito!"));
+                txtClaveAnterior.setValue("");
+                txtClaveUsuario.setValue("");
+                txtConfirmacion.setValue("");
+            }            
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: ", ex.getMessage()));
             Logger.getLogger(EmpleadoVista.class.getName()).log(Level.SEVERE, null, ex);
         }
-        listaUsuario = null;
-        limpiar_action();
-
     }
 
     public void cerrarSesion_action() {
@@ -363,7 +368,7 @@ public class UsuarioVista {
             Usuario usuario = usuarioLogica.consultarPorDocumento(Long.parseLong(documento));
 
             usuarioLogica.eliminar(usuario);
-            FacesContext.getCurrentInstance().addMessage("mensajes", new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "El usuario se eliminó con Éxito"));
+            FacesContext.getCurrentInstance().addMessage("mensajes", new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "¡El usuario se eliminó con Éxito!"));
 
         } catch (Exception e) {
 

@@ -33,12 +33,12 @@ public class UsuarioFacade extends AbstractFacade<Usuario> implements UsuarioFac
     }
 
     @Override
-    public Usuario findUsuario(Long documento) {
-
+    public Usuario findUsuario(String nombre) {
+        getEntityManager().getEntityManagerFactory().getCache().evictAll();
         try {
-            String jpql = "SELECT u FROM Usuario u WHERE u.documentousuario = :documentousuario";
+            String jpql = "SELECT u FROM Usuario u WHERE u.nombreusuario = :nombreusuario";
             Query query = em.createQuery(jpql);
-            query.setParameter("documentousuario", documento);
+            query.setParameter("nombreusuario", nombre);
             
             return (Usuario) query.getSingleResult();
 

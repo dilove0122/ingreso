@@ -48,6 +48,22 @@
                     background-color:darksalmon;
                     background-image:none;
                 }
+
+                .imagenConsultar {
+                    background-image: url(../images/search.png)
+                }
+                
+                .imagenLimpiar {
+                    background-image: url(../images/restart.png)
+                }
+                
+                .imagenReportePDF {
+                    background-image: url(../images/pdf.png)
+                }
+                
+                .imagenReporteExcel {
+                    background-image: url(../images/excel.png)
+                }
             </style>
         </h:head>
 
@@ -62,9 +78,10 @@
                 <p:layoutUnit position="west" size="160" header="..." collapsible="true">
                     <h:form id="formularioMenu"> 
                         <p:menu>
-                            <p:menuitem value="Empleados" url="gestionEmpleados.xhtml" />
-                            <p:menuitem value="Contratistas" url="gestionContratistas.xhtml" />
                             <p:menuitem value="Ingresos" url="gestionIngresos.xhtml" />
+                            <p:menuitem value="Empleados" url="gestionEmpleados.xhtml" />
+                            <p:menuitem value="Contratistas" url="gestionContratistas.xhtml" />                            
+                            <p:menuitem value="Cambiar Clave" url="gestionUsuarios.xhtml" />
                             <p:menuitem value="Cerrar Sesión"  action="#{usuarioVista.cerrarSesion_action}"/>
                         </p:menu>
                     </h:form>
@@ -114,10 +131,16 @@
                                         <p:calendar locale="es" size="15" id="txtFechaFinC" binding="#{ingresosVista.txtFechaIngresoFinC}"/>
                                     </p:column>
                                     <p:column>
-                                        <p:commandButton value="Consultar" icon="ui-icon-search" action="#{ingresosVista.consultarxContratista()}" update=":formulario" />
+                                        <p:commandButton title="Consultar" image="imagenConsultar" action="#{ingresosVista.consultarxContratista()}" update=":formulario:mensajes,:formulario:panelParametros,:formulario:panelTablaIngresos" />
                                     </p:column>
                                     <p:column>
-                                        <p:commandButton value="Limpiar" icon="ui-icon-refresh" action="#{ingresosVista.limpiarConsultaContratista()}" update=":formulario:panelParametros,:formulario:panelTablaIngresos" />
+                                        <p:commandButton title="Limpiar" image="imagenLimpiar" action="#{ingresosVista.limpiarConsultaContratista()}" update=":formulario:mensajes,:formulario:panelParametros,:formulario:panelTablaIngresos" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:commandButton title="PDF" ajax="false" image="imagenReportePDF" action="#{ingresosVista.consultarxContratistaPDF()}" update=":formulario:mensajes,:formulario:panelParametros,:formulario:panelTablaIngresos" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:commandButton title="Excel" ajax="false" image="imagenReporteExcel" action="#{ingresosVista.consultarxContratistaExcel()}" update=":formulario:mensajes,:formulario:panelParametros,:formulario:panelTablaIngresos" />
                                     </p:column>
                                 </p:row>
                                 <p:row>
@@ -158,10 +181,16 @@
                                         <p:calendar locale="es" size="15" id="txtFechaFinU" binding="#{ingresosVista.txtFechaIngresoFinE}"/>
                                     </p:column>
                                     <p:column>
-                                        <p:commandButton value="Consultar" icon="ui-icon-search" action="#{ingresosVista.consultarxEmpleado()}" update=":formulario"/>
+                                        <p:commandButton title="Consultar" image="imagenConsultar"  action="#{ingresosVista.consultarxEmpleado()}" update=":formulario:mensajes,:formulario:panelParametros,:formulario:panelTablaIngresos"/>
                                     </p:column>
                                     <p:column>
-                                        <p:commandButton value="Limpiar" icon="ui-icon-refresh" action="#{ingresosVista.limpiarConsultaEmpleados()}" update=":formulario:panelParametros,:formulario:panelTablaIngresos" />
+                                        <p:commandButton title="Limpiar" image="imagenLimpiar" action="#{ingresosVista.limpiarConsultaEmpleados()}" update=":formulario:mensajes,:formulario:panelParametros,:formulario:panelTablaIngresos" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:commandButton title="PDF" ajax="false" image="imagenReportePDF" action="#{ingresosVista.consultarxEmpleadoPDF()}" update=":formulario:mensajes,:formulario:panelParametros,:formulario:panelTablaIngresos" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:commandButton title="Excel" ajax="false" image="imagenReporteExcel" action="#{ingresosVista.consultarxEmpleadoExcel()}" update=":formulario:mensajes,:formulario:panelParametros,:formulario:panelTablaIngresos" />
                                     </p:column>
                                 </p:row>
                             </p:panelGrid>
@@ -184,14 +213,14 @@
 
                                     <p:column headerText="Hora Entrada" sortBy="#{ingreso.horaentradaingreso}">
                                         <h:outputText value="#{ingreso.horaentradaingreso}">
-                                            <f:convertDateTime pattern="HH:mm:ss" />
+                                            <f:convertDateTime pattern="HH:mm:ss" locale="es" />
                                         </h:outputText>
                                     </p:column>
 
 
                                     <p:column headerText="Hora Salida" sortBy="#{ingreso.horasalidaingreso}">
                                         <h:outputText value="#{ingreso.horasalidaingreso}">
-                                            <f:convertDateTime pattern="HH:mm:ss" />
+                                            <f:convertDateTime pattern="HH:mm:ss" locale="es" />
                                         </h:outputText>
                                     </p:column>
                                     <p:column headerText="Ingreso Autorizado" filterBy="#{ingreso.autorizadoingreso}" filterMatchMode="exact">
@@ -207,15 +236,6 @@
                                         <h:outputText value="#{ingreso.empleadoingreso.nombreempleado}" />
                                     </p:column>
                                 </p:dataTable>
-                                <h:commandLink>
-                                    <p:graphicImage url="../images/excel.png" width="24" />
-                                    <p:dataExporter type="xls" target="tablaIngresos" fileName="ingresos" />
-                                </h:commandLink>
-
-                                <h:commandLink>
-                                    <p:graphicImage url="../images/pdf.png" width="24" />
-                                    <p:dataExporter type="pdf" target="tablaIngresos" fileName="ingresos"  />
-                                </h:commandLink>
                             </p:panel>
                         </p:panel>
                     </h:form>

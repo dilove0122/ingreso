@@ -26,9 +26,10 @@
                 <p:layoutUnit position="west" size="160" header="..." collapsible="true">
                     <h:form id="formularioMenu"> 
                         <p:menu>
-                            <p:menuitem value="Empleados" url="gestionEmpleados.xhtml" />
-                            <p:menuitem value="Contratistas" url="gestionContratistas.xhtml" />
                             <p:menuitem value="Ingresos" url="gestionIngresos.xhtml" />
+                            <p:menuitem value="Empleados" url="gestionEmpleados.xhtml" />
+                            <p:menuitem value="Contratistas" url="gestionContratistas.xhtml" />                            
+                            <p:menuitem value="Cambiar Clave" url="gestionUsuarios.xhtml" />
                             <p:menuitem value="Cerrar Sesión"  action="#{usuarioVista.cerrarSesion_action}"/>
                         </p:menu>
                     </h:form>
@@ -116,7 +117,7 @@
                                         <h:outputText   value="Estado:"/>
                                     </p:column>
                                     <p:column>
-                                        <p:inputText value="ACTIVO"  disabled="true" id="txtEstado" binding="#{empleadoVista.txtEstadoEmpleado}"/>
+                                        <p:inputText value="ACTIVO" disabled="true" id="txtEstado" binding="#{empleadoVista.txtEstadoEmpleado}"/>
                                     </p:column>
                                 </p:row>
                                 <p:row>
@@ -152,7 +153,7 @@
                                                 </p:column>
 
 
-                                                <p:column headerText="Nombre">
+                                                <p:column headerText="Nombre" filterBy="#{contratista.nombrecontratista}" filterMatchMode="contains">
                                                     <h:outputText value="#{contratista.nombrecontratista}" />
                                                 </p:column>
 
@@ -199,12 +200,12 @@
                                     />
 
 
-                                <p:column headerText="Cedula"   filterBy="#{empleado.cedulaempleado}" filterMatchMode="contains">
+                                <p:column headerText="Cédula"   filterBy="#{empleado.cedulaempleado}" filterMatchMode="contains">
                                     <h:outputText value="#{empleado.cedulaempleado}" />
                                 </p:column>
 
 
-                                <p:column headerText="Nombre" filterBy="#{empleado.nombreempleado}" filterMatchMode="contains">
+                                <p:column headerText="Nombre" filterBy="#{empleado.nombreempleado}"  filterMatchMode="contains">
                                     <h:outputText value="#{empleado.nombreempleado}" />
                                 </p:column>
 
@@ -261,8 +262,8 @@
 
 
             <h:form id="formDialog1" > 
-                <p:confirmDialog id="confirmDialog1" message="Está Seguro de inactivarlo el usuario?"  
-                                 header="Confirmación1" showEffect="fade" hideEffect="explode" severity="alert" widgetVar="confirmation1">  
+                <p:confirmDialog id="confirmDialog1" message="¿Está Seguro que desea inactivar el Empleado?"  
+                                 header="Confirmación Inactivar" showEffect="fade" hideEffect="explode" severity="alert" widgetVar="confirmation1">  
                     <p:commandButton id="confirm1" value="Si" oncomplete="PF('confirmation1').hide();" 
                                      update=":formulario"  
                                      actionListener="#{empleadoVista.inactivar_action()}" />  
@@ -272,8 +273,8 @@
             </h:form>
 
             <h:form id="formDialog2" > 
-                <p:confirmDialog id="confirmDialog2" message="Está Seguro de activarlo el usuario?"  
-                                 header="Confirmación2" showEffect="fade" hideEffect="explode" severity="alert" widgetVar="confirmation2">  
+                <p:confirmDialog id="confirmDialog2" message="¿Está seguro que desea activar el Empleado?"  
+                                 header="Confirmación Activación" showEffect="fade" hideEffect="explode" severity="alert" widgetVar="confirmation2">  
                     <p:commandButton id="confirm2" value="Si" oncomplete="PF('confirmation2').hide();" 
                                      update=":formulario"  
                                      actionListener="#{empleadoVista.activar_action()}" />  

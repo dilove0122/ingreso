@@ -25,11 +25,11 @@ public class ContratistaLogica implements ContratistaLogicaLocal {
     public void registrar(Contratista contratista) throws Exception {
 
         if (contratista == null) {
-            throw new Exception("El contratista no exixte");
+            throw new Exception("¡El contratista no existe!");
         }
         Contratista objcontratista=contratistaDAO.find(contratista.getNitcontratista());
         if (objcontratista != null) {
-            throw new Exception("El contratista que desea registrar ya existe");
+            throw new Exception("¡El contratista que desea registrar ya existe!");
         } 
                       
         else {
@@ -42,11 +42,11 @@ public class ContratistaLogica implements ContratistaLogicaLocal {
     public void modificar(Contratista contratista) throws Exception {
 
         if (contratista == null) {
-            throw new Exception("El contratista no exixte");
+            throw new Exception("¡El contratista no existe!");
         }
         Contratista objcontratista = contratistaDAO.find(contratista.getNitcontratista());
         if (objcontratista == null) {
-            throw new Exception("El contratista que desea modificar no existe");
+            throw new Exception("¡El contratista que desea modificar no existe!");
         } else {
             
             objcontratista.setNitcontratista(contratista.getNitcontratista());
@@ -61,11 +61,11 @@ public class ContratistaLogica implements ContratistaLogicaLocal {
     public void inactivar(Contratista contratista) throws Exception {
 
             if (contratista == null) {
-            throw new Exception("El contratista esta vacio");
+            throw new Exception("¡El contratista está vacio!");
         }
         Contratista objContratista = contratistaDAO.find(contratista.getNitcontratista());
         if (objContratista == null) {
-            throw new Exception("El contratista no existe");
+            throw new Exception("¡El contratista no existe!");
         } else {
             objContratista.setEstadocontratista("INACTIVO");
             contratistaDAO.edit(objContratista);
@@ -78,11 +78,11 @@ public class ContratistaLogica implements ContratistaLogicaLocal {
     public void activar(Contratista contratista) throws Exception {
 
             if (contratista == null) {
-            throw new Exception("El contratista esta vacio");
+            throw new Exception("¡El contratista esta vacio!");
         }
         Contratista objContratista = contratistaDAO.find(contratista.getNitcontratista());
         if (objContratista == null) {
-            throw new Exception("El contratista no existe");
+            throw new Exception("¡El contratista no existe!");
         } else {
             objContratista.setEstadocontratista("ACTIVO");
             contratistaDAO.edit(objContratista);

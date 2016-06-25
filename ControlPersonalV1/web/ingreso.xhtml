@@ -15,7 +15,7 @@
 
         <h:body>           
             <p:layout fullPage="true">
-                 <p:layoutUnit position="north" size="150" resizable="true" closable="true" collapsible="true">
+                 <p:layoutUnit position="north" size="140" resizable="true" closable="true" collapsible="true">
                      <div align="center">
                 <h:graphicImage url="images/bannerControl.png" width="100%" height="100%" alt="Ingreso"  />
             </div>
@@ -46,11 +46,11 @@
                             </p:panelGrid>
                                 </div>
                         </p:panel>
-                        <p:dialog style="font-size: 25px;" header="INFORMACIÓN DE INGRESO" widgetVar="dlgIngreso" height="200" width="550" onShow="myFunction();" onHide="myStopFunction();">
-                            <h:outputText style="font-size: 30px;" value="Fecha: #{ingresosVista.datoFechaIngreso} - Hora: #{ingresosVista.datoHoraIngreso}" />
-                            <p:messages id="mensajesDialogo" showDetail="true" style="font-size: 35px;"/>
-                            <h:outputText style="font-size: 25px;font-weight: bold;" value="#{ingresosVista.datoNombreIngreso}" /> <br/>
-                            <h:outputText style="font-size: 25px;" value="#{ingresosVista.datoCargoIngreso}" />
+                        <p:dialog style="font-size: 25px;" header="INFORMACIÓN DE INGRESO" widgetVar="dlgIngreso" height="340" width="900" onShow="myFunction();" onHide="myStopFunction();">
+                            <h:outputText style="font-size: 50px;" value="Fecha: #{ingresosVista.datoFechaIngreso} - Hora: #{ingresosVista.datoHoraIngreso}" />
+                            <p:messages id="mensajesDialogo" showDetail="true" style="font-size: 50px;"/>
+                            <h:outputText style="font-size: 40px;font-weight: bold;" value="#{ingresosVista.datoNombreIngreso}" /> <br/>
+                            <h:outputText style="font-size: 40px;" value="#{ingresosVista.datoCargoIngreso}" />
                         </p:dialog>   
                         <script>
                             var myVar;
@@ -59,7 +59,7 @@
                             {
                                 myVar = setTimeout(function () {
                                     PF('dlgIngreso').hide();
-                                }, 4000);
+                                }, 5000);
                             }
 
                             function myStopFunction()
@@ -69,6 +69,11 @@
                         </script>
                     </h:form>
 
+                </p:layoutUnit>
+                <p:layoutUnit position="south" size="63" resizable="true" closable="true" collapsible="true">
+                     <div align="center">
+                <h:graphicImage url="images/footerControl.png" width="100%" height="100%" alt="Ingreso"  />
+            </div>
                 </p:layoutUnit>
             </p:layout>
         </h:body>

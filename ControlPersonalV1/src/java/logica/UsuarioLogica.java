@@ -141,19 +141,19 @@ public class UsuarioLogica implements UsuarioLogicaLocal {
     public Usuario ingresar(Usuario u) throws Exception {
 
         if (u.getClaveusuario().equals("")) {
-            throw new Exception("La clave es obligatoria");
+            throw new Exception("¡La clave es obligatoria!");
         }
 
-        if (u.getDocumentousuario()==null) {
-            throw new Exception("El nombre de usuario  es obligatorio");
+        if (u.getNombreusuario()==null || u.getNombreusuario().equals("")) {
+            throw new Exception("¡El nombre de usuario  es obligatorio!");
         }
-        Usuario objUsuario = usuarioDAO.find(u.getDocumentousuario());
+        Usuario objUsuario = usuarioDAO.findUsuario(u.getNombreusuario());
         if (objUsuario == null) {
-            throw new Exception("La clave y Contraseña son incorrectas");
+            throw new Exception("¡El usuario y la clave son incorrectas!");
         }
 
         if (!(objUsuario.getClaveusuario().equals(u.getClaveusuario()))) {
-            throw new Exception("la clave de usuario es incorecta");
+            throw new Exception("La clave de Usuario es incorrecta!");
         }
 
         return objUsuario;
@@ -183,17 +183,7 @@ public class UsuarioLogica implements UsuarioLogicaLocal {
     
         @Override
     public void cambiarClave(Usuario u) throws Exception {
-
-        if (u == null) {
-            throw new Exception("El usuario esta vacio");
-        }
-        Usuario objUsuario = usuarioDAO.consultarPorClave(u.getClaveusuario());
-        if (objUsuario == null) {
-            throw new Exception("el usuario no existe");
-        } else {
-            objUsuario.setClaveusuario(u.getClaveusuario());
-            usuarioDAO.edit(objUsuario);
-        }
-
+            usuarioDAO.edit(u);
+       
     }
 }

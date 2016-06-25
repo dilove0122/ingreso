@@ -28,12 +28,12 @@
                         <p:growl id="msgs"  showDetail="true" />
                         <p:panelGrid id="pnlLogin" columns="2"> 
                             <f:facet name="header">  
-                                Bienvenido a : CONTROL PERSONAL V1
+                                Bienvenido a: CONTROL PERSONAL V1
                             </f:facet> 
                             <h:outputText value="Usuario:"/>
                             <p:inputText id="txtUsuario" binding="#{usuarioVista.txtdocUsuario}"  />
 
-                            <h:outputText value="Contraseña:"/>
+                            <h:outputText value="Clave:"/>
                             <p:password id="passUsuario" binding="#{usuarioVista.txtClaveUsuario}" /> 
 
                             <f:facet name="footer"> 
@@ -46,7 +46,9 @@
                     </div>   
                 </p:panel>                
             </h:form>
-            
+                     <div align="center">
+                <h:graphicImage url="images/footerControl.png" width="100%" height="100%" alt="Ingreso"  />
+            </div>
              
         </h:body>
 
