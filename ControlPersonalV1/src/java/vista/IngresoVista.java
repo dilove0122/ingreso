@@ -134,11 +134,19 @@ public class IngresoVista {
         try {
             empleadoLogica.limpiarCache();
             if (documento.equals("")) {
+                datoFechaIngreso = "";
+                datoHoraIngreso = "";
+                datoNombreIngreso = "";
+                datoCargoIngreso = "";
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "Pase la cédula Nuevamente"));
             } else {
                 Empleado empleadoIngreso = empleadoLogica.consultarPorDocumento(Long.parseLong(documento));
                 if (empleadoIngreso == null) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "INGRESO NO AUTORIZADO", "¡El empleado no se encuentra registrado!"));
+                    datoFechaIngreso = "";
+                    datoHoraIngreso = "";
+                    datoNombreIngreso = "";
+                    datoCargoIngreso = "";
                 } else {
                     Ingreso nuevoIngreso = new Ingreso();
                     nuevoIngreso.setEmpleadoingreso(empleadoIngreso);
@@ -157,9 +165,13 @@ public class IngresoVista {
                         tieneIngreso.setHorasalidaingreso(fechaSalida);
                         ingresoLogica.modificar(tieneIngreso);
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "SALIDA REGISTRADA", ""));
-                    } else if(tieneIngreso != null && tieneIngreso.getHorasalidaingreso() == null && tieneIngreso.getAutorizadoingreso().equals("N")) {
+                    } else if (tieneIngreso != null && tieneIngreso.getHorasalidaingreso() == null && tieneIngreso.getAutorizadoingreso().equals("N")) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "INGRESO NO AUTORIZADO", "¡El empleado ya tiene un Registro el día de hoy que no Fue Autorizado!"));
-                    }else{
+                        datoFechaIngreso = "";
+                        datoHoraIngreso = "";
+                        datoNombreIngreso = "";
+                        datoCargoIngreso = "";
+                    } else {
                         if (empleadoIngreso.getEpsempleado().equals("N")) {
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "INGRESO NO AUTORIZADO", "¡El empleado no tiene Activa la EPS!"));
                             nuevoIngreso.setAutorizadoingreso("N");
@@ -172,7 +184,7 @@ public class IngresoVista {
                         } else {
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "INGRESO AUTORIZADO", ""));
                             nuevoIngreso.setAutorizadoingreso("S");
-                            
+
                         }
                         ingresoLogica.registrar(nuevoIngreso);
                     }
@@ -594,9 +606,9 @@ public class IngresoVista {
                 parametros.put("telefono", objE.getTelefonoempleado());
                 parametros.put("correo", objE.getCorreoempleado());
                 parametros.put("cargo", objE.getCargoempleado());
-                if(objE.getContratistaempleado()!=null){
+                if (objE.getContratistaempleado() != null) {
                     parametros.put("contratista", objE.getContratistaempleado().getNombrecontratista());
-                }else{
+                } else {
                     parametros.put("contratista", "No Asignado");
                 }
                 parametros.put("estado", objE.getEstadoempleado());
@@ -683,9 +695,9 @@ public class IngresoVista {
                 parametros.put("telefono", objE.getTelefonoempleado());
                 parametros.put("correo", objE.getCorreoempleado());
                 parametros.put("cargo", objE.getCargoempleado());
-                if(objE.getContratistaempleado()!=null){
+                if (objE.getContratistaempleado() != null) {
                     parametros.put("contratista", objE.getContratistaempleado().getNombrecontratista());
-                }else{
+                } else {
                     parametros.put("contratista", "No Asignado");
                 }
                 parametros.put("estado", objE.getEstadoempleado());
