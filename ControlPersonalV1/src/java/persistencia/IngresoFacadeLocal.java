@@ -42,4 +42,5 @@ public interface IngresoFacadeLocal {
     
     List<Ingreso> consultarIngresosEmpleado(Empleado e, String fechai, String fechaf);
     
+    
 }

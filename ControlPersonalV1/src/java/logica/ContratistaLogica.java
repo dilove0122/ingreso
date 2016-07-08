@@ -9,6 +9,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import modelo.Contratista;
+import modelo.Empleado;
 import persistencia.ContratistaFacadeLocal;
 
 /**
@@ -68,6 +69,11 @@ public class ContratistaLogica implements ContratistaLogicaLocal {
             throw new Exception("¡El contratista no existe!");
         } else {
             objContratista.setEstadocontratista("INACTIVO");
+            List<Empleado> listaEmpleados = objContratista.getEmpleadoList();
+            for (Empleado empleado : listaEmpleados) {
+                empleado.setEstadoempleado("INACTIVO");
+            }
+            objContratista.setEmpleadoList(listaEmpleados);
             contratistaDAO.edit(objContratista);
         }
 
@@ -85,6 +91,11 @@ public class ContratistaLogica implements ContratistaLogicaLocal {
             throw new Exception("¡El contratista no existe!");
         } else {
             objContratista.setEstadocontratista("ACTIVO");
+            List<Empleado> listaEmpleados = objContratista.getEmpleadoList();
+            for (Empleado empleado : listaEmpleados) {
+                empleado.setEstadoempleado("ACTIVO");
+            }
+            objContratista.setEmpleadoList(listaEmpleados);
             contratistaDAO.edit(objContratista);
         }
 

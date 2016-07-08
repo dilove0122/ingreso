@@ -122,13 +122,13 @@
                                         <h:outputText value="Desde:"/>
                                     </p:column>
                                     <p:column>
-                                        <p:calendar locale="es" size="15" id="txtFechaInicioC" binding="#{ingresosVista.txtFechaIngresoInicioC}"/>
+                                        <p:calendar locale="es" size="15"  id="txtFechaInicioC"  binding="#{ingresosVista.txtFechaIngresoInicioC}"/>
                                     </p:column>
                                     <p:column>
                                         <h:outputText value="Hasta:"/>
                                     </p:column>
                                     <p:column>
-                                        <p:calendar locale="es" size="15" id="txtFechaFinC" binding="#{ingresosVista.txtFechaIngresoFinC}"/>
+                                        <p:calendar locale="es" size="15" id="txtFechaFinC"  binding="#{ingresosVista.txtFechaIngresoFinC}"/>
                                     </p:column>
                                     <p:column>
                                         <p:commandButton title="Consultar" image="imagenConsultar" action="#{ingresosVista.consultarxContratista()}" update=":formulario:mensajes,:formulario:panelParametros,:formulario:panelTablaIngresos" />
