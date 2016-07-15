@@ -28,7 +28,7 @@ public class ContratistaLogica implements ContratistaLogicaLocal {
         if (contratista == null) {
             throw new Exception("¡El contratista no existe!");
         }
-        Contratista objcontratista=contratistaDAO.find(contratista.getNitcontratista());
+        Contratista objcontratista=contratistaDAO.findNit(contratista.getNitcontratista());
         if (objcontratista != null) {
             throw new Exception("¡El contratista que desea registrar ya existe!");
         } 
@@ -45,7 +45,7 @@ public class ContratistaLogica implements ContratistaLogicaLocal {
         if (contratista == null) {
             throw new Exception("¡El contratista no existe!");
         }
-        Contratista objcontratista = contratistaDAO.find(contratista.getNitcontratista());
+        Contratista objcontratista = contratistaDAO.find(contratista.getCodigocontratista());
         if (objcontratista == null) {
             throw new Exception("¡El contratista que desea modificar no existe!");
         } else {
@@ -64,7 +64,7 @@ public class ContratistaLogica implements ContratistaLogicaLocal {
             if (contratista == null) {
             throw new Exception("¡El contratista está vacio!");
         }
-        Contratista objContratista = contratistaDAO.find(contratista.getNitcontratista());
+        Contratista objContratista = contratistaDAO.findNit(contratista.getNitcontratista());
         if (objContratista == null) {
             throw new Exception("¡El contratista no existe!");
         } else {
@@ -86,7 +86,7 @@ public class ContratistaLogica implements ContratistaLogicaLocal {
             if (contratista == null) {
             throw new Exception("¡El contratista esta vacio!");
         }
-        Contratista objContratista = contratistaDAO.find(contratista.getNitcontratista());
+        Contratista objContratista = contratistaDAO.findNit(contratista.getNitcontratista());
         if (objContratista == null) {
             throw new Exception("¡El contratista no existe!");
         } else {
@@ -113,11 +113,30 @@ public class ContratistaLogica implements ContratistaLogicaLocal {
              if (nit == null ) {
             throw new Exception("El nit  es incorrecto");
         } else {
-             return contratistaDAO.find(nit);
+             return contratistaDAO.findNit(nit);
         }
         
         
        
+    }
+
+    @Override
+    public void eliminar(Contratista contratista) throws Exception {
+        
+            if (contratista == null) {
+            throw new Exception("¡El contratista esta vacio!");
+        }
+        Contratista objContratista = contratistaDAO.findNit(contratista.getNitcontratista());
+        if (objContratista == null) {
+            throw new Exception("¡El contratista no existe!");
+        } else {
+            List<Empleado> listaEmpleados = objContratista.getEmpleadoList();
+            if(!listaEmpleados.isEmpty()){
+                throw new Exception("¡El contratista tiene empleados asociados. No se puede Eliminar!");
+            }else{
+                contratistaDAO.remove(objContratista);
+            }
+        }
     }
 
 }

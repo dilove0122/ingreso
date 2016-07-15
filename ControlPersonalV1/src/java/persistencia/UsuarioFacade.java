@@ -8,18 +8,16 @@ package persistencia;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import modelo.Usuario;
 
 /**
  *
- * @author DILOVE
+ * @author ADMIN
  */
 @Stateless
 public class UsuarioFacade extends AbstractFacade<Usuario> implements UsuarioFacadeLocal {
-
     @PersistenceContext(unitName = "ControlPersonalV1PU")
     private EntityManager em;
 
@@ -31,7 +29,8 @@ public class UsuarioFacade extends AbstractFacade<Usuario> implements UsuarioFac
     public UsuarioFacade() {
         super(Usuario.class);
     }
-
+    
+    
     @Override
     public Usuario findUsuario(String nombre) {
         getEntityManager().getEntityManagerFactory().getCache().evictAll();
@@ -69,5 +68,5 @@ public class UsuarioFacade extends AbstractFacade<Usuario> implements UsuarioFac
         }
 
     }
-
+    
 }

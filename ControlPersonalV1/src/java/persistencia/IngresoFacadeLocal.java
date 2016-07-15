@@ -13,7 +13,7 @@ import modelo.Ingreso;
 
 /**
  *
- * @author DILOVE
+ * @author ADMIN
  */
 @Local
 public interface IngresoFacadeLocal {
@@ -41,6 +41,5 @@ public interface IngresoFacadeLocal {
     List<Ingreso> consultarIngresosEmpleado(Empleado e);
     
     List<Ingreso> consultarIngresosEmpleado(Empleado e, String fechai, String fechaf);
-    
     
 }

@@ -11,7 +11,7 @@ import modelo.Empleado;
 
 /**
  *
- * @author DILOVE
+ * @author ADMIN
  */
 @Local
 public interface EmpleadoFacadeLocal {
@@ -23,6 +23,8 @@ public interface EmpleadoFacadeLocal {
     void remove(Empleado empleado);
 
     Empleado find(Object id);
+    
+    Empleado findCedula(Object id);
 
     List<Empleado> findAll();
 

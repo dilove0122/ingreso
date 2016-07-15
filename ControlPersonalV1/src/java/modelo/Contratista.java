@@ -10,6 +10,8 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -31,35 +33,45 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Contratista.findAll", query = "SELECT c FROM Contratista c"),
     @NamedQuery(name = "Contratista.findByNitcontratista", query = "SELECT c FROM Contratista c WHERE c.nitcontratista = :nitcontratista"),
     @NamedQuery(name = "Contratista.findByNombrecontratista", query = "SELECT c FROM Contratista c WHERE c.nombrecontratista = :nombrecontratista"),
-    @NamedQuery(name = "Contratista.findByEstadocontratista", query = "SELECT c FROM Contratista c WHERE c.estadocontratista = :estadocontratista")})
+    @NamedQuery(name = "Contratista.findByEstadocontratista", query = "SELECT c FROM Contratista c WHERE c.estadocontratista = :estadocontratista"),
+    @NamedQuery(name = "Contratista.findByCodigocontratista", query = "SELECT c FROM Contratista c WHERE c.codigocontratista = :codigocontratista")})
 public class Contratista implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "nitcontratista")
-    private Long nitcontratista;
+    private long nitcontratista;
     @Size(max = 50)
     @Column(name = "nombrecontratista")
     private String nombrecontratista;
     @Size(max = 50)
     @Column(name = "estadocontratista")
     private String estadocontratista;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "codigocontratista")
+    private Integer codigocontratista;
     @OneToMany(mappedBy = "contratistaempleado")
     private List<Empleado> empleadoList;
 
     public Contratista() {
     }
 
-    public Contratista(Long nitcontratista) {
+    public Contratista(Integer codigocontratista) {
+        this.codigocontratista = codigocontratista;
+    }
+
+    public Contratista(Integer codigocontratista, long nitcontratista) {
+        this.codigocontratista = codigocontratista;
         this.nitcontratista = nitcontratista;
     }
 
-    public Long getNitcontratista() {
+    public long getNitcontratista() {
         return nitcontratista;
     }
 
-    public void setNitcontratista(Long nitcontratista) {
+    public void setNitcontratista(long nitcontratista) {
         this.nitcontratista = nitcontratista;
     }
 
@@ -79,6 +91,14 @@ public class Contratista implements Serializable {
         this.estadocontratista = estadocontratista;
     }
 
+    public Integer getCodigocontratista() {
+        return codigocontratista;
+    }
+
+    public void setCodigocontratista(Integer codigocontratista) {
+        this.codigocontratista = codigocontratista;
+    }
+
     @XmlTransient
     public List<Empleado> getEmpleadoList() {
         return empleadoList;
@@ -91,7 +111,7 @@ public class Contratista implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (nitcontratista != null ? nitcontratista.hashCode() : 0);
+        hash += (codigocontratista != null ? codigocontratista.hashCode() : 0);
         return hash;
     }
 
@@ -102,7 +122,7 @@ public class Contratista implements Serializable {
             return false;
         }
         Contratista other = (Contratista) object;
-        if ((this.nitcontratista == null && other.nitcontratista != null) || (this.nitcontratista != null && !this.nitcontratista.equals(other.nitcontratista))) {
+        if ((this.codigocontratista == null && other.codigocontratista != null) || (this.codigocontratista != null && !this.codigocontratista.equals(other.codigocontratista))) {
             return false;
         }
         return true;
@@ -110,7 +130,7 @@ public class Contratista implements Serializable {
 
     @Override
     public String toString() {
-        return "modelo.Contratista[ nitcontratista=" + nitcontratista + " ]";
+        return "modelo.Contratista[ codigocontratista=" + codigocontratista + " ]";
     }
     
 }

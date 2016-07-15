@@ -27,7 +27,7 @@ public class EmpleadoLogica implements EmpleadoLogicaLocal {
         if (empleado == null) {
             throw new Exception("¡El empleado no existe!");
         }
-        Empleado objEmpleado = empleadoDAO.find(empleado.getCedulaempleado());
+        Empleado objEmpleado = empleadoDAO.findCedula(empleado.getCedulaempleado());
         if (objEmpleado != null) {
             throw new Exception("¡El empleado que desea registrar ya existe!");
         } else {
@@ -42,7 +42,7 @@ public class EmpleadoLogica implements EmpleadoLogicaLocal {
         if (empleado == null) {
             throw new Exception("¡El empleado no existe!");
         }
-        Empleado objEmpleado = empleadoDAO.find(empleado.getCedulaempleado());
+        Empleado objEmpleado = empleadoDAO.find(empleado.getCodigoempleado());
         if (objEmpleado == null) {
             throw new Exception("¡El empleado que desea modificar no existe!");
         } else {
@@ -68,7 +68,7 @@ public class EmpleadoLogica implements EmpleadoLogicaLocal {
         if (empleado == null) {
             throw new Exception("¡El empleado esta vacio!");
         }
-        Empleado objEmpleado = empleadoDAO.find(empleado.getCedulaempleado());
+        Empleado objEmpleado = empleadoDAO.findCedula(empleado.getCedulaempleado());
         if (objEmpleado == null) {
             throw new Exception("¡El empleado no existe!");
         } else {
@@ -84,12 +84,31 @@ public class EmpleadoLogica implements EmpleadoLogicaLocal {
         if (empleado == null) {
             throw new Exception("¡El empleado esta vacio!");
         }
-        Empleado objEmpleado = empleadoDAO.find(empleado.getCedulaempleado());
+        Empleado objEmpleado = empleadoDAO.findCedula(empleado.getCedulaempleado());
         if (objEmpleado == null) {
             throw new Exception("¡El empleado no existe!");
         } else {
             objEmpleado.setEstadoempleado("INACTIVO");
             empleadoDAO.edit(objEmpleado);
+        }
+
+    }
+    
+     @Override
+    public void eliminar(Empleado empleado) throws Exception {
+
+        if (empleado == null) {
+            throw new Exception("¡El empleado esta vacio!");
+        }
+        Empleado objEmpleado = empleadoDAO.findCedula(empleado.getCedulaempleado());
+        if (objEmpleado == null) {
+            throw new Exception("¡El empleado no existe!");
+        } else if(!objEmpleado.getIngresoList().isEmpty()){
+            throw new Exception("¡El empleado ya tiene ingresos registrados. No puede eliminarse!");
+        } 
+        else{
+            
+            empleadoDAO.remove(objEmpleado);
         }
 
     }
@@ -113,18 +132,18 @@ public class EmpleadoLogica implements EmpleadoLogicaLocal {
 
     @Override
     public Empleado consultarPorDocumento(Long documento) throws Exception {
-
+        empleadoDAO.limpiarCache();
         if (documento == null || documento == 0) {
             throw new Exception("¡Número del empleado es incorrecto!");
         } else {
-            return empleadoDAO.find(documento);
+            return empleadoDAO.findCedula(documento);
         }
 
     }
 
     @Override
     public void limpiarCache() {
-        empleadoDAO.limpiarCache();
+       empleadoDAO.limpiarCache();
     }
 
 }

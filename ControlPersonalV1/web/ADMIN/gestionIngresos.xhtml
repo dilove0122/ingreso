@@ -102,13 +102,13 @@
                                         <p:commandButton id="btnConsultarC" value="..." type="button"/>
                                         <p:overlayPanel id="contratistaPanel" widgetVar="contratistaP" for="btnConsultarC" hideEffect="fade"  style="width:600px">
                                             <p:dataTable var="contratista" value="#{ingresosVista.listaContratistas}" rows="5" paginator="true" selectionMode="single"
-                                                         selection="#{ingresosVista.selectedContratista}" rowKey="#{contratista.nitcontratista}" filteredValue="#{ingresosVista.listaContratistas}">
+                                                         selection="#{ingresosVista.selectedContratista}" rowKey="#{contratista.nitcontratista}" filteredValue="#{ingresosVista.listaContratistas}" emptyMessage="No se encontraron Contratistas">
                                                 <p:ajax event="rowSelect" update=":formulario:txtContratista" listener="#{ingresosVista.seleccionarContratista}"  oncomplete="PF('contratistaP').hide();"/>
                                                 <p:column headerText="Nit" filterBy="#{contratista.nitcontratista}" filterMatchMode="contains">
                                                     <h:outputText value="#{contratista.nitcontratista}" />
                                                 </p:column>
 
-                                                <p:column headerText="Nombre" filterBy="#{contratista.nombrecontratista}" filterMatchMode="contains">
+                                                <p:column headerText="Nombre" filterBy="#{contratista.nombrecontratista.toLowerCase()}" filterMatchMode="contains">
                                                     <h:outputText value="#{contratista.nombrecontratista}" />
                                                 </p:column>
 
@@ -131,16 +131,16 @@
                                         <p:calendar locale="es" size="15" id="txtFechaFinC"  binding="#{ingresosVista.txtFechaIngresoFinC}"/>
                                     </p:column>
                                     <p:column>
-                                        <p:commandButton title="Consultar" image="imagenConsultar" action="#{ingresosVista.consultarxContratista()}" update=":formulario:mensajes,:formulario:panelParametros,:formulario:panelTablaIngresos" />
+                                        <p:commandButton title="Consultar" image="imagenConsultar" action="#{ingresosVista.consultarxContratista()}" update=":formulario" />
                                     </p:column>
                                     <p:column>
-                                        <p:commandButton title="Limpiar" image="imagenLimpiar" action="#{ingresosVista.limpiarConsultaContratista()}" update=":formulario:mensajes,:formulario:panelParametros,:formulario:panelTablaIngresos" />
+                                        <p:commandButton title="Limpiar" image="imagenLimpiar" action="#{ingresosVista.limpiarConsultaContratista()}" update=":formulario" />
                                     </p:column>
                                     <p:column>
-                                        <p:commandButton title="PDF" ajax="false" image="imagenReportePDF" action="#{ingresosVista.consultarxContratistaPDF()}" update=":formulario:mensajes,:formulario:panelParametros,:formulario:panelTablaIngresos" />
+                                        <p:commandButton title="PDF" ajax="false" image="imagenReportePDF" action="#{ingresosVista.consultarxContratistaPDF()}" update=":formulario" />
                                     </p:column>
                                     <p:column>
-                                        <p:commandButton title="Excel" ajax="false" image="imagenReporteExcel" action="#{ingresosVista.consultarxContratistaExcel()}" update=":formulario:mensajes,:formulario:panelParametros,:formulario:panelTablaIngresos" />
+                                        <p:commandButton title="Excel" ajax="false" image="imagenReporteExcel" action="#{ingresosVista.consultarxContratistaExcel()}" update=":formulario" />
                                     </p:column>
                                 </p:row>
                                 <p:row>
@@ -181,16 +181,16 @@
                                         <p:calendar locale="es" size="15" id="txtFechaFinU" binding="#{ingresosVista.txtFechaIngresoFinE}"/>
                                     </p:column>
                                     <p:column>
-                                        <p:commandButton title="Consultar" image="imagenConsultar"  action="#{ingresosVista.consultarxEmpleado()}" update=":formulario:mensajes,:formulario:panelParametros,:formulario:panelTablaIngresos"/>
+                                        <p:commandButton title="Consultar" image="imagenConsultar"  action="#{ingresosVista.consultarxEmpleado()}" update=":formulario"/>
                                     </p:column>
                                     <p:column>
-                                        <p:commandButton title="Limpiar" image="imagenLimpiar" action="#{ingresosVista.limpiarConsultaEmpleados()}" update=":formulario:mensajes,:formulario:panelParametros,:formulario:panelTablaIngresos" />
+                                        <p:commandButton title="Limpiar" image="imagenLimpiar" action="#{ingresosVista.limpiarConsultaEmpleados()}" update=":formulario" />
                                     </p:column>
                                     <p:column>
-                                        <p:commandButton title="PDF" ajax="false" image="imagenReportePDF" action="#{ingresosVista.consultarxEmpleadoPDF()}" update=":formulario:mensajes,:formulario:panelParametros,:formulario:panelTablaIngresos" />
+                                        <p:commandButton title="PDF" ajax="false" image="imagenReportePDF" action="#{ingresosVista.consultarxEmpleadoPDF()}" update=":formulario" />
                                     </p:column>
                                     <p:column>
-                                        <p:commandButton title="Excel" ajax="false" image="imagenReporteExcel" action="#{ingresosVista.consultarxEmpleadoExcel()}" update=":formulario:mensajes,:formulario:panelParametros,:formulario:panelTablaIngresos" />
+                                        <p:commandButton title="Excel" ajax="false" image="imagenReporteExcel" action="#{ingresosVista.consultarxEmpleadoExcel()}" update=":formulario" />
                                     </p:column>
                                 </p:row>
                             </p:panelGrid>

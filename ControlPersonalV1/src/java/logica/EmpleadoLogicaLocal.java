@@ -27,6 +27,7 @@ public interface EmpleadoLogicaLocal {
 
     public void inactivar(Empleado empleado) throws Exception;
     
+    public void eliminar(Empleado empleado) throws Exception;
 
     public Empleado consultarPorId(Integer idEmpleado) throws Exception;
         

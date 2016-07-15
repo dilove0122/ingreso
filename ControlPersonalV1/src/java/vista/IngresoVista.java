@@ -20,9 +20,12 @@ import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.ViewHandler;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -131,8 +134,20 @@ public class IngresoVista {
         this.datoNombreIngreso = datoNombreIngreso;
     }
 
+    public void refresh() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Application application = context.getApplication();
+        ViewHandler viewHandler = application.getViewHandler();
+        UIViewRoot viewRoot = viewHandler.createView(context, context
+                .getViewRoot().getViewId());
+        context.setViewRoot(viewRoot);
+        context.renderResponse();
+    }
+
     public void action_registrar_ingreso() {
         try {
+            System.out.println("Documento del empleado "+documento);
+            //refresh();
             empleadoLogica.limpiarCache();
             if (documento.equals("")) {
                 datoFechaIngreso = "";
@@ -259,10 +274,12 @@ public class IngresoVista {
     }
 
     public List<Contratista> getListaContratistas() {
-        try {
-            listaContratistas = contratistaLogica.consultar();
-        } catch (Exception ex) {
-            Logger.getLogger(IngresoVista.class.getName()).log(Level.SEVERE, null, ex);
+        if (listaContratistas == null) {
+            try {
+                listaContratistas = contratistaLogica.consultar();
+            } catch (Exception ex) {
+                Logger.getLogger(IngresoVista.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return listaContratistas;
     }
@@ -384,7 +401,7 @@ public class IngresoVista {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Info", "¡No hay Ingresos que coincidan con los Parámetros!"));
                     } else {
                         Contratista objC = contratistaLogica.consultarPorNit(c.getNitcontratista());
-                        parametros.put("nitContratista", c.getNitcontratista().toString());
+                        parametros.put("nitContratista", c.getNitcontratista() + "");
                         parametros.put("nombreContratista", objC.getNombrecontratista());
                         parametros.put("banner", this.getClass().getResourceAsStream("bannerControl.png"));
                         List<DatosIngresoReporte> listaIngresosReporte = new ArrayList<>();
@@ -405,7 +422,7 @@ public class IngresoVista {
                             }
                             objDatos.setAutorizadoingreso(obj.getAutorizadoingreso());
                             objDatos.setNombreempleadoingreso(obj.getEmpleadoingreso().getNombreempleado() + " " + obj.getEmpleadoingreso().getApellidoempleado());
-                            objDatos.setCedulaempleadoingreso(obj.getEmpleadoingreso().getCedulaempleado().toString());
+                            objDatos.setCedulaempleadoingreso(obj.getEmpleadoingreso().getCedulaempleado() + "");
                             objDatos.setCargoempleadoingreso(obj.getEmpleadoingreso().getCargoempleado());
                             listaIngresosReporte.add(objDatos);
                         }
@@ -438,7 +455,7 @@ public class IngresoVista {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Info", "¡No hay Ingresos que coincidan con los Parámetros!"));
                     } else {
                         Contratista objC = contratistaLogica.consultarPorNit(c.getNitcontratista());
-                        parametros.put("nitContratista", c.getNitcontratista().toString());
+                        parametros.put("nitContratista", c.getNitcontratista() + "");
                         parametros.put("nombreContratista", objC.getNombrecontratista());
                         parametros.put("banner", this.getClass().getResourceAsStream("bannerControl.png"));
                         List<DatosIngresoReporte> listaIngresosReporte = new ArrayList<>();
@@ -446,7 +463,7 @@ public class IngresoVista {
                         for (Empleado objEmpleado : listaEmpleados) {
                             DatosIngresoReporte objDatos = new DatosIngresoReporte();
                             objDatos.setNombreempleadoingreso(objEmpleado.getNombreempleado() + " " + objEmpleado.getApellidoempleado());
-                            objDatos.setCedulaempleadoingreso(objEmpleado.getCedulaempleado().toString());
+                            objDatos.setCedulaempleadoingreso(objEmpleado.getCedulaempleado() + "");
                             objDatos.setCargoempleadoingreso(objEmpleado.getCargoempleado());
                             objDatos.setE1("");
                             objDatos.setE2("");
@@ -469,56 +486,56 @@ public class IngresoVista {
                                     Date horaS = obj.getHorasalidaingreso();
                                     switch (dia) {
                                         case 2: //Lunes
-                                            objDatos.setE1(objDatos.getE1()+formatoH.format(horaE)+"\n");
+                                            objDatos.setE1(objDatos.getE1() + formatoH.format(horaE) + "\n");
                                             if (horaS != null) {
-                                                objDatos.setS1(objDatos.getS1()+formatoH.format(horaS)+"\n");
+                                                objDatos.setS1(objDatos.getS1() + formatoH.format(horaS) + "\n");
                                             } else {
-                                                objDatos.setHorasalidaingreso(objDatos.getS1()+"- \n");
+                                                objDatos.setHorasalidaingreso(objDatos.getS1() + "- \n");
                                             }
                                             objDatos.setA1(obj.getAutorizadoingreso());
                                             break;
                                         case 3: //Martes
-                                            objDatos.setE2(objDatos.getE2()+formatoH.format(horaE)+"\n");
+                                            objDatos.setE2(objDatos.getE2() + formatoH.format(horaE) + "\n");
                                             if (horaS != null) {
-                                                objDatos.setS2(objDatos.getS2()+formatoH.format(horaS)+"\n");
+                                                objDatos.setS2(objDatos.getS2() + formatoH.format(horaS) + "\n");
                                             } else {
-                                                objDatos.setHorasalidaingreso(objDatos.getS2()+"-"+"\n");
+                                                objDatos.setHorasalidaingreso(objDatos.getS2() + "-" + "\n");
                                             }
                                             objDatos.setA2(obj.getAutorizadoingreso());
                                             break;
                                         case 4: //Miercoles
-                                            objDatos.setE3(objDatos.getE3()+formatoH.format(horaE)+"\n");
+                                            objDatos.setE3(objDatos.getE3() + formatoH.format(horaE) + "\n");
                                             if (horaS != null) {
-                                                objDatos.setS3(objDatos.getS3()+formatoH.format(horaS)+"\n");
+                                                objDatos.setS3(objDatos.getS3() + formatoH.format(horaS) + "\n");
                                             } else {
-                                                objDatos.setHorasalidaingreso(objDatos.getS3()+"-"+"\n");
+                                                objDatos.setHorasalidaingreso(objDatos.getS3() + "-" + "\n");
                                             }
                                             objDatos.setA3(obj.getAutorizadoingreso());
                                             break;
                                         case 5: //Jueves
-                                            objDatos.setE4(objDatos.getE4()+formatoH.format(horaE)+"\n");
+                                            objDatos.setE4(objDatos.getE4() + formatoH.format(horaE) + "\n");
                                             if (horaS != null) {
-                                                objDatos.setS4(objDatos.getS4()+formatoH.format(horaS)+"\n");
+                                                objDatos.setS4(objDatos.getS4() + formatoH.format(horaS) + "\n");
                                             } else {
-                                                objDatos.setHorasalidaingreso(objDatos.getS4()+"-"+"\n");
+                                                objDatos.setHorasalidaingreso(objDatos.getS4() + "-" + "\n");
                                             }
                                             objDatos.setA4(obj.getAutorizadoingreso());
                                             break;
                                         case 6: //Viernes
-                                            objDatos.setE5(objDatos.getE5()+formatoH.format(horaE)+"\n");
+                                            objDatos.setE5(objDatos.getE5() + formatoH.format(horaE) + "\n");
                                             if (horaS != null) {
-                                                objDatos.setS5(objDatos.getS5()+formatoH.format(horaS)+"\n");
+                                                objDatos.setS5(objDatos.getS5() + formatoH.format(horaS) + "\n");
                                             } else {
-                                                objDatos.setHorasalidaingreso(objDatos.getS5()+"-"+"\n");
+                                                objDatos.setHorasalidaingreso(objDatos.getS5() + "-" + "\n");
                                             }
                                             objDatos.setA5(obj.getAutorizadoingreso());
                                             break;
                                         case 7: //Sabado
-                                            objDatos.setE6(objDatos.getE6()+formatoH.format(horaE)+"\n");
+                                            objDatos.setE6(objDatos.getE6() + formatoH.format(horaE) + "\n");
                                             if (horaS != null) {
-                                                objDatos.setS6(objDatos.getS6()+formatoH.format(horaS)+"\n");
+                                                objDatos.setS6(objDatos.getS6() + formatoH.format(horaS) + "\n");
                                             } else {
-                                                objDatos.setHorasalidaingreso(objDatos.getS6()+"-"+"\n");
+                                                objDatos.setHorasalidaingreso(objDatos.getS6() + "-" + "\n");
                                             }
                                             objDatos.setA6(obj.getAutorizadoingreso());
                                             break;
@@ -574,7 +591,7 @@ public class IngresoVista {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Info", "¡No hay Ingresos que coincidan con los Parámetros!"));
                     } else {
                         Contratista objC = contratistaLogica.consultarPorNit(c.getNitcontratista());
-                        parametros.put("nitContratista", c.getNitcontratista().toString());
+                        parametros.put("nitContratista", c.getNitcontratista() + "");
                         parametros.put("nombreContratista", objC.getNombrecontratista());
                         parametros.put("banner", this.getClass().getResourceAsStream("bannerControl.png"));
                         List<DatosIngresoReporte> listaIngresosReporte = new ArrayList<>();
@@ -595,7 +612,7 @@ public class IngresoVista {
                             }
                             objDatos.setAutorizadoingreso(obj.getAutorizadoingreso());
                             objDatos.setNombreempleadoingreso(obj.getEmpleadoingreso().getNombreempleado() + " " + obj.getEmpleadoingreso().getApellidoempleado());
-                            objDatos.setCedulaempleadoingreso(obj.getEmpleadoingreso().getCedulaempleado().toString());
+                            objDatos.setCedulaempleadoingreso(obj.getEmpleadoingreso().getCedulaempleado() + "");
                             objDatos.setCargoempleadoingreso(obj.getEmpleadoingreso().getCargoempleado());
                             listaIngresosReporte.add(objDatos);
                         }
@@ -644,7 +661,7 @@ public class IngresoVista {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Info", "¡No hay Ingresos que coincidan con los Parámetros!"));
                     } else {
                         Contratista objC = contratistaLogica.consultarPorNit(c.getNitcontratista());
-                        parametros.put("nitContratista", c.getNitcontratista().toString());
+                        parametros.put("nitContratista", c.getNitcontratista() + "");
                         parametros.put("nombreContratista", objC.getNombrecontratista());
                         parametros.put("banner", this.getClass().getResourceAsStream("bannerControl.png"));
                         List<DatosIngresoReporte> listaIngresosReporte = new ArrayList<>();
@@ -652,7 +669,7 @@ public class IngresoVista {
                         for (Empleado objEmpleado : listaEmpleados) {
                             DatosIngresoReporte objDatos = new DatosIngresoReporte();
                             objDatos.setNombreempleadoingreso(objEmpleado.getNombreempleado() + " " + objEmpleado.getApellidoempleado());
-                            objDatos.setCedulaempleadoingreso(objEmpleado.getCedulaempleado().toString());
+                            objDatos.setCedulaempleadoingreso(objEmpleado.getCedulaempleado() + "");
                             objDatos.setCargoempleadoingreso(objEmpleado.getCargoempleado());
                             objDatos.setE1("");
                             objDatos.setE2("");
@@ -833,7 +850,7 @@ public class IngresoVista {
             } else {
                 Empleado objE = empleadoLogica.consultarPorDocumento(e.getCedulaempleado());
                 parametros.put("banner", this.getClass().getResourceAsStream("bannerControl.png"));
-                parametros.put("cedula", objE.getCedulaempleado().toString());
+                parametros.put("cedula", objE.getCedulaempleado() + "");
                 parametros.put("nombre", objE.getNombreempleado() + " " + objE.getApellidoempleado());
                 parametros.put("telefono", objE.getTelefonoempleado());
                 parametros.put("correo", objE.getCorreoempleado());
@@ -922,7 +939,7 @@ public class IngresoVista {
             } else {
                 Empleado objE = empleadoLogica.consultarPorDocumento(e.getCedulaempleado());
                 parametros.put("banner", this.getClass().getResourceAsStream("bannerControl.png"));
-                parametros.put("cedula", objE.getCedulaempleado().toString());
+                parametros.put("cedula", objE.getCedulaempleado() + "");
                 parametros.put("nombre", objE.getNombreempleado() + " " + objE.getApellidoempleado());
                 parametros.put("telefono", objE.getTelefonoempleado());
                 parametros.put("correo", objE.getCorreoempleado());

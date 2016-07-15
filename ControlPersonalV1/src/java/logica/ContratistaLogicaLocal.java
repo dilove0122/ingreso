@@ -23,6 +23,8 @@ public interface ContratistaLogicaLocal {
     public void inactivar(Contratista contratista) throws Exception;
 
     public void activar(Contratista contratista) throws Exception;
+    
+    public void eliminar(Contratista contratista) throws Exception;
 
     public List<Contratista> consultar() throws Exception;
 

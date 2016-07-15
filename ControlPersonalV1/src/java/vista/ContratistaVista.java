@@ -16,6 +16,7 @@ import javax.faces.context.FacesContext;
 import logica.ContratistaLogicaLocal;
 import modelo.Contratista;
 import org.primefaces.component.commandbutton.CommandButton;
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.event.SelectEvent;
 
@@ -42,6 +43,7 @@ public class ContratistaVista {
     private CommandButton btnInactivo;
     private CommandButton btnActivo;
     private CommandButton btnRegistrar;
+    private CommandButton btnEliminar;
 
     public ContratistaVista() {
     }
@@ -208,7 +210,9 @@ public class ContratistaVista {
                 FacesContext.getCurrentInstance().addMessage("Mensajes", new FacesMessage(FacesMessage.SEVERITY_INFO, " ", "El nombre es obligatorio!"));
             } else {
                 contratistaLogica.registrar(objcontratista);
-
+                listaContratista = null;
+                limpiar();
+                resetearFitrosTabla("formulario:tablaC");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "¡El contratista se Registró con Éxito!"));
 
             }
@@ -218,19 +222,21 @@ public class ContratistaVista {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: ", ex.getMessage()));
             Logger.getLogger(ContratistaVista.class.getName()).log(Level.SEVERE, null, ex);
         }
-        listaContratista = null;
-        limpiar();
+
     }
 
     public void modificar_action() {
         Contratista objcontratista = new Contratista();
         try {
-
+            Contratista objContratistaAnterior = selectedContratista;
+            objcontratista.setCodigocontratista(objContratistaAnterior.getCodigocontratista());
             objcontratista.setNitcontratista(Long.parseLong(txtNitContratista.getValue().toString()));
             objcontratista.setNombrecontratista(txtNombreContratista.getValue().toString());
 
             contratistaLogica.modificar(objcontratista);
-
+            listaContratista = null;
+            limpiar();
+            resetearFitrosTabla("formulario:tablaC");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "¡El contratista se Modificó con Éxito!"));
         } catch (NumberFormatException e) {
             FacesContext.getCurrentInstance().addMessage("mensajes", new FacesMessage("¡El nit debe ser numérico!"));
@@ -238,8 +244,7 @@ public class ContratistaVista {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: ", ex.getMessage()));
             Logger.getLogger(ContratistaVista.class.getName()).log(Level.SEVERE, null, ex);
         }
-        listaContratista = null;
-        limpiar();
+
     }
 
     public void inactivar_action() {
@@ -250,7 +255,7 @@ public class ContratistaVista {
             contratista.setNitcontratista(Long.parseLong(txtNitContratista.getValue().toString()));
 
             contratistaLogica.inactivar(contratista);
-
+            resetearFitrosTabla("formulario:tablaC");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "¡El Contratista se desactivó con Éxito!"));
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: ", ex.getMessage()));
@@ -268,8 +273,26 @@ public class ContratistaVista {
             contratista.setNitcontratista(Long.parseLong(txtNitContratista.getValue().toString()));
 
             contratistaLogica.activar(contratista);
-
+            resetearFitrosTabla("formulario:tablaC");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "¡El contratista se activó con Éxito!"));
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: ", ex.getMessage()));
+            Logger.getLogger(ContratistaVista.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        listaContratista = null;
+        limpiar();
+    }
+
+    public void eliminar_action() {
+        try {
+
+            Contratista contratista = new Contratista();
+
+            contratista.setNitcontratista(Long.parseLong(txtNitContratista.getValue().toString()));
+
+            contratistaLogica.eliminar(contratista);
+            resetearFitrosTabla("formulario:tablaC");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "¡El contratista se eliminó con Éxito!"));
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: ", ex.getMessage()));
             Logger.getLogger(ContratistaVista.class.getName()).log(Level.SEVERE, null, ex);
@@ -284,8 +307,10 @@ public class ContratistaVista {
         txtNombreContratista.setValue("");
         txtEstadoContratista.setValue("");
         btnRegistrar.setDisabled(false);
-        btnActivo.setDisabled(false);
-        btnInactivo.setDisabled(false);
+        btnActivo.setDisabled(true);
+        btnInactivo.setDisabled(true);
+        btnModificar.setDisabled(true);
+        btnEliminar.setDisabled(true);
     }
 
     public void seleccionarContratista(SelectEvent event) {
@@ -297,7 +322,8 @@ public class ContratistaVista {
         txtEstadoContratista.setValue(contratista.getEstadocontratista());
         txtEstadoContratista.setDisabled(true);
         btnRegistrar.setDisabled(true);
-
+        btnModificar.setDisabled(false);
+        btnEliminar.setDisabled(false);
         if (contratista.getEstadocontratista().equals("ACTIVO")) {
             btnActivo.setDisabled(true);
             btnInactivo.setDisabled(false);
@@ -322,6 +348,19 @@ public class ContratistaVista {
      */
     public void setBtnActivo(CommandButton btnActivo) {
         this.btnActivo = btnActivo;
+    }
+
+    public CommandButton getBtnEliminar() {
+        return btnEliminar;
+    }
+
+    public void setBtnEliminar(CommandButton btnEliminar) {
+        this.btnEliminar = btnEliminar;
+    }
+    
+    public void resetearFitrosTabla(String id) {
+        DataTable table = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent(id);
+        table.reset();
     }
 
 }

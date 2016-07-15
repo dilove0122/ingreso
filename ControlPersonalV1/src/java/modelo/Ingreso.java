@@ -56,7 +56,7 @@ public class Ingreso implements Serializable {
     @Size(max = 50)
     @Column(name = "autorizadoingreso")
     private String autorizadoingreso;
-    @JoinColumn(name = "empleadoingreso", referencedColumnName = "cedulaempleado")
+    @JoinColumn(name = "empleadoingreso", referencedColumnName = "codigoempleado")
     @ManyToOne
     private Empleado empleadoingreso;
 

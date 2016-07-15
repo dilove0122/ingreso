@@ -174,24 +174,25 @@
                             <f:facet name="footer"> 
                                 <div align="center"> 
                                     <p:commandButton  id="btnRegistrar" action="#{empleadoVista.registrar_action()}" value="Registrar" binding="#{empleadoVista.btnRegistrar}" update=":formulario" />
-                                    <p:commandButton  id="btnModificar" action="#{empleadoVista.modificar_action}" value="Modificar" binding="#{empleadoVista.btnModificar}" update=":formulario"/>
+                                    <p:commandButton  id="btnModificar" disabled="true" action="#{empleadoVista.modificar_action}" value="Modificar" binding="#{empleadoVista.btnModificar}" update=":formulario"/>
                                     <p:commandButton  id="btnLimpiar" action="#{empleadoVista.limpiar()}" value="Limpiar" binding="#{empleadoVista.btnLimpiar}" update=":formulario" />
-                                    <p:commandButton  id="btnActivar" action="#{empleadoVista.activar_action()}" value="Activar" binding="#{empleadoVista.btnActivar}" onclick="PF('confirmation2').show();"  type="button" update=":formulario" />
-                                    <p:commandButton  id="btnInactivar" action="#{empleadoVista.inactivar_action()}" value="Inactivar" binding="#{empleadoVista.btnInactivo}" onclick="PF('confirmation1').show();"  type="button" update=":formulario" />
+                                    <p:commandButton  id="btnActivar" disabled="true" value="Activar" binding="#{empleadoVista.btnActivar}" onclick="PF('confirmation2').show();"  type="button"/>
+                                    <p:commandButton  id="btnInactivar" disabled="true" value="Inactivar" binding="#{empleadoVista.btnInactivo}" onclick="PF('confirmation1').show();"  type="button" />
+                                    <p:commandButton  id="btnEliminar" disabled="true" value="Eliminar" binding="#{empleadoVista.btnEliminar}" onclick="PF('confirmation3').show();"  type="button" />
                                 </div>
                             </f:facet>
                         </p:panelGrid>       
 
                         <p:panel id="panelTabla">   
-                            <p:dataTable var="empleado" value="#{empleadoVista.listaEmpleado}" rows="10"
+                            <p:dataTable id="tablaE" var="empleado" value="#{empleadoVista.listaEmpleado}" rows="10"
                                          paginator="true"
                                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                          rowsPerPageTemplate="5,10,15"
-                                         rowKey="#{empleado.cedulaempleado}"
+                                         rowKey="#{empleado.codigoempleado}"
                                          selection="#{empleadoVista.selectedEmpleado}"
                                          selectionMode="single"
-                                         filteredValue="#{empleadoVista.listaEmpleado}"
-                                         widgetVar="tablaEmpleados"
+                                         widgetVar="tablaEmpleados" 
+                                         emptyMessage="No se encontraron Empleados"
                                          >
                                 <p:ajax 
                                     event="rowSelect"
@@ -220,6 +221,7 @@
                                 <p:column headerText="Eps" filterBy="#{empleado.epsempleado}" filterMatchMode="exact" >
                                     <f:facet name="filter">
                                             <p:selectOneMenu onchange="PF('tablaEmpleados').filter()" >
+                                                <f:selectItem itemLabel="" itemValue="" />
                                                 <f:selectItem itemLabel="SI" itemValue="S" />
                                                 <f:selectItem itemLabel="NO" itemValue="N" />
                                             </p:selectOneMenu>
@@ -230,6 +232,7 @@
                                 <p:column headerText="Arl" filterBy="#{empleado.arlempleado}" filterMatchMode="exact">
                                     <f:facet name="filter">
                                             <p:selectOneMenu onchange="PF('tablaEmpleados').filter()" >
+                                                <f:selectItem itemLabel="" itemValue="" />
                                                 <f:selectItem itemLabel="SI" itemValue="S" />
                                                 <f:selectItem itemLabel="NO" itemValue="N" />
                                             </p:selectOneMenu>
@@ -240,6 +243,7 @@
                                 <p:column headerText="Estado" filterBy="#{empleado.estadoempleado}" filterMatchMode="exact">
                                     <f:facet name="filter">
                                             <p:selectOneMenu onchange="PF('tablaEmpleados').filter()" >
+                                                <f:selectItem itemLabel="" itemValue="" />
                                                 <f:selectItem itemLabel="ACTIVO" itemValue="ACTIVO" />
                                                 <f:selectItem itemLabel="INACTIVO" itemValue="INACTIVO" />
                                             </p:selectOneMenu>
@@ -279,6 +283,17 @@
                                      update=":formulario"  
                                      actionListener="#{empleadoVista.activar_action()}" />  
                     <p:commandButton id="decline" value="No" onclick="PF('confirmation2').hide();" type="button" />   
+
+                </p:confirmDialog> 
+            </h:form>
+            
+            <h:form id="formDialog3" > 
+                <p:confirmDialog id="confirmDialog3" message="¿Está seguro que desea eliminar el Empleado?"  
+                                 header="Confirmación Eliminación" showEffect="fade" hideEffect="explode" severity="alert" widgetVar="confirmation3">  
+                    <p:commandButton id="confirm2" value="Si" oncomplete="PF('confirmation3').hide();" 
+                                     update=":formulario"  
+                                     actionListener="#{empleadoVista.eliminar_action()}" />  
+                    <p:commandButton id="decline" value="No" onclick="PF('confirmation3').hide();" type="button" />   
 
                 </p:confirmDialog> 
             </h:form>

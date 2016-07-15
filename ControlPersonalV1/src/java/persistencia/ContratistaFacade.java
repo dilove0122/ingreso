@@ -7,12 +7,15 @@ package persistencia;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import modelo.Contratista;
+import modelo.Ingreso;
 
 /**
  *
- * @author DILOVE
+ * @author ADMIN
  */
 @Stateless
 public class ContratistaFacade extends AbstractFacade<Contratista> implements ContratistaFacadeLocal {
@@ -26,6 +29,17 @@ public class ContratistaFacade extends AbstractFacade<Contratista> implements Co
 
     public ContratistaFacade() {
         super(Contratista.class);
+    }
+
+    @Override
+    public Contratista findNit(Object id) {
+        String consulta = "select c from Contratista c where c.nitcontratista = " + id;
+        try {
+            Query query = em.createQuery(consulta);
+            return (Contratista) query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
     
 }

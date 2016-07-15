@@ -11,7 +11,7 @@ import modelo.Usuario;
 
 /**
  *
- * @author DILOVE
+ * @author ADMIN
  */
 @Local
 public interface UsuarioFacadeLocal {
@@ -29,7 +29,7 @@ public interface UsuarioFacadeLocal {
     List<Usuario> findRange(int[] range);
 
     int count();
-
+    
     public Usuario findUsuario(String nombre);
 
     public Usuario consultarPorClave(String clave);

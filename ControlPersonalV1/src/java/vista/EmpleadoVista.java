@@ -19,10 +19,12 @@ import modelo.Contratista;
 import modelo.Empleado;
 
 import org.primefaces.component.commandbutton.CommandButton;
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.component.selectoneradio.SelectOneRadio;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.LazyDataModel;
 
 /**
  *
@@ -55,6 +57,7 @@ public class EmpleadoVista {
     private InputText txtCodigoContratista;
 
     private List<Empleado> listaEmpleado = null;
+    private LazyDataModel<Empleado> listaEmpleadoFiltro;
     private List<Contratista> listaContratista = null;
 
     private Empleado selectedEmpleado;
@@ -64,6 +67,7 @@ public class EmpleadoVista {
     private CommandButton btnModificar;
     private CommandButton btnActivar;
     private CommandButton btnInactivo;
+    private CommandButton btnEliminar;
     private CommandButton btnRegistrar;
     private CommandButton btnSeleccionar;
 
@@ -172,9 +176,9 @@ public class EmpleadoVista {
      * @return the listaEmpleado
      */
     public List<Empleado> getListaEmpleado() {
-
         if (listaEmpleado == null) {
             try {
+                empleadoLogica.limpiarCache();
                 listaEmpleado = empleadoLogica.consultar();
             } catch (Exception ex) {
                 Logger.getLogger(vista.EmpleadoVista.class.getName()).log(Level.SEVERE, null, ex);
@@ -276,15 +280,15 @@ public class EmpleadoVista {
             empleado.setArlempleado(getCmbArl().getValue().toString());
             empleado.setEstadoempleado("ACTIVO");
             if (txtCodigoContratista.getValue() != null) {
-                contratistaObj.setNitcontratista(Long.parseLong(txtCodigoContratista.getValue().toString()));
+                contratistaObj = contratistaLogica.consultarPorNit(Long.parseLong(txtCodigoContratista.getValue().toString()));
                 empleado.setContratistaempleado(contratistaObj);
             }
-            
-            empleadoLogica.registrar(empleado);
 
+            empleadoLogica.registrar(empleado);
+            resetearFitrosTabla("formulario:tablaE");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "¡El Empleado se registró con Éxito!"));
         } catch (NumberFormatException e) {
-            FacesContext.getCurrentInstance().addMessage("mensajes", new FacesMessage("¡La cédula y el teléfono debe ser numérica!", " "));
+            FacesContext.getCurrentInstance().addMessage("mensajes", new FacesMessage("¡La cédula y el teléfono son obligatorios!", " "));
         } catch (NullPointerException e) {
             FacesContext.getCurrentInstance().addMessage("mensajes", new FacesMessage("¡La ARL y la EPS son obligatorias!", " "));
         } catch (Exception ex) {
@@ -300,6 +304,8 @@ public class EmpleadoVista {
 
             Empleado empleado = new Empleado();
             Contratista contratistaObj = new Contratista();
+            Empleado objEmpleadoAnterior = selectedEmpleado;
+            empleado.setCodigoempleado(objEmpleadoAnterior.getCodigoempleado());
             empleado.setCedulaempleado(Long.parseLong(txtCedula.getValue().toString()));
             empleado.setNombreempleado(txtNombre.getValue().toString().trim() + " " + txtNombre2.getValue().toString().trim());
             empleado.setApellidoempleado(txtApellido.getValue().toString().trim() + " " + txtApellido2.getValue().toString().trim());
@@ -308,18 +314,20 @@ public class EmpleadoVista {
             empleado.setCargoempleado(txtCargo.getValue().toString());
             empleado.setEpsempleado((getCmbEps().getValue().toString()));
             empleado.setArlempleado(getCmbArl().getValue().toString());
-            contratistaObj.setNitcontratista(Long.parseLong(txtCodigoContratista.getValue().toString()));
+            contratistaObj = contratistaLogica.consultarPorNit(Long.parseLong(txtCodigoContratista.getValue().toString()));
             empleado.setContratistaempleado(contratistaObj);
             empleadoLogica.modificar(empleado);
+            listaEmpleado = null;
+            limpiar();
+            resetearFitrosTabla("formulario:tablaE");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "¡El Empleado se modificó con Éxito!"));
         } catch (NumberFormatException e) {
-            FacesContext.getCurrentInstance().addMessage("mensajes", new FacesMessage("¡La cédula y el teléfono debe ser numérica!", " "));
+            FacesContext.getCurrentInstance().addMessage("mensajes", new FacesMessage("¡La cédula, teléfono y contratista son obligatorios!", " "));
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: ", ex.getMessage()));
             Logger.getLogger(EmpleadoVista.class.getName()).log(Level.SEVERE, null, ex);
         }
-        listaEmpleado = null;
-        limpiar();
+
     }
 
     public void inactivar_action() {
@@ -330,14 +338,15 @@ public class EmpleadoVista {
             empleado.setCedulaempleado(Long.parseLong(txtCedula.getValue().toString()));
 
             empleadoLogica.inactivar(empleado);
-
+            listaEmpleado = null;
+            limpiar();
+            resetearFitrosTabla("formulario:tablaE");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "¡El Empleado se desactivó con Éxito!"));
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: ", ex.getMessage()));
             Logger.getLogger(EmpleadoVista.class.getName()).log(Level.SEVERE, null, ex);
         }
-        listaEmpleado = null;
-        limpiar();
+
     }
 
     public void activar_action() {
@@ -348,14 +357,39 @@ public class EmpleadoVista {
             empleado.setCedulaempleado(Long.parseLong(txtCedula.getValue().toString()));
 
             empleadoLogica.activar(empleado);
-
+            listaEmpleado = null;
+            limpiar();
+            resetearFitrosTabla("formulario:tablaE");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "¡El Empleado se activó con Éxito!"));
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: ", ex.getMessage()));
             Logger.getLogger(EmpleadoVista.class.getName()).log(Level.SEVERE, null, ex);
         }
-        listaEmpleado = null;
-        limpiar();
+
+    }
+
+    public void eliminar_action() {
+        try {
+
+            Empleado empleado = new Empleado();
+
+            empleado.setCedulaempleado(Long.parseLong(txtCedula.getValue().toString()));
+
+            empleadoLogica.eliminar(empleado);
+            listaEmpleado = null;
+            limpiar();
+            resetearFitrosTabla("formulario:tablaE");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "¡El Empleado se eliminó con Éxito!"));
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: ", ex.getMessage()));
+            Logger.getLogger(EmpleadoVista.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    
+    public void resetearFitrosTabla(String id) {
+        DataTable table = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent(id);
+        table.reset();
     }
 
     public void limpiar() {
@@ -366,17 +400,18 @@ public class EmpleadoVista {
         txtApellido2.setValue("");
         txtCedula.setValue("");
         txtCorreo.setValue("");
-        getCmbEps().setValue("-1");
-        getCmbArl().setValue("-1");
         txtTelefono.setValue("");
         txtEstadoEmpleado.setValue("");
         btnRegistrar.setDisabled(false);
         txtCodigoContratista.setValue("");
+        cmbArl.setValue("S");
+        cmbEps.setValue("S");
         txtCargo.setValue("");
-        btnActivar.setDisabled(false);
-        btnInactivo.setDisabled(false);
+        btnActivar.setDisabled(true);
+        btnInactivo.setDisabled(true);
         listaContratista = null;
-
+        btnModificar.setDisabled(true);
+        btnEliminar.setDisabled(true);
     }
 
     public void seleccionarEmpleado(SelectEvent event) {
@@ -425,15 +460,14 @@ public class EmpleadoVista {
 
         }
         listaContratista = null;
-        // btnEliminar.setDisabled(false);
-        // btnModificar.setDisabled(false);
+        btnEliminar.setDisabled(false);
+        btnModificar.setDisabled(false);
     }
 
     /**
      * @return the listaContratista
      */
     public List<Contratista> getListaContratista() {
-        System.out.println("Llama lista?");
         if (listaContratista == null) {
             try {
                 listaContratista = contratistaLogica.consultar();
@@ -537,6 +571,14 @@ public class EmpleadoVista {
 
     public void setTxtApellido2(InputText txtApellido2) {
         this.txtApellido2 = txtApellido2;
+    }
+
+    public CommandButton getBtnEliminar() {
+        return btnEliminar;
+    }
+
+    public void setBtnEliminar(CommandButton btnEliminar) {
+        this.btnEliminar = btnEliminar;
     }
 
 }

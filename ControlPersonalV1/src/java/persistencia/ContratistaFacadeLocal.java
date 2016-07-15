@@ -11,7 +11,7 @@ import modelo.Contratista;
 
 /**
  *
- * @author DILOVE
+ * @author ADMIN
  */
 @Local
 public interface ContratistaFacadeLocal {
@@ -23,6 +23,8 @@ public interface ContratistaFacadeLocal {
     void remove(Contratista contratista);
 
     Contratista find(Object id);
+    
+    Contratista findNit(Object id);
 
     List<Contratista> findAll();
 

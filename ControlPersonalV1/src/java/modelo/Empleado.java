@@ -10,6 +10,8 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -39,14 +41,14 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Empleado.findByEpsempleado", query = "SELECT e FROM Empleado e WHERE e.epsempleado = :epsempleado"),
     @NamedQuery(name = "Empleado.findByArlempleado", query = "SELECT e FROM Empleado e WHERE e.arlempleado = :arlempleado"),
     @NamedQuery(name = "Empleado.findByCargoempleado", query = "SELECT e FROM Empleado e WHERE e.cargoempleado = :cargoempleado"),
-    @NamedQuery(name = "Empleado.findByEstadoempleado", query = "SELECT e FROM Empleado e WHERE e.estadoempleado = :estadoempleado")})
+    @NamedQuery(name = "Empleado.findByEstadoempleado", query = "SELECT e FROM Empleado e WHERE e.estadoempleado = :estadoempleado"),
+    @NamedQuery(name = "Empleado.findByCodigoempleado", query = "SELECT e FROM Empleado e WHERE e.codigoempleado = :codigoempleado")})
 public class Empleado implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "cedulaempleado")
-    private Long cedulaempleado;
+    private long cedulaempleado;
     @Size(max = 50)
     @Column(name = "nombreempleado")
     private String nombreempleado;
@@ -71,7 +73,12 @@ public class Empleado implements Serializable {
     @Size(max = 50)
     @Column(name = "estadoempleado")
     private String estadoempleado;
-    @JoinColumn(name = "contratistaempleado", referencedColumnName = "nitcontratista")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "codigoempleado")
+    private Integer codigoempleado;
+    @JoinColumn(name = "contratistaempleado", referencedColumnName = "codigocontratista")
     @ManyToOne
     private Contratista contratistaempleado;
     @OneToMany(mappedBy = "empleadoingreso")
@@ -80,15 +87,20 @@ public class Empleado implements Serializable {
     public Empleado() {
     }
 
-    public Empleado(Long cedulaempleado) {
+    public Empleado(Integer codigoempleado) {
+        this.codigoempleado = codigoempleado;
+    }
+
+    public Empleado(Integer codigoempleado, long cedulaempleado) {
+        this.codigoempleado = codigoempleado;
         this.cedulaempleado = cedulaempleado;
     }
 
-    public Long getCedulaempleado() {
+    public long getCedulaempleado() {
         return cedulaempleado;
     }
 
-    public void setCedulaempleado(Long cedulaempleado) {
+    public void setCedulaempleado(long cedulaempleado) {
         this.cedulaempleado = cedulaempleado;
     }
 
@@ -156,6 +168,14 @@ public class Empleado implements Serializable {
         this.estadoempleado = estadoempleado;
     }
 
+    public Integer getCodigoempleado() {
+        return codigoempleado;
+    }
+
+    public void setCodigoempleado(Integer codigoempleado) {
+        this.codigoempleado = codigoempleado;
+    }
+
     public Contratista getContratistaempleado() {
         return contratistaempleado;
     }
@@ -176,7 +196,7 @@ public class Empleado implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (cedulaempleado != null ? cedulaempleado.hashCode() : 0);
+        hash += (codigoempleado != null ? codigoempleado.hashCode() : 0);
         return hash;
     }
 
@@ -187,7 +207,7 @@ public class Empleado implements Serializable {
             return false;
         }
         Empleado other = (Empleado) object;
-        if ((this.cedulaempleado == null && other.cedulaempleado != null) || (this.cedulaempleado != null && !this.cedulaempleado.equals(other.cedulaempleado))) {
+        if ((this.codigoempleado == null && other.codigoempleado != null) || (this.codigoempleado != null && !this.codigoempleado.equals(other.codigoempleado))) {
             return false;
         }
         return true;
@@ -195,7 +215,7 @@ public class Empleado implements Serializable {
 
     @Override
     public String toString() {
-        return "modelo.Empleado[ cedulaempleado=" + cedulaempleado + " ]";
+        return "modelo.Empleado[ codigoempleado=" + codigoempleado + " ]";
     }
     
 }

@@ -7,12 +7,15 @@ package persistencia;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import modelo.Contratista;
 import modelo.Empleado;
 
 /**
  *
- * @author DILOVE
+ * @author ADMIN
  */
 @Stateless
 public class EmpleadoFacade extends AbstractFacade<Empleado> implements EmpleadoFacadeLocal {
@@ -29,8 +32,18 @@ public class EmpleadoFacade extends AbstractFacade<Empleado> implements Empleado
     }
 
     @Override
+    public Empleado findCedula(Object id) {
+         String consulta = "select e from Empleado e where e.cedulaempleado = " + id;
+        try {
+            Query query = em.createQuery(consulta);
+            return (Empleado) query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+    
+    @Override
     public void limpiarCache() {
        getEntityManager().getEntityManagerFactory().getCache().evictAll();
     }
-    
 }
