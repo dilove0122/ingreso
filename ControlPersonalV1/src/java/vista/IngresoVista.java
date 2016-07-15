@@ -64,6 +64,7 @@ public class IngresoVista {
     private String datoHoraIngreso;
     private String datoCargoIngreso;
     private String datoNombreIngreso;
+    private String datoAutorizadoIngreso="";
     private List<Ingreso> listaIngresos;
     private Ingreso selectedIngreso;
     //Consultas Contratista
@@ -146,7 +147,6 @@ public class IngresoVista {
 
     public void action_registrar_ingreso() {
         try {
-            System.out.println("Documento del empleado "+documento);
             //refresh();
             empleadoLogica.limpiarCache();
             if (documento.equals("")) {
@@ -154,6 +154,7 @@ public class IngresoVista {
                 datoHoraIngreso = "";
                 datoNombreIngreso = "";
                 datoCargoIngreso = "";
+                datoAutorizadoIngreso = "";
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "Pase la cédula Nuevamente"));
             } else {
                 Empleado empleadoIngreso = empleadoLogica.consultarPorDocumento(Long.parseLong(documento));
@@ -163,6 +164,7 @@ public class IngresoVista {
                     datoHoraIngreso = "";
                     datoNombreIngreso = "";
                     datoCargoIngreso = "";
+                    datoAutorizadoIngreso = "N";
                 } else {
                     Ingreso nuevoIngreso = new Ingreso();
                     nuevoIngreso.setEmpleadoingreso(empleadoIngreso);
@@ -175,11 +177,13 @@ public class IngresoVista {
                     datoHoraIngreso = formatoH.format(fechaActual);
                     datoNombreIngreso = empleadoIngreso.getNombreempleado() + " " + empleadoIngreso.getApellidoempleado();
                     datoCargoIngreso = empleadoIngreso.getCargoempleado();
+                    
                     Ingreso tieneIngreso = ingresoLogica.consultarxFecha(datoFechaIngreso, empleadoIngreso);
                     if (tieneIngreso != null && tieneIngreso.getHorasalidaingreso() == null && tieneIngreso.getAutorizadoingreso().equals("S")) {
                         Date fechaSalida = new Date();
                         tieneIngreso.setHorasalidaingreso(fechaSalida);
                         ingresoLogica.modificar(tieneIngreso);
+                        datoAutorizadoIngreso = "S";
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "SALIDA REGISTRADA", ""));
                     } else if (tieneIngreso != null && tieneIngreso.getHorasalidaingreso() == null && tieneIngreso.getAutorizadoingreso().equals("N")) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "INGRESO NO AUTORIZADO", "¡El empleado ya tiene un Registro el día de hoy que no Fue Autorizado!"));
@@ -187,20 +191,24 @@ public class IngresoVista {
                         datoHoraIngreso = "";
                         datoNombreIngreso = "";
                         datoCargoIngreso = "";
+                        datoAutorizadoIngreso = "N";
                     } else {
                         if (empleadoIngreso.getEpsempleado().equals("N")) {
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "INGRESO NO AUTORIZADO", "¡El empleado no tiene Activa la EPS!"));
                             nuevoIngreso.setAutorizadoingreso("N");
+                            datoAutorizadoIngreso = "N";
                         } else if (empleadoIngreso.getArlempleado().equals("N")) {
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "INGRESO NO AUTORIZADO", "¡El empleado no tiene Activa la ARL!"));
                             nuevoIngreso.setAutorizadoingreso("N");
+                            datoAutorizadoIngreso = "N";
                         } else if (empleadoIngreso.getEstadoempleado().equals("INACTIVO")) {
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "INGRESO NO AUTORIZADO", "¡El empleado esta INACTIVO!"));
                             nuevoIngreso.setAutorizadoingreso("N");
+                            datoAutorizadoIngreso = "N";
                         } else {
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "INGRESO AUTORIZADO", ""));
                             nuevoIngreso.setAutorizadoingreso("S");
-
+                            datoAutorizadoIngreso = "S";
                         }
                         ingresoLogica.registrar(nuevoIngreso);
                     }
@@ -1019,5 +1027,15 @@ public class IngresoVista {
         txtFechaIngresoFinE.setValue(null);
         listaIngresos = null;
     }
+
+    public String getDatoAutorizadoIngreso() {
+        return datoAutorizadoIngreso;
+    }
+
+    public void setDatoAutorizadoIngreso(String datoAutorizadoIngreso) {
+        this.datoAutorizadoIngreso = datoAutorizadoIngreso;
+    }
+    
+    
 
 }

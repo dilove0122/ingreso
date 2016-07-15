@@ -10,7 +10,17 @@
             <f:facet name="first">
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
                 <title>Control Personal V1</title>
-            </f:facet>           
+            </f:facet>     
+            <style>
+                .colorA{
+                    background-image: none;
+                    background-color:lightgreen;
+                }
+                .colorNA{
+                    background-image: none;
+                    background-color:darksalmon;
+                }
+            </style>
         </h:head>
 
         <h:body>           
@@ -46,7 +56,7 @@
                             </p:panelGrid>
                                 </div>
                         </p:panel>
-                        <p:dialog style="font-size: 25px;" header="INFORMACIÓN DE INGRESO" widgetVar="dlgIngreso" height="340" width="900" onShow="myFunction();" onHide="myStopFunction();">
+                        <p:dialog style="font-size: 25px;" styleClass="#{ingresosVista.datoAutorizadoIngreso eq 'S' ? 'colorA' : 'colorNA'}"  header="INFORMACIÓN DE INGRESO" widgetVar="dlgIngreso" height="340" width="900" onShow="myFunction();" onHide="myStopFunction();">
                             <h:outputText style="font-size: 50px;" value="Fecha: #{ingresosVista.datoFechaIngreso} - Hora: #{ingresosVista.datoHoraIngreso}" />
                             <p:messages id="mensajesDialogo" showDetail="true" style="font-size: 50px;"/>
                             <h:outputText style="font-size: 40px;font-weight: bold;" value="#{ingresosVista.datoNombreIngreso}" /> <br/>
