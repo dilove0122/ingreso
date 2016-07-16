@@ -9,6 +9,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,6 +24,7 @@ import javax.ejb.EJB;
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ViewHandler;
+import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIViewRoot;
@@ -54,8 +56,8 @@ import persistencia.IngresoFacadeLocal;
  * @author arios
  */
 @ManagedBean(name = "ingresosVista")
-@ViewScoped
-public class IngresoVista {
+@ApplicationScoped
+public class IngresoVista implements Serializable{
 
     private InputText txtCedula;
 
@@ -64,7 +66,7 @@ public class IngresoVista {
     private String datoHoraIngreso;
     private String datoCargoIngreso;
     private String datoNombreIngreso;
-    private String datoAutorizadoIngreso="";
+    private String datoAutorizadoIngreso = "";
     private List<Ingreso> listaIngresos;
     private Ingreso selectedIngreso;
     //Consultas Contratista
@@ -147,7 +149,12 @@ public class IngresoVista {
 
     public void action_registrar_ingreso() {
         try {
-            //refresh();
+            datoFechaIngreso = "";
+            datoHoraIngreso = "";
+            datoNombreIngreso = "";
+            datoCargoIngreso = "";
+            datoAutorizadoIngreso = "";
+            System.out.println("Documento "+documento);
             empleadoLogica.limpiarCache();
             if (documento.equals("")) {
                 datoFechaIngreso = "";
@@ -177,7 +184,7 @@ public class IngresoVista {
                     datoHoraIngreso = formatoH.format(fechaActual);
                     datoNombreIngreso = empleadoIngreso.getNombreempleado() + " " + empleadoIngreso.getApellidoempleado();
                     datoCargoIngreso = empleadoIngreso.getCargoempleado();
-                    
+
                     Ingreso tieneIngreso = ingresoLogica.consultarxFecha(datoFechaIngreso, empleadoIngreso);
                     if (tieneIngreso != null && tieneIngreso.getHorasalidaingreso() == null && tieneIngreso.getAutorizadoingreso().equals("S")) {
                         Date fechaSalida = new Date();
@@ -1035,7 +1042,5 @@ public class IngresoVista {
     public void setDatoAutorizadoIngreso(String datoAutorizadoIngreso) {
         this.datoAutorizadoIngreso = datoAutorizadoIngreso;
     }
-    
-    
 
 }
