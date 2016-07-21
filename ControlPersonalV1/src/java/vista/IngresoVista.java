@@ -26,6 +26,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.application.ViewHandler;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
@@ -56,7 +57,7 @@ import persistencia.IngresoFacadeLocal;
  * @author arios
  */
 @ManagedBean(name = "ingresosVista")
-@ApplicationScoped
+@SessionScoped
 public class IngresoVista implements Serializable{
 
     private InputText txtCedula;
@@ -190,7 +191,7 @@ public class IngresoVista implements Serializable{
                         Date fechaSalida = new Date();
                         tieneIngreso.setHorasalidaingreso(fechaSalida);
                         ingresoLogica.modificar(tieneIngreso);
-                        datoAutorizadoIngreso = "S";
+                        datoAutorizadoIngreso = "SA";
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "SALIDA REGISTRADA", ""));
                     } else if (tieneIngreso != null && tieneIngreso.getHorasalidaingreso() == null && tieneIngreso.getAutorizadoingreso().equals("N")) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "INGRESO NO AUTORIZADO", "¡El empleado ya tiene un Registro el día de hoy que no Fue Autorizado!"));
