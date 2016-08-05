@@ -602,7 +602,7 @@ public class IngresoVista implements Serializable{
                 if (txtFechaIngresoInicioC.getValue() == null || txtFechaIngresoFinC.getValue() == null) {
                     listaIngresos = ingresoDAO.consultarIngresosContratista(c);
                     jasper = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("reportes/reporteContratista.jasper"));
-                    nombreReporte = "reporteContratista" + c.getNitcontratista();
+                    nombreReporte = "reporteContratista" + c.getNitcontratista()+".xls";
                     if (listaIngresos.isEmpty()) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Info", "¡No hay Ingresos que coincidan con los Parámetros!"));
                     } else {
@@ -666,7 +666,7 @@ public class IngresoVista implements Serializable{
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Info", "¡El rango debe corresponder a una semana de Lunes a Sábado!"));
                     } else {
                         jasper = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("reportes/reporteContratistaFechas.jasper"));
-                        nombreReporte = "reporteContratista" + c.getNitcontratista() + "xFecha";
+                        nombreReporte = "reporteContratista" + c.getNitcontratista() + "xFecha.xls";
                         fechai = formato.format(fechaI);
                         fechaf = formato.format(fechaF);
                         parametros.put("fechainicio", fechai);
@@ -932,7 +932,7 @@ public class IngresoVista implements Serializable{
                 if (txtFechaIngresoInicioE.getValue() == null || txtFechaIngresoFinE.getValue() == null) {
                     listaIngresos = ingresoDAO.consultarIngresosEmpleado(e);
                     jasper = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("reportes/reporteEmpleado.jasper"));
-                    nombreReporte = "reporteEmpleado" + e.getCedulaempleado();
+                    nombreReporte = "reporteEmpleado" + e.getCedulaempleado()+".xls";
                 } else {
                     SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
                     Date fechaI = (Date) txtFechaIngresoInicioE.getValue();
@@ -945,7 +945,7 @@ public class IngresoVista implements Serializable{
                         fechaf = formato.format(fechaF);
                         parametros.put("fechai", fechai);
                         parametros.put("fechafin", fechaf);
-                        nombreReporte = "reporteEmpleado" + e.getCedulaempleado() + "xFecha";
+                        nombreReporte = "reporteEmpleado" + e.getCedulaempleado() + "xFecha.xls";
                         listaIngresos = ingresoDAO.consultarIngresosEmpleado(e, fechai, fechaf);
                     }
                 }

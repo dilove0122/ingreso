@@ -232,8 +232,12 @@
                                         </f:facet>
                                         <h:outputText value="#{ingreso.autorizadoingreso}" />
                                     </p:column>
-                                    <p:column headerText="Empleado">
-                                        <h:outputText value="#{ingreso.empleadoingreso.nombreempleado}" />
+                                    <p:column headerText="Empleado" filterBy="#{ingreso.empleadoingreso.nombreempleado}" filterMatchMode="contains">
+                                        <h:outputText value="#{ingreso.empleadoingreso.nombreempleado} #{ingreso.empleadoingreso.apellidoempleado}" />
+                                    </p:column>
+                                    
+                                    <p:column headerText="Contratista" filterBy="#{ingreso.empleadoingreso.contratistaempleado.nombrecontratista}" filterMatchMode="contains">
+                                        <h:outputText value="#{ingreso.empleadoingreso.contratistaempleado.nombrecontratista}" />
                                     </p:column>
                                 </p:dataTable>
                             </p:panel>

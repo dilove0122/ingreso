@@ -271,22 +271,26 @@ public class EmpleadoVista {
             Empleado empleado = new Empleado();
             Contratista contratistaObj = new Contratista();
             empleado.setCedulaempleado(Long.parseLong(txtCedula.getValue().toString()));
-            empleado.setNombreempleado(txtNombre.getValue().toString().trim().toUpperCase() + " " + txtNombre2.getValue().toString().trim().toUpperCase());
-            empleado.setApellidoempleado(txtApellido.getValue().toString().trim().toUpperCase() + " " + txtApellido2.getValue().toString().trim().toUpperCase());
-            empleado.setTelefonoempleado(txtTelefono.getValue().toString());
-            empleado.setCorreoempleado(txtCorreo.getValue().toString());
-            empleado.setCargoempleado(txtCargo.getValue().toString().trim().toUpperCase());
-            empleado.setEpsempleado((getCmbEps().getValue().toString()));
-            empleado.setArlempleado(getCmbArl().getValue().toString());
-            empleado.setEstadoempleado("ACTIVO");
-            if (txtCodigoContratista.getValue() != null) {
-                contratistaObj = contratistaLogica.consultarPorNit(Long.parseLong(txtCodigoContratista.getValue().toString()));
-                empleado.setContratistaempleado(contratistaObj);
-            }
+            if (txtNombre.getValue().toString().equals("") || txtApellido.getValue().toString().equals("")) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Mensaje: ", "¡Es obligatorio el primer nombre y primer apellido!"));
+            } else {
+                empleado.setNombreempleado(txtNombre.getValue().toString().trim().toUpperCase() + " " + txtNombre2.getValue().toString().trim().toUpperCase());
+                empleado.setApellidoempleado(txtApellido.getValue().toString().trim().toUpperCase() + " " + txtApellido2.getValue().toString().trim().toUpperCase());
+                empleado.setTelefonoempleado(txtTelefono.getValue().toString());
+                empleado.setCorreoempleado(txtCorreo.getValue().toString());
+                empleado.setCargoempleado(txtCargo.getValue().toString().trim().toUpperCase());
+                empleado.setEpsempleado((getCmbEps().getValue().toString()));
+                empleado.setArlempleado(getCmbArl().getValue().toString());
+                empleado.setEstadoempleado("ACTIVO");
+                if (txtCodigoContratista.getValue() != null) {
+                    contratistaObj = contratistaLogica.consultarPorNit(Long.parseLong(txtCodigoContratista.getValue().toString()));
+                    empleado.setContratistaempleado(contratistaObj);
+                }
 
-            empleadoLogica.registrar(empleado);
-            resetearFitrosTabla("formulario:tablaE");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "¡El Empleado se registró con Éxito!"));
+                empleadoLogica.registrar(empleado);
+                resetearFitrosTabla("formulario:tablaE");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Mensaje: ", "¡El Empleado se registró con Éxito!"));
+            }
         } catch (NumberFormatException e) {
             FacesContext.getCurrentInstance().addMessage("mensajes", new FacesMessage("¡La cédula y el teléfono son obligatorios!", " "));
         } catch (NullPointerException e) {
@@ -386,7 +390,7 @@ public class EmpleadoVista {
         }
 
     }
-    
+
     public void resetearFitrosTabla(String id) {
         DataTable table = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent(id);
         table.reset();
@@ -421,13 +425,17 @@ public class EmpleadoVista {
         String apellido = empleado.getApellidoempleado();
         String[] datosN = nombre.split(" ");
         String[] datosA = apellido.split(" ");
-        txtNombre.setValue(datosN[0]);
+        if(datosN.length>0){
+            txtNombre.setValue(datosN[0]);
+        }
         if (datosN.length > 1) {
             txtNombre2.setValue(datosN[1]);
         } else {
             txtNombre2.setValue("");
         }
-        txtApellido.setValue(datosA[0]);
+        if(datosA.length>0){
+            txtApellido.setValue(datosA[0]);
+        }
         if (datosA.length > 1) {
             txtApellido2.setValue(datosA[1]);
         } else {
