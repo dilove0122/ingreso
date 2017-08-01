@@ -202,8 +202,8 @@
                                              rowsPerPageTemplate="5,10,15"
                                              style="margin-bottom:20px"
                                              rowKey="#{ingreso.numeroingreso}"
-                                             filteredValue="#{ingresosVista.listaIngresos}"
-                                             emptyMessage="No se encontraron Ingresos Reqistrados"
+                                             filteredValue="#{ingresosVista.listaIngresosFiltro}"
+                                             emptyMessage="No se encontraron Ingresos Reqistrados para el día de Hoy"
                                              rowStyleClass="#{ingreso.autorizadoingreso eq 'S' ? 'a' : 'na'}">
                                     <p:column headerText="Fecha" sortBy="#{ingreso.fechaingreso}">
                                         <h:outputText value="#{ingreso.fechaingreso}">
@@ -226,6 +226,7 @@
                                     <p:column headerText="Ingreso Autorizado" filterBy="#{ingreso.autorizadoingreso}" filterMatchMode="exact">
                                         <f:facet name="filter">
                                             <p:selectOneMenu onchange="PF('tablaIngreso').filter()" >
+                                                <f:selectItem itemLabel="-" itemValue="" />
                                                 <f:selectItem itemLabel="SI" itemValue="S" />
                                                 <f:selectItem itemLabel="NO" itemValue="N" />
                                             </p:selectOneMenu>

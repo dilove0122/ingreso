@@ -210,7 +210,6 @@ public class UsuarioVista {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext extContext = context.getExternalContext();
         String url = "";
-
         try {
 
             Usuario usr = new Usuario();

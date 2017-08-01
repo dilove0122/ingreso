@@ -60,6 +60,11 @@ public class IngresoLogica implements IngresoLogicaLocal {
         return ingresoDAO.consultarIngresoxFecha(fecha, empleado);
     }
 
+    @Override
+    public List<Ingreso> consultarIngresosDiarios(String fechaf) throws Exception {
+        return ingresoDAO.consultarIngresosDiarios(fechaf);
+    }
+
 
     
 }

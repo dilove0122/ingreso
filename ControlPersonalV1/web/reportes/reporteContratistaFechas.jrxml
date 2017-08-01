@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="1008" pageHeight="612" orientation="Landscape" columnWidth="968" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="06cbf0f4-ea1b-4681-9c6d-912f1eb8ef4e">
 	<property name="ireport.zoom" value="1.3310000000000024"/>
-	<property name="ireport.x" value="552"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="estiloA1">
 		<conditionalStyle>
@@ -171,7 +171,7 @@
 				<text><![CDATA[Nombre:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="39" width="161" height="17" uuid="7e39fccc-80d0-40a3-856f-213eccc49b75"/>
+				<reportElement x="0" y="39" width="161" height="16" uuid="7e39fccc-80d0-40a3-856f-213eccc49b75"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -185,7 +185,7 @@
 				<text><![CDATA[Fecha: Semana ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="161" y="39" width="807" height="17" uuid="9ea6b46b-7261-4525-af87-da7f748c6f26"/>
+				<reportElement x="161" y="39" width="807" height="16" uuid="9ea6b46b-7261-4525-af87-da7f748c6f26"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>

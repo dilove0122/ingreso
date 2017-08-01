@@ -26,5 +26,7 @@ public interface IngresoLogicaLocal {
     public List<Ingreso> consultar() throws Exception;
     
     public Ingreso consultarxFecha(String fecha, Empleado empleado) throws Exception;
+    
+    public List<Ingreso> consultarIngresosDiarios(String fechaf) throws Exception;
 
 }

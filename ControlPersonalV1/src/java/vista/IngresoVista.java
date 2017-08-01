@@ -69,6 +69,7 @@ public class IngresoVista implements Serializable{
     private String datoNombreIngreso;
     private String datoAutorizadoIngreso = "";
     private List<Ingreso> listaIngresos;
+    private List<Ingreso> listaIngresosFiltro;
     private Ingreso selectedIngreso;
     //Consultas Contratista
     private InputText txtContratista;
@@ -243,13 +244,17 @@ public class IngresoVista implements Serializable{
     }
 
     public List<Ingreso> getListaIngresos() {
-        if (listaIngresos == null) {
+    //if (listaIngresos == null) {
             try {
-                listaIngresos = ingresoLogica.consultar();
+                Date fechaActual = new Date();
+                SimpleDateFormat formato = new SimpleDateFormat("YYYY-MM-dd");
+                String fechaA = formato.format(fechaActual);
+                System.out.println("Fecha actual "+fechaA);
+                listaIngresos = ingresoLogica.consultarIngresosDiarios(fechaA);
             } catch (Exception ex) {
                 Logger.getLogger(IngresoVista.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
+    //}
         return listaIngresos;
     }
 
@@ -1044,4 +1049,13 @@ public class IngresoVista implements Serializable{
         this.datoAutorizadoIngreso = datoAutorizadoIngreso;
     }
 
+    public List<Ingreso> getListaIngresosFiltro() {
+        return listaIngresosFiltro;
+    }
+
+    public void setListaIngresosFiltro(List<Ingreso> listaIngresosFiltro) {
+        this.listaIngresosFiltro = listaIngresosFiltro;
+    }
+
+    
 }

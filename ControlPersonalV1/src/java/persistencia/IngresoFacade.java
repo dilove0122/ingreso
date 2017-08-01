@@ -21,6 +21,7 @@ import modelo.Ingreso;
  */
 @Stateless
 public class IngresoFacade extends AbstractFacade<Ingreso> implements IngresoFacadeLocal {
+
     @PersistenceContext(unitName = "ControlPersonalV1PU")
     private EntityManager em;
 
@@ -32,7 +33,7 @@ public class IngresoFacade extends AbstractFacade<Ingreso> implements IngresoFac
     public IngresoFacade() {
         super(Ingreso.class);
     }
-    
+
     @Override
     public Ingreso consultarIngresoxFecha(String fecha, Empleado empleado) {
         getEntityManager().getEntityManagerFactory().getCache().evictAll();
@@ -48,33 +49,41 @@ public class IngresoFacade extends AbstractFacade<Ingreso> implements IngresoFac
 
     @Override
     public List<Ingreso> consultarIngresosContratista(Contratista c) {
-        String consulta = "select ingreso from Ingreso ingreso where ingreso.empleadoingreso.contratistaempleado.nitcontratista=" + c.getNitcontratista()+" order by ingreso.empleadoingreso.cedulaempleado";
+        String consulta = "select ingreso from Ingreso ingreso where ingreso.empleadoingreso.contratistaempleado.nitcontratista=" + c.getNitcontratista() + " order by ingreso.empleadoingreso.cedulaempleado";
         Query query = em.createQuery(consulta);
         return query.getResultList();
     }
 
     @Override
     public List<Ingreso> consultarIngresosContratista(Contratista c, String fechai, String fechaf) {
-        String consulta = "select ingreso from Ingreso ingreso where ingreso.empleadoingreso.contratistaempleado.nitcontratista=" + c.getNitcontratista()+" and ingreso.fechaingreso between '"+fechai+"' and '"+fechaf+"' order by ingreso.empleadoingreso.cedulaempleado";
-        System.out.println("COnsulta "+consulta);
+        String consulta = "select ingreso from Ingreso ingreso where ingreso.empleadoingreso.contratistaempleado.nitcontratista=" + c.getNitcontratista() + " and ingreso.fechaingreso between '" + fechai + "' and '" + fechaf + "' order by ingreso.empleadoingreso.cedulaempleado";
+        System.out.println("COnsulta " + consulta);
         Query query = em.createQuery(consulta);
         return query.getResultList();
     }
 
     @Override
     public List<Ingreso> consultarIngresosEmpleado(Empleado e) {
-        String consulta = "select ingreso from Ingreso ingreso where ingreso.empleadoingreso.cedulaempleado=" + e.getCedulaempleado()+" order by ingreso.empleadoingreso.cedulaempleado";
-        System.out.println("Consulta "+consulta);
+        String consulta = "select ingreso from Ingreso ingreso where ingreso.empleadoingreso.cedulaempleado=" + e.getCedulaempleado() + " order by ingreso.empleadoingreso.cedulaempleado";
+        System.out.println("Consulta " + consulta);
         Query query = em.createQuery(consulta);
         return query.getResultList();
     }
 
     @Override
     public List<Ingreso> consultarIngresosEmpleado(Empleado e, String fechai, String fechaf) {
-        String consulta = "select ingreso from Ingreso ingreso where ingreso.empleadoingreso.cedulaempleado=" + e.getCedulaempleado()+" and ingreso.fechaingreso between '"+fechai+"' and '"+fechaf+"' order by ingreso.empleadoingreso.cedulaempleado";
-        System.out.println("COnsulta "+consulta);
+        String consulta = "select ingreso from Ingreso ingreso where ingreso.empleadoingreso.cedulaempleado=" + e.getCedulaempleado() + " and ingreso.fechaingreso between '" + fechai + "' and '" + fechaf + "' order by ingreso.empleadoingreso.cedulaempleado";
+        System.out.println("COnsulta " + consulta);
         Query query = em.createQuery(consulta);
         return query.getResultList();
     }
-    
+
+    @Override
+    public List<Ingreso> consultarIngresosDiarios(String fechaf) {
+        getEntityManager().getEntityManagerFactory().getCache().evictAll();
+        String consulta = "select ingreso from Ingreso ingreso where ingreso.fechaingreso = '" + fechaf + "'";
+        Query query = em.createQuery(consulta);
+        return query.getResultList();
+    }
+
 }
