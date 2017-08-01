@@ -47,7 +47,10 @@
                                 </p:row>
                                 <p:row>
                                     <p:column style="text-align: center;">
-                                        <p:inputText id="txtCedula" binding="#{ingresosVista.txtCedula}" value="#{ingresosVista.documento}"/>
+                                        <p:remoteCommand name="test" update="formulario" oncomplete="PF('dlgIngreso').show();"  process="@all" action="#{ingresosVista.action_registrar_ingreso}" />
+                                        <p:inputText id="txtCedula" binding="#{ingresosVista.txtCedula}" value="#{ingresosVista.documento}"
+                                                     onkeypress="if (event.keyCode === 13) { test(); return false; }"/>
+                                            
                                     </p:column>  
                                 </p:row>
                                 <p:row>
