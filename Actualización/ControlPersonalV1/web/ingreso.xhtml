@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Control Personal V1</title>
+            </f:facet>     
+            <style>
+                .colorA{
+                    background-image: none;
+                    background-color:lightgreen;
+                }
+                .colorNA{
+                    background-image: none;
+                    background-color:darksalmon;
+                }
+                .colorS{
+                    background-image: none;
+                    background-color: goldenrod;
+                }
+            </style>
+        </h:head>
+
+        <h:body>           
+            <p:layout fullPage="true">
+                 <p:layoutUnit position="north" size="140" resizable="true" closable="true" collapsible="true">
+                     <div align="center">
+                <h:graphicImage url="images/bannerControl.png" width="100%" height="100%" alt="Ingreso"  />
+            </div>
+                </p:layoutUnit>
+                <p:layoutUnit position="center">
+                    <h:form id="formulario">
+                        <p:panel style="font-size: 30px;text-align: center;" id="panelIngreso" header="SISTEMA - CONTROL DE INGRESO DE PERSONAL">
+                            <p:focus context="panelIngreso"/>
+                            <div align="center">                                          
+                            <p:panelGrid id="panelGridIngreso" style="width: 100%;">                                
+                                <p:row>
+                                    <p:column style="text-align: center;">
+                                        <h:outputText value="!Bienvenido! Pase su Cédula por el Lector:"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="text-align: center;">
+                                        <p:remoteCommand name="test" update="formulario" oncomplete="PF('dlgIngreso').show();"  process="@all" action="#{ingresosVista.action_registrar_ingreso}" />
+                                        <p:inputText id="txtCedula" binding="#{ingresosVista.txtCedula}" value="#{ingresosVista.documento}"
+                                                     onkeypress="if (event.keyCode === 13) { test(); return false; }"/>
+                                            
+                                    </p:column>  
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="2">
+                                        <p:inputText style="opacity: 0.0;" id="txtCodigo3" >
+                                            <p:ajax event="focus" update="formulario" oncomplete="PF('dlgIngreso').show();"  process="@all"  listener="#{ingresosVista.action_registrar_ingreso}" />
+                                        </p:inputText>
+                                    </p:column> 
+                                </p:row>
+                            </p:panelGrid>
+                                </div>
+                        </p:panel>
+                        <p:dialog style="font-size: 25px;" styleClass="#{ingresosVista.datoAutorizadoIngreso eq 'S' ? 'colorA' : ingresosVista.datoAutorizadoIngreso eq 'SA' ? 'colorS': 'colorNA'}"  header="INFORMACIÓN DE INGRESO" widgetVar="dlgIngreso" height="340" width="900" onShow="myFunction();" onHide="myStopFunction();">
+                            <h:outputText style="font-size: 50px;" value="Fecha: #{ingresosVista.datoFechaIngreso} - Hora: #{ingresosVista.datoHoraIngreso}" />
+                            <p:messages id="mensajesDialogo" showDetail="true" style="font-size: 50px;"/>
+                            <h:outputText style="font-size: 40px;font-weight: bold;" value="#{ingresosVista.datoNombreIngreso}" /> <br/>
+                            <h:outputText style="font-size: 40px;" value="#{ingresosVista.datoCargoIngreso}" />
+                        </p:dialog>   
+                        <script>
+                            var myVar;
+
+                            function myFunction()
+                            {
+                                myVar = setTimeout(function () {
+                                    PF('dlgIngreso').hide();
+                                }, 5000);
+                            }
+
+                            function myStopFunction()
+                            {
+                                clearTimeout(myVar);
+                            }
+                        </script>
+                    </h:form>
+
+                </p:layoutUnit>
+                <p:layoutUnit position="south" size="63" resizable="true" closable="true" collapsible="true">
+                     <div align="center">
+                <h:graphicImage url="images/footerControl2.png" width="100%" height="100%" alt="Ingreso"  />
+            </div>
+                </p:layoutUnit>
+            </p:layout>
+        </h:body>
+    </f:view>
+</html>
+
+
+

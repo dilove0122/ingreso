@@ -1,0 +1,252 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Control Personal V1</title>
+            </f:facet>
+            <script>
+                PrimeFaces.locales["es"] = {
+                    closeText: "Cerrar",
+                    prevText: "Anterior",
+                    nextText: "Siguiente",
+                    monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                    monthNamesShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+                    dayNames: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+                    dayNamesShort: ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
+                    dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+                    weekHeader: "Semana",
+                    firstDay: 0,
+                    isRTL: false,
+                    showMonthAfterYear: false,
+                    yearSuffix: "",
+                    timeOnlyTitle: "Solo hora",
+                    timeText: "Tiempo",
+                    hourText: "Hora",
+                    minuteText: "Minuto",
+                    secondText: "Segundo",
+                    currentText: "Fecha actual",
+                    ampm: false,
+                    month: "Mes",
+                    week: "Semana",
+                    day: "Día",
+                    allDayText: "Todo el día"
+                };
+            </script>
+            <style>
+                .a{
+                    background-color:lightgreen;
+                    background-image:none;
+                }
+                .na{
+                    background-color:darksalmon;
+                    background-image:none;
+                }
+
+                .imagenConsultar {
+                    background-image: url(../images/search.png)
+                }
+                
+                .imagenLimpiar {
+                    background-image: url(../images/restart.png)
+                }
+                
+                .imagenReportePDF {
+                    background-image: url(../images/pdf.png)
+                }
+                
+                .imagenReporteExcel {
+                    background-image: url(../images/excel.png)
+                }
+            </style>
+        </h:head>
+
+        <h:body style="font-size: 12px;" >
+
+            <p:layout fullPage="true">
+                <p:layoutUnit position="north" size="140" resizable="true" closable="true" collapsible="true">
+                    <div align="center">
+                        <h:graphicImage url="../images/bannerControl.png" width="100%" height="100%" alt="Ingreso"  />
+                    </div>
+                </p:layoutUnit>
+                <p:layoutUnit position="west" size="160" header="..." collapsible="true">
+                    <h:form id="formularioMenu"> 
+                        <p:menu>
+                            <p:menuitem value="Ingresos" url="gestionIngresos.xhtml" />
+                            <p:menuitem value="Empleados" url="gestionEmpleados.xhtml" />
+                            <p:menuitem value="Contratistas" url="gestionContratistas.xhtml" />                            
+                            <p:menuitem value="Cambiar Clave" url="gestionUsuarios.xhtml" />
+                            <p:menuitem value="Cerrar Sesión"  action="#{usuarioVista.cerrarSesion_action}"/>
+                        </p:menu>
+                    </h:form>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center">
+                    <h:form id="formulario"> 
+
+                        <p:messages id="mensajes" showDetail="true" />
+                        <p:panel header="CONSULTA DE INGRESOS">
+                            <p:panelGrid id="panelParametros">
+                                <p:row>
+                                    <p:column colspan="10">
+                                        <p:commandButton id="iconOnly" update="cantidadIngresos,cantidadIngresosC" icon="ui-icon-refresh" title="Actualizar" />
+                                        <h:outputText id="cantidadIngresos" style="text-align: center;color: blue;font-size: 16px; font-weight: bold;" value="#{ingresosVista.ingresos}" />    
+                                        <br/>
+                                        <h:outputText id="cantidadIngresosC" style="text-align: center;color: goldenrod;font-size: 16px; font-weight: bold;" value="#{ingresosVista.ingresosC}" />                                        
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <h:outputText value="Contratista:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText size="10" id="txtContratista" readonly="true" binding="#{ingresosVista.txtContratista}"/>
+                                        <p:commandButton id="btnConsultarC" value="..." type="button"/>
+                                        <p:overlayPanel id="contratistaPanel" widgetVar="contratistaP" for="btnConsultarC" hideEffect="fade"  style="width:600px">
+                                            <p:dataTable var="contratista" value="#{ingresosVista.listaContratistas}" rows="5" paginator="true" selectionMode="single"
+                                                         selection="#{ingresosVista.selectedContratista}" rowKey="#{contratista.nitcontratista}" filteredValue="#{ingresosVista.listaContratistas}" emptyMessage="No se encontraron Contratistas">
+                                                <p:ajax event="rowSelect" update=":formulario:txtContratista" listener="#{ingresosVista.seleccionarContratista}"  oncomplete="PF('contratistaP').hide();"/>
+                                                <p:column headerText="Nit" filterBy="#{contratista.nitcontratista}" filterMatchMode="contains">
+                                                    <h:outputText value="#{contratista.nitcontratista}" />
+                                                </p:column>
+
+                                                <p:column headerText="Nombre" filterBy="#{contratista.nombrecontratista.toLowerCase()}" filterMatchMode="contains">
+                                                    <h:outputText value="#{contratista.nombrecontratista}" />
+                                                </p:column>
+
+                                                <p:column headerText="Estado">
+                                                    <h:outputText value="#{contratista.estadocontratista}" />
+                                                </p:column>
+                                            </p:dataTable>
+                                        </p:overlayPanel>
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="Desde:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:calendar locale="es" size="15"  id="txtFechaInicioC"  binding="#{ingresosVista.txtFechaIngresoInicioC}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="Hasta:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:calendar locale="es" size="15" id="txtFechaFinC"  binding="#{ingresosVista.txtFechaIngresoFinC}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:commandButton title="Consultar" image="imagenConsultar" action="#{ingresosVista.consultarxContratista()}" update=":formulario" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:commandButton title="Limpiar" image="imagenLimpiar" action="#{ingresosVista.limpiarConsultaContratista()}" update=":formulario" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:commandButton title="PDF" ajax="false" image="imagenReportePDF" action="#{ingresosVista.consultarxContratistaPDF()}" update=":formulario" />
+                                    </p:column>
+                                    <p:column>
+                                        <p:commandButton title="Excel" ajax="false" image="imagenReporteExcel" action="#{ingresosVista.consultarxContratistaExcel()}" update=":formulario" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <h:outputText value="Empleado:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText size="10" id="txtEmpleado" binding="#{ingresosVista.txtEmpleado}"/>
+                                        <p:commandButton id="btnConsultarU" value="..." type="button"/>
+                                        <p:overlayPanel id="usuarioPanel" widgetVar="usuarioP" for="btnConsultarU" hideEffect="fade"  style="width:600px">
+                                            <p:dataTable var="empleado" value="#{ingresosVista.listaEmpleados}" rows="5" paginator="true" selectionMode="single"
+                                                         selection="#{ingresosVista.selectedEmpleado}" rowKey="#{empleado.cedulaempleado}" filteredValue="#{ingresosVista.listaEmpleados}">
+                                                <p:ajax event="rowSelect" update=":formulario:txtEmpleado" listener="#{ingresosVista.seleccionarEmpleado}"  oncomplete="PF('usuarioP').hide();"/>
+                                                <p:column headerText="Cédula" filterBy="#{empleado.cedulaempleado}" filterMatchMode="contains">
+                                                    <h:outputText value="#{empleado.cedulaempleado}" />
+                                                </p:column>
+
+                                                <p:column headerText="Nombre" filterBy="#{empleado.nombreempleado}" filterMatchMode="contains">
+                                                    <h:outputText value="#{empleado.nombreempleado}" />
+                                                </p:column>
+
+                                                <p:column headerText="Cargo">
+                                                    <h:outputText value="#{empleado.cargoempleado}" />
+                                                </p:column>
+                                            </p:dataTable>
+                                        </p:overlayPanel>
+                                    </p:column>
+                                    
+                                      <p:column colspan="9">
+                                        <p:commandButton title="Consultar" image="imagenConsultar"  action="#{ingresosVista.consultarxEmpleado()}" update=":formulario"/>
+                                        <p:commandButton title="Limpiar" image="imagenLimpiar" action="#{ingresosVista.limpiarConsultaEmpleados()}" update=":formulario" />
+                                        <p:commandButton title="PDF" ajax="false" image="imagenReportePDF" action="#{ingresosVista.consultarxEmpleadoPDF()}" update=":formulario" />
+                                        <p:commandButton title="Excel" ajax="false" image="imagenReporteExcel" action="#{ingresosVista.consultarxEmpleadoExcel()}" update=":formulario" />
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+
+                            <p:panel id="panelTablaIngresos">   
+                                <p:dataTable id="tablaIngresos" var="ingreso" value="#{ingresosVista.listaIngresos}" rows="10" widgetVar="tablaIngreso"
+                                             paginator="true" 
+                                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="5,10,15"
+                                             style="margin-bottom:20px"
+                                             rowKey="#{ingreso.numeroingreso}"
+                                             filteredValue="#{ingresosVista.listaIngresosFiltro}"
+                                             emptyMessage="No se encontraron Ingresos Reqistrados"
+                                             rowStyleClass="#{ingreso.autorizadoingreso eq 'S' ? 'a' : 'na'}">
+                                    <p:column headerText="Fecha" sortBy="#{ingreso.fechaingreso}">
+                                        <h:outputText value="#{ingreso.fechaingreso}">
+                                            <f:convertDateTime pattern="yyyy-MM-dd" />
+                                        </h:outputText>
+                                    </p:column>
+
+                                    <p:column headerText="Hora Entrada" sortBy="#{ingreso.horaentradaingreso}">
+                                        <h:outputText value="#{ingreso.horaentradaingreso}">
+                                            <f:convertDateTime pattern="HH:mm:ss" locale="es" />
+                                        </h:outputText>
+                                    </p:column>
+
+
+                                    <p:column headerText="Hora Salida" sortBy="#{ingreso.horasalidaingreso}">
+                                        <h:outputText value="#{ingreso.horasalidaingreso}">
+                                            <f:convertDateTime pattern="HH:mm:ss" locale="es" />
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Ingreso Autorizado" filterBy="#{ingreso.autorizadoingreso}" filterMatchMode="exact">
+                                        <f:facet name="filter">
+                                            <p:selectOneMenu onchange="PF('tablaIngreso').filter()" >
+                                                <f:selectItem itemLabel="-" itemValue="" />
+                                                <f:selectItem itemLabel="SI" itemValue="S" />
+                                                <f:selectItem itemLabel="NO" itemValue="N" />
+                                            </p:selectOneMenu>
+                                        </f:facet>
+                                        <h:outputText value="#{ingreso.autorizadoingreso}" />
+                                    </p:column>
+                                    <p:column headerText="Empleado" filterBy="#{ingreso.empleadoingreso.nombreempleado}" filterMatchMode="contains">
+                                        <h:outputText value="#{ingreso.empleadoingreso.nombreempleado}" />
+                                    </p:column>
+                                    
+                                    <p:column headerText="Contratista" filterBy="#{ingreso.contratistaingreso.nombrecontratista}" filterMatchMode="contains">
+                                        <h:outputText value="#{ingreso.contratistaingreso.nombrecontratista}" />
+                                    </p:column>
+                                    
+                                </p:dataTable>
+                            </p:panel>
+                        </p:panel>
+                    </h:form>
+
+
+
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>
+
+
+

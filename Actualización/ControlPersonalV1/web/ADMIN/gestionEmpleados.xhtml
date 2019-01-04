@@ -1,0 +1,302 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Control Personal V2</title>
+            </f:facet>
+        </h:head>
+
+        <h:body style="font-size: 12px;" >
+
+            <p:layout fullPage="true">
+                 <p:layoutUnit position="north" size="140" resizable="true" closable="true" collapsible="true">
+                     <div align="center">
+                <h:graphicImage url="../images/bannerControl.png" width="100%" height="100%" alt="Ingreso"  />
+            </div>
+                </p:layoutUnit>
+
+
+                <p:layoutUnit position="west" size="160" header="..." collapsible="true">
+                    <h:form id="formularioMenu"> 
+                        <p:menu>
+                            <p:menuitem value="Ingresos" url="gestionIngresos.xhtml" />
+                            <p:menuitem value="Empleados" url="gestionEmpleados.xhtml" />
+                            <p:menuitem value="Contratistas" url="gestionContratistas.xhtml" />                            
+                            <p:menuitem value="Cambiar Clave" url="gestionUsuarios.xhtml" />
+                            <p:menuitem value="Cerrar Sesión"  action="#{usuarioVista.cerrarSesion_action}"/>
+                        </p:menu>
+                    </h:form>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center">
+                    <h:form id="formulario" onkeypress="return event.keyCode !== 13">                         
+                        <p:messages id="mensajes" showDetail="true" />
+                        <p:panel header="GESTIÓN DE INFORMACIÓN DE EMPLEADOS">
+                            <p:focus context="panelUsuario"/>
+                            <p:panelGrid id="panelUsuario" style="width: 82%;">
+                                <p:row>
+                                    <p:column>
+                                        <h:outputText value="Cédula:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="txtCedula" binding="#{empleadoVista.txtCedula}"/>
+                                    </p:column>
+                                     <p:column>
+                                        <h:outputText value="Primer Apellido:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="txtApellido" binding="#{empleadoVista.txtApellido}"/>
+                                    </p:column>                                    
+                                </p:row>
+                                <p:row>
+                                   <p:column>
+                                        <h:outputText value="Segundo Apellido:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="txtApellido2" binding="#{empleadoVista.txtApellido2}"/>
+                                    </p:column>
+                                    
+                                    <p:column>
+                                        <h:outputText value="Primer Nombre:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="txtNombre" binding="#{empleadoVista.txtNombre}"/>
+                                    </p:column>
+                                    
+                                    
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <h:outputText value="Segundo Nombre:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="txtNombre2" binding="#{empleadoVista.txtNombre2}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="Teléfono:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="txtTelefono" binding="#{empleadoVista.txtTelefono}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <h:outputText   value="Estado:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText value="ACTIVO" disabled="true" id="txtEstado" binding="#{empleadoVista.txtEstadoEmpleado}"/>
+                                    </p:column>
+                                    
+                                    <p:column>
+                                        <h:outputText   value="Contratos Empleado:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:commandButton disabled="true"   id="btnContratos" type="button" value="Ver..." binding="#{empleadoVista.btnContratos}" />
+                                        <p:overlayPanel id="panelContratos" for="btnContratos" widgetVar="panelContratos" hideEffect="fade"  style="width:600px">
+                                            <p:dataTable var="contrato" value="#{empleadoVista.listaContratos}" rows="10"
+                                                         paginator="true" emptyMessage="No tiene contratos Asociados"
+                                                         >
+                                                <p:column headerText="Número Contrato">
+                                                    <h:outputText value="#{contrato.numerocontrato}" />
+                                                </p:column>
+
+
+                                                <p:column headerText="Contratista" filterBy="#{contrato.codigocontratista.nombrecontratista}" filterMatchMode="contains">
+                                                    <h:outputText value="#{contrato.codigocontratista.nombrecontratista}" />
+                                                </p:column>
+
+
+                                                <p:column headerText="Fecha Ingreso">
+                                                    <h:outputText value="#{contrato.fechaingreso}">
+                                                        <f:convertDateTime pattern="YYYY-MM-dd" />
+                                                    </h:outputText>
+                                                </p:column>
+
+                                                 <p:column headerText="Fecha Salida">
+                                                     <h:outputText value="#{contrato.fechasalida}">
+                                                         <f:convertDateTime pattern="YYYY-MM-dd" />
+                                                    </h:outputText>
+                                                </p:column>
+
+                                            </p:dataTable>
+                                        </p:overlayPanel>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <h:outputText   value="Cargo:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText id="txtCargo" binding="#{empleadoVista.txtCargo}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText   value="Contratista:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText readonly="true" id="txtContratista" binding="#{empleadoVista.txtCodigoContratista}"/>
+                                        <p:commandButton   id="btnSeleccionar" type="button" value="..." />
+                                        <p:overlayPanel id="panelContratista" for="btnSeleccionar" widgetVar="panelC" hideEffect="fade"  style="width:600px">
+                                            <p:dataTable var="contratista" value="#{empleadoVista.listaContratista}" rows="10"
+                                                         paginator="true"
+                                                         rowKey="#{contratista.nitcontratista}"
+                                                         selection="#{empleadoVista.selectedContratista}"
+                                                         selectionMode="single"
+                                                         filteredValue="#{empleadoVista.listaContratista}"
+                                                         >
+                                                <p:ajax 
+                                                    event="rowSelect"
+                                                    listener="#{empleadoVista.seleccionarContratista}"
+                                                    update=":formulario:txtContratista" oncomplete="PF('panelC').hide();"
+                                                    />
+
+
+                                                <p:column headerText="Nit"   filterBy="#{contratista.nitcontratista}" filterMatchMode="contains" >
+                                                    <h:outputText value="#{contratista.nitcontratista}" />
+                                                </p:column>
+
+
+                                                <p:column headerText="Nombre" filterBy="#{contratista.nombrecontratista}" filterMatchMode="contains">
+                                                    <h:outputText value="#{contratista.nombrecontratista}" />
+                                                </p:column>
+
+
+                                                <p:column headerText="Estado">
+                                                    <h:outputText value="#{contratista.estadocontratista}" />
+                                                </p:column>
+                                            </p:dataTable>
+                                        </p:overlayPanel>
+                                    </p:column>
+                                </p:row>     
+                                <p:row>
+                                    <p:column>
+                                        <h:outputText   value="Fecha de Ingreso:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:calendar id="txtFechaIngreso" binding="#{empleadoVista.txtFechaInicio}"></p:calendar>
+                                        </p:column>
+                                    <p:column>
+                                        <h:outputText   value="Fecha de Salida:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:calendar disabled="true" id="txtFechaSalida" binding="#{empleadoVista.txtFechaFin}"   ></p:calendar>                              
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:panel>
+
+                        <p:panelGrid id="pnlBotones" columns="4" style="width: 82%;">
+                            <f:facet name="footer"> 
+                                <div align="center"> 
+                                    <p:commandButton  id="btnRegistrar" action="#{empleadoVista.registrar_action()}" value="Registrar" binding="#{empleadoVista.btnRegistrar}" update=":formulario" />
+                                    <p:commandButton  id="btnModificar" disabled="true" action="#{empleadoVista.modificar_action}" value="Modificar" binding="#{empleadoVista.btnModificar}" update=":formulario"/>
+                                    <p:commandButton  id="btnLimpiar" action="#{empleadoVista.limpiar()}" value="Limpiar" binding="#{empleadoVista.btnLimpiar}" update=":formulario" />
+                                    <p:commandButton  id="btnEliminar" disabled="true" value="Eliminar" binding="#{empleadoVista.btnEliminar}" onclick="PF('confirmation3').show();"  type="button" />
+                                </div>
+                            </f:facet>
+                        </p:panelGrid>       
+
+                        <p:panel id="panelTabla">   
+                            <p:dataTable id="tablaE" var="empleado" value="#{empleadoVista.listaEmpleado}" rows="10"
+                                         paginator="true"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15"
+                                         rowKey="#{empleado.codigoempleado}"
+                                         selection="#{empleadoVista.selectedEmpleado}"
+                                         selectionMode="single"
+                                         widgetVar="tablaEmpleados" 
+                                         emptyMessage="No se encontraron Empleados"
+                                         >
+                                <p:ajax 
+                                    event="rowSelect"
+                                    listener="#{empleadoVista.seleccionarEmpleado}"
+                                    update=":formulario:pnlBotones,:formulario:panelUsuario "
+                                    />
+
+
+                                <p:column headerText="Cédula"   filterBy="#{empleado.cedulaempleado}" filterMatchMode="contains">
+                                    <h:outputText value="#{empleado.cedulaempleado}" />
+                                </p:column>
+
+
+                                <p:column headerText="Nombre" filterBy="#{empleado.nombreempleado}"  filterMatchMode="contains">
+                                    <h:outputText value="#{empleado.nombreempleado}" />
+                                </p:column>
+
+                                <p:column headerText="Apellido"  filterBy="#{empleado.apellidoempleado}" filterMatchMode="contains" >
+                                    <h:outputText  value="#{empleado.apellidoempleado}" />
+                                </p:column>
+
+                                <p:column headerText="Estado" filterBy="#{empleado.estadoempleado}" filterMatchMode="exact">
+                                    <f:facet name="filter">
+                                            <p:selectOneMenu onchange="PF('tablaEmpleados').filter()" >
+                                                <f:selectItem itemLabel="" itemValue="" />
+                                                <f:selectItem itemLabel="ACTIVO" itemValue="ACTIVO" />
+                                                <f:selectItem itemLabel="INACTIVO" itemValue="INACTIVO" />
+                                            </p:selectOneMenu>
+                                        </f:facet>
+                                    <h:outputText value="#{empleado.estadoempleado}" />
+                                </p:column>
+
+
+                                <p:column headerText="Contratista"  filterBy="#{empleado.contratistaActual.nombrecontratista}" filterMatchMode="contains" >
+                                    <h:outputText  value="#{empleado.contratistaActual.nombrecontratista}" />
+                                </p:column>
+
+
+                            </p:dataTable>
+                        </p:panel>
+                        <br/>
+                        <br/>
+                    </h:form>
+                </p:layoutUnit>
+
+            </p:layout>
+
+
+            <h:form id="formDialog1" > 
+                <p:confirmDialog id="confirmDialog1" message="¿Está Seguro que desea inactivar el Empleado?"  
+                                 header="Confirmación Inactivar" showEffect="fade" hideEffect="explode" severity="alert" widgetVar="confirmation1">  
+                    <p:commandButton id="confirm1" value="Si" oncomplete="PF('confirmation1').hide();" 
+                                     update=":formulario"  
+                                     actionListener="#{empleadoVista.inactivar_action()}" />  
+                    <p:commandButton id="decline" value="No" onclick="PF('confirmation1').hide();" type="button" />   
+
+                </p:confirmDialog> 
+            </h:form>
+
+            <h:form id="formDialog2" > 
+                <p:confirmDialog id="confirmDialog2" message="¿Está seguro que desea activar el Empleado?"  
+                                 header="Confirmación Activación" showEffect="fade" hideEffect="explode" severity="alert" widgetVar="confirmation2">  
+                    <p:commandButton id="confirm2" value="Si" oncomplete="PF('confirmation2').hide();" 
+                                     update=":formulario"  
+                                     actionListener="#{empleadoVista.activar_action()}" />  
+                    <p:commandButton id="decline" value="No" onclick="PF('confirmation2').hide();" type="button" />   
+
+                </p:confirmDialog> 
+            </h:form>
+            
+            <h:form id="formDialog3" > 
+                <p:confirmDialog id="confirmDialog3" message="¿Está seguro que desea eliminar el Empleado?"  
+                                 header="Confirmación Eliminación" showEffect="fade" hideEffect="explode" severity="alert" widgetVar="confirmation3">  
+                    <p:commandButton id="confirm2" value="Si" oncomplete="PF('confirmation3').hide();" 
+                                     update=":formulario"  
+                                     actionListener="#{empleadoVista.eliminar_action()}" />  
+                    <p:commandButton id="decline" value="No" onclick="PF('confirmation3').hide();" type="button" />   
+
+                </p:confirmDialog> 
+            </h:form>
+
+        </h:body>
+
+    </f:view>
+</html>
+
+
+
